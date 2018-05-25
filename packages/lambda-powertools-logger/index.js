@@ -1,4 +1,4 @@
-const CorrelationIds = require('./correlation-ids')
+const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
 
 const LogLevels = {
   DEBUG : 0,
@@ -7,13 +7,14 @@ const LogLevels = {
   ERROR : 3
 }
 
-// these are available through the Node.js execution environment for Lambda
+// most of these are available through the Node.js execution environment for Lambda
 // see https://docs.aws.amazon.com/lambda/latest/dg/current-supported-versions.html
 const DEFAULT_CONTEXT = {
-  awsRegion: process.env.AWS_REGION,
+  awsRegion: process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION,
   functionName: process.env.AWS_LAMBDA_FUNCTION_NAME,
   functionVersion: process.env.AWS_LAMBDA_FUNCTION_VERSION,
-  functionMemorySize: process.env.AWS_LAMBDA_FUNCTION_MEMORY_SIZE
+  functionMemorySize: process.env.AWS_LAMBDA_FUNCTION_MEMORY_SIZE,
+  environment: process.env.ENVIRONMENT || process.env.STAGE // convention in our functions
 }
 
 function getContext () {

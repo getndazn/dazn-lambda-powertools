@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "name": "@perform/lambda-powertools-active-service",
+  "version": "0.1.0",
+  "description": "Utility module for creating an active service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yan Cui"
+}

@@ -1,5 +1,5 @@
-const CorrelationIds = require('../tools/correlation-ids')
-const Log = require('../tools/logger')
+const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
+const Log = require('@perform/lambda-powertools-logger')
 
 function captureHttp({ headers }, { awsRequestId }) {
   if (!headers) {
@@ -84,8 +84,9 @@ function isSnsEvent(event) {
 
 module.exports = ({ sampleDebugLogRate }) => {
   return {
-    before: (handler, next) => {
-      const { event, context } = handler
+    before: (handler, next) => {      
+      CorrelationIds.clearAll()
+      const { event, context } = handler      
 
       if (isApiGatewayEvent(event)) {
         captureHttp(event, context)

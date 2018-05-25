@@ -1,11 +1,11 @@
 function create (refresh, refreshFreqMs) {
   let value, expiration
 
-  let getValue = co.wrap(function* () {
+  let getValue = async () => {
     let now = new Date()
     if (!value || expiration < now) {
       try {
-        value = yield refresh()
+        value = await refresh()
         expiration = new Date(now.getTime() + refreshFreqMs)
       } catch (err) {
         // only rethrow if this is first request and we don't have a cached value yet
@@ -16,7 +16,7 @@ function create (refresh, refreshFreqMs) {
     }
 
     return value
-  })
+  }
 
   let activeSerivce = {
     get value() { return getValue() }
