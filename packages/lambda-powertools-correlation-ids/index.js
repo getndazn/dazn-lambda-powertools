@@ -12,7 +12,7 @@ let set = (key, value) => {
   }
 
   global.CONTEXT[key] = value
-};
+}
 
 let get = () => global.CONTEXT || {}
 

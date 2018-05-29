@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk')
-const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
 const SNS = new AWS.SNS()
+const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
 
 function addCorrelationIds(messageAttributes) {
   let attributes = {}
@@ -17,13 +17,13 @@ function addCorrelationIds(messageAttributes) {
   return Object.assign(attributes, messageAttributes || {})
 }
 
-const publish = (params, cb) => {
+function publish(params, cb) {
   const newMessageAttributes = addCorrelationIds(params.MessageAttributes)
   params = Object.assign(params, { MessageAttributes: newMessageAttributes })
 
   return SNS.publish(params, cb)
 }
 
-const client = Object.assign(SNS, { publish })
+const client = Object.assign({}, SNS, { publish })
 
 module.exports = client

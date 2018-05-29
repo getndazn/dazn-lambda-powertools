@@ -22,7 +22,7 @@ function getContext () {
   const correlationIds = CorrelationIds.get()
   if (correlationIds) {
     // note: this is a shallow copy, which is ok as we're not going to mutate anything
-    return Object.assign(DEFAULT_CONTEXT, correlationIds)
+    return Object.assign({}, DEFAULT_CONTEXT, correlationIds)
   }
 
   return DEFAULT_CONTEXT
@@ -43,7 +43,8 @@ function appendError(params, err) {
   }
 
   return Object.assign(
-    params || { }, 
+    {},
+    params || {},
     { errorName: err.name, errorMessage: err.message, stackTrace: err.stack }
   )
 }
@@ -54,7 +55,7 @@ function log (levelName, message, params) {
   }
 
   const context = getContext()
-  let logMsg = Object.assign(context, params)
+  let logMsg = Object.assign({}, context, params)
   logMsg.level = levelName
   logMsg.message = message
 
