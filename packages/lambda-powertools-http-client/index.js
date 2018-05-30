@@ -1,9 +1,19 @@
 const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
 const HTTP = require('superagent-promise')(require('superagent'), Promise)
+const Metrics = require('@perform/lambda-powertools-datadog-metrics')
+const URL = require('url')
 
-function getRequest ({ uri }) {
-  const method = options.method || ''
+const AWS_REGION = process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION
+const FUNCTION_NAME = process.env.AWS_LAMBDA_FUNCTION_NAME
+const FUNCTION_VERSION = process.env.AWS_LAMBDA_FUNCTION_VERSION
 
+const DEFAULT_TAGS = [
+  `awsRegion:${AWS_REGION}`,
+  `functionName:${FUNCTION_NAME}`,
+  `functionVersion:${FUNCTION_VERSION}`
+]
+
+function getRequest (uri, method) {
   switch (method.toLowerCase()) {
     case '':
     case 'get':
@@ -50,6 +60,8 @@ function setBody (request, body) {
 //    headers : object
 //    qs      : object
 //    body    : object
+//    metricName [optional] : string  (e.g. adyenApi)
+//    metricTags [optional] : string []  (e.g. ['request_type:submit', 'load_test'], by default we add function name, version, HTTP method, path, and response statusCode for you as tags)
 //  }
 const Req = (options) => {
   if (!options) {
@@ -65,18 +77,47 @@ const Req = (options) => {
   // copy the provided headers last so it overrides the values from the context
   let headers = Object.assign({}, correlationIds, options.headers)
 
-  let request = getRequest(options)
+  const method = options.method || 'get'
+  let request = getRequest(options.uri, method)
 
   request = setHeaders(request, headers)
   request = setQueryStrings(request, options.qs)
   request = setBody(request, options.body)
 
+  const start = new Date().getTime()
+  const url = URL.parse(options.uri)
+  const metricName = options.methicName || url.hostname + '.response'
+  const requestMetricTags = [
+    `method:${method}`,
+    `path:${url.pathname}`
+  ]
+  let metricTags = [].concat(DEFAULT_TAGS, requestMetricTags, options.metricTags || [])
+
+  const recordMetrics = ({ status }) => {
+    const end = new Date().getTime()
+    const latency = end - start
+
+    metricTags.push(`statusCode:${status}`)
+
+    Metrics.histogram(`${metricName}.latency`, latency, metricTags)
+    Metrics.increment(`${metricName}.${status}`, 1, metricTags)
+  }
+  
   return request
+    .then(resp => {
+      recordMetrics(resp)
+      return resp
+    })
     .catch(e => {
-      if (e.response && e.response.error) {
-        throw e.response.error
+      if (e.response) {
+        recordMetrics(e.response)
+
+        if (e.response.error) {
+          throw e.response.error
+        }
       }
       
+      // non-http error
       throw e
     })
 }
