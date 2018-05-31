@@ -4,8 +4,7 @@
   "version": "0.1.0",
   "description": "HTTP client that supports forwarding correlation IDs (captured via @perform/lambda-powertools-correlation-ids) and auto-records metrics",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "scripts": {    
   },
   "author": "Yan Cui",
   "dependencies": {

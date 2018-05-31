@@ -5,7 +5,6 @@
   "description": "Logger that is tightly integrated with the rest of the lambda-powertools",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Yan Cui",
   "dependencies": {
