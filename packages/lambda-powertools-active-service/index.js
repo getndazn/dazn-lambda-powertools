@@ -1,3 +1,5 @@
+const Log = require('@perform/lambda-powertools-logger')
+
 function create (refresh, refreshFreqMs) {
   let value, expiration
 
@@ -7,9 +9,14 @@ function create (refresh, refreshFreqMs) {
       try {
         value = await refresh()
         expiration = new Date(now.getTime() + refreshFreqMs)
+        Log.debug(`cache has been refreshed`, { expiration })
       } catch (err) {
         // only rethrow if this is first request and we don't have a cached value yet
-        if (!value) {
+        if (value) {
+          expiration = new Date(now.getTime() + refreshFreqMs)
+          Log.warn(`failed to refresh cache, using existing cached value`, { expiration }, err)          
+        } else {
+          Log.error('failed to get initial value', null, err)
           throw err
         }
       }

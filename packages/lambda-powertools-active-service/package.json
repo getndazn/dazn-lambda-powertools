@@ -5,7 +5,14 @@
   "description": "Utility module for creating an active service",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
-  "author": "Yan Cui"
+  "author": "Yan Cui",
+  "dependencies": {
+    "@perform/lambda-powertools-logger": "^0.1.0"
+  },
+  "devDependencies": {
+    "bluebird": "^3.5.1",
+    "jest": "^23.0.1"
+  }
 }
