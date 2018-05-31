@@ -35,6 +35,15 @@ function putRecord(params, cb) {
   return Kinesis.putRecord(params, cb)
 }
 
-const client = Object.assign({}, Kinesis, { putRecord })
+function putRecords(params, cb) {
+  const newRecords = params.Records.map(record => {
+    const newData = addCorrelationIds(record.Data)
+    return Object.assign({}, record, { Data: newData })
+  })
+
+  return Kinesis.putRecords(params, cb)
+}
+
+const client = Object.assign({}, Kinesis, { putRecord, putRecords })
 
 module.exports = client
