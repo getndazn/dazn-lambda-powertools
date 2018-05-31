@@ -30,7 +30,7 @@ function getContext () {
 
 // default to debug if not specified
 function logLevelName() {
-  return process.env.log_level || 'DEBUG'
+  return process.env.LOG_LEVEL || 'DEBUG'
 }
 
 function isEnabled (level) {
