@@ -10,7 +10,6 @@
   "author": "Yan Cui",
   "dependencies": {
     "@perform/lambda-powertools-correlation-ids": "^0.1.0",
-    "@perform/lambda-powertools-logger": "^0.1.0",
     "@perform/lambda-powertools-datadog-metrics": "^0.1.0",
     "superagent": "^3.8.3",
     "superagent-promise": "^1.1.0"
