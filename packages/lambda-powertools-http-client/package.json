@@ -4,7 +4,8 @@
   "version": "0.1.0",
   "description": "HTTP client that supports forwarding correlation IDs (captured via @perform/lambda-powertools-correlation-ids) and auto-records metrics",
   "main": "index.js",
-  "scripts": {    
+  "scripts": {
+    "test": "jest"
   },
   "author": "Yan Cui",
   "dependencies": {
@@ -13,5 +14,9 @@
     "@perform/lambda-powertools-datadog-metrics": "^0.1.0",
     "superagent": "^3.8.3",
     "superagent-promise": "^1.1.0"
+  },
+  "devDependencies": {
+    "jest": "^23.1.0",
+    "nock": "^9.3.0"
   }
 }
