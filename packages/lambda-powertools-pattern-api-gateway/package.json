@@ -5,7 +5,6 @@
   "description": "Template for an API Gateway function",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
   },
   "author": "Yan Cui",
   "dependencies": {
