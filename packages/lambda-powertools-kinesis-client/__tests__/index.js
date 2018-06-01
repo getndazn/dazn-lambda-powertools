@@ -69,34 +69,38 @@ const verifyPutRecordsContext = async (f) => {
   })
 }
 
-test('[PutRecord] When there are no correlation IDs, an empty __context__ is added to JSON payload', async () => {  
-  await verifyPutRecordContext(x => expect(x).toEqual({}))
+describe('PutRecord', () => {
+  test('When there are no correlation IDs, an empty __context__ is added to JSON payload', async () => {  
+    await verifyPutRecordContext(x => expect(x).toEqual({}))
+  })
+  
+  test("When there are correlation IDs, they're forwarded in a __context__ property added to JSON payload", async () => {
+    CorrelationIds.replaceAllWith({
+      'x-correlation-id': 'id',
+      'Debug-Log-Enabled': 'true'
+    })
+  
+    await verifyPutRecordContext(x => {
+      expect(x['x-correlation-id']).toBe('id')
+      expect(x['Debug-Log-Enabled']).toBe('true')
+    })
+  })
 })
 
-test("[PutRecord] When there are correlation IDs, they're forwarded in a __context__ property added to JSON payload", async () => {
-  CorrelationIds.replaceAllWith({
-    'x-correlation-id': 'id',
-    'Debug-Log-Enabled': 'true'
+describe('PutRecords', () => {
+  test('When there are no correlation IDs, an empty __context__ is added to JSON payload', async () => {  
+    await verifyPutRecordsContext(x => expect(x).toEqual({}))
   })
-
-  await verifyPutRecordContext(x => {
-    expect(x['x-correlation-id']).toBe('id')
-    expect(x['Debug-Log-Enabled']).toBe('true')
-  })
-})
-
-test('[PutRecords] When there are no correlation IDs, an empty __context__ is added to JSON payload', async () => {  
-  await verifyPutRecordsContext(x => expect(x).toEqual({}))
-})
-
-test("[PutRecords] When there are correlation IDs, they're forwarded in a __context__ property added to JSON payload", async () => {
-  CorrelationIds.replaceAllWith({
-    'x-correlation-id': 'id',
-    'Debug-Log-Enabled': 'true'
-  })
-
-  await verifyPutRecordsContext(x => {
-    expect(x['x-correlation-id']).toBe('id')
-    expect(x['Debug-Log-Enabled']).toBe('true')
+  
+  test("When there are correlation IDs, they're forwarded in a __context__ property added to JSON payload", async () => {
+    CorrelationIds.replaceAllWith({
+      'x-correlation-id': 'id',
+      'Debug-Log-Enabled': 'true'
+    })
+  
+    await verifyPutRecordsContext(x => {
+      expect(x['x-correlation-id']).toBe('id')
+      expect(x['Debug-Log-Enabled']).toBe('true')
+    })
   })
 })
