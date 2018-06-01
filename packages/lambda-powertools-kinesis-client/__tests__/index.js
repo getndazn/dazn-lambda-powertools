@@ -16,13 +16,13 @@ beforeEach(() => {
   mockPutRecords.mockReturnValueOnce({
     promise: async () => Promise.resolve()
   })
-
-  CorrelationIds.clearAll()
 })
 
 afterEach(() => {
-  mockPutRecord.mockReset()
-  mockPutRecords.mockReset()
+  mockPutRecord.mockClear()
+  mockPutRecords.mockClear()
+
+  CorrelationIds.clearAll()
 })
 
 const verifyPutRecordContext = async (f) => {

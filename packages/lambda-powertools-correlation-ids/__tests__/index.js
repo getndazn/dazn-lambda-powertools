@@ -1,8 +1,6 @@
 const CorrelationIds = require('../index')
 
-beforeEach(() => {
-  CorrelationIds.clearAll()
-})
+afterEach(CorrelationIds.clearAll)
 
 test('The convention of "x-correlation-" is enforced', () => {
   CorrelationIds.set('id', 'test')

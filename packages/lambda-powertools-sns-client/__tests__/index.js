@@ -10,11 +10,12 @@ beforeEach(() => {
   mockPublish.mockReturnValueOnce({
     promise: async () => Promise.resolve()
   })
-
-  CorrelationIds.clearAll()
 })
 
-afterEach(mockPublish.mockReset)
+afterEach(() => {
+  mockPublish.mockClear()
+  CorrelationIds.clearAll()
+})
 
 test('When there are no correlation IDs, MessageAttributes is empty', async () => {  
   const params = {
