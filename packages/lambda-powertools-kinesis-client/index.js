@@ -41,6 +41,8 @@ function putRecords(params, cb) {
     return Object.assign({}, record, { Data: newData })
   })
 
+  params = Object.assign({}, params, { Records: newRecords })
+
   return Kinesis.putRecords(params, cb)
 }
 
