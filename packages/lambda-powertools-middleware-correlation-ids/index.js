@@ -23,10 +23,10 @@ function captureHttp({ headers }, { awsRequestId }, sampleDebugLogRate) {
     correlationIds['User-Agent'] = headers['User-Agent']
   }
 
-  if (headers['Debug-Log-Enabled']) {
-    correlationIds['Debug-Log-Enabled'] = headers['Debug-Log-Enabled']
+  if (headers['debug-log-enabled']) {
+    correlationIds['debug-log-enabled'] = headers['debug-log-enabled']
   } else {
-    correlationIds['Debug-Log-Enabled'] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
+    correlationIds['debug-log-enabled'] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
   }
 
   CorrelationIds.replaceAllWith(correlationIds)
@@ -47,8 +47,8 @@ function captureSns({ Records }, { awsRequestId }, sampleDebugLogRate) {
       correlationIds['User-Agent'] = msgAttributes['User-Agent'].Value
     }
 
-    if (msgAttribute === 'Debug-Log-Enabled') {
-      correlationIds['Debug-Log-Enabled'] = msgAttributes['Debug-Log-Enabled'].Value
+    if (msgAttribute === 'debug-log-enabled') {
+      correlationIds['debug-log-enabled'] = msgAttributes['debug-log-enabled'].Value
     }
   }
  
@@ -56,8 +56,8 @@ function captureSns({ Records }, { awsRequestId }, sampleDebugLogRate) {
     correlationIds['x-correlation-id'] = awsRequestId
   }
 
-  if (!correlationIds['Debug-Log-Enabled']) {
-    correlationIds['Debug-Log-Enabled'] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
+  if (!correlationIds['debug-log-enabled']) {
+    correlationIds['debug-log-enabled'] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
   }
 
   CorrelationIds.replaceAllWith(correlationIds)
@@ -81,10 +81,12 @@ function captureKinesis({ Records }, context, sampleDebugLogRate) {
         correlationIds['x-correlation-id'] = awsRequestId
       }
 
-      if (!correlationIds['Debug-Log-Enabled']) {
-        correlationIds['Debug-Log-Enabled'] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
+      if (!correlationIds['debug-log-enabled']) {
+        correlationIds['debug-log-enabled'] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
       }
 
+      let debugLogEnabled = correlationIds['debug-log-enabled'] === 'true'
+      let debugLogRollback = undefined
       let oldCorrelationIds = undefined
 
       // add functions to the parsed event object to facilitate swapping in & out the current set of
@@ -109,12 +111,20 @@ function captureKinesis({ Records }, context, sampleDebugLogRate) {
           oldCorrelationIds = CorrelationIds.get()
           CorrelationIds.replaceAllWith(correlationIds)
         }
+
+        if (debugLogEnabled) {
+          debugLogRollback = Log.enableDebug()
+        }
       };
 
       // switches the current correlation IDs to what were there previously
       event.unscope = () => {
         if (oldCorrelationIds) {
           CorrelationIds.replaceAllWith(oldCorrelationIds)
+        }
+
+        if (debugLogRollback) {
+          debugLogRollback()
         }
       }
 

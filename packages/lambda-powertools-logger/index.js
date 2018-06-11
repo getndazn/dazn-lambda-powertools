@@ -66,3 +66,13 @@ module.exports.debug = (msg, params) => log('DEBUG', msg, params)
 module.exports.info  = (msg, params) => log('INFO',  msg, params)
 module.exports.warn  = (msg, params, error) => log('WARN',  msg, appendError(params, error))
 module.exports.error = (msg, params, error) => log('ERROR', msg, appendError(params, error))
+
+module.exports.enableDebug = () => {
+  const oldLevel = process.env.LOG_LEVEL
+  process.env.LOG_LEVEL = 'DEBUG'
+
+  // return a function to perform the rollback
+  return () => {
+    process.env.LOG_LEVEL = oldLevel
+  }
+}

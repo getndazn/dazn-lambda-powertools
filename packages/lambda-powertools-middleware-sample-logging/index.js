@@ -3,13 +3,13 @@ const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
 
 // config should be { sampleRate: double } where sampleRate is between 0.0-1.0
 module.exports = ({ sampleRate }) => {
-  let oldLogLevel = undefined
+  let rollback = undefined
 
   const isDebugEnabled = () => {
     const correlationIds = CorrelationIds.get()
 
     // allow upstream to enable debug logging for the entire call chain
-    if (correlationIds['Debug-Log-Enabled'] === 'true') {
+    if (correlationIds['debug-log-enabled'] === 'true') {
       return true
     }
 
@@ -18,16 +18,17 @@ module.exports = ({ sampleRate }) => {
 
   return {
     before: (handler, next) => {
+      rollback = undefined
+      
       if (isDebugEnabled()) {
-        oldLogLevel = process.env.log_level
-        process.env.log_level = 'DEBUG'
+        rollback = Log.enableDebug()
       }
 
       next()
     },
     after: (handler, next) => {
-      if (oldLogLevel) {
-        process.env.log_level = oldLogLevel
+      if (rollback) {
+        rollback()
       }
 
       next()

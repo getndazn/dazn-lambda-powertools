@@ -77,12 +77,12 @@ describe('PutRecord', () => {
   test("When there are correlation IDs, they're forwarded in a __context__ property added to JSON payload", async () => {
     CorrelationIds.replaceAllWith({
       'x-correlation-id': 'id',
-      'Debug-Log-Enabled': 'true'
+      'debug-log-enabled': 'true'
     })
   
     await verifyPutRecordContext(x => {
       expect(x['x-correlation-id']).toBe('id')
-      expect(x['Debug-Log-Enabled']).toBe('true')
+      expect(x['debug-log-enabled']).toBe('true')
     })
   })
 })
@@ -95,12 +95,12 @@ describe('PutRecords', () => {
   test("When there are correlation IDs, they're forwarded in a __context__ property added to JSON payload", async () => {
     CorrelationIds.replaceAllWith({
       'x-correlation-id': 'id',
-      'Debug-Log-Enabled': 'true'
+      'debug-log-enabled': 'true'
     })
   
     await verifyPutRecordsContext(x => {
       expect(x['x-correlation-id']).toBe('id')
-      expect(x['Debug-Log-Enabled']).toBe('true')
+      expect(x['debug-log-enabled']).toBe('true')
     })
   })
 })

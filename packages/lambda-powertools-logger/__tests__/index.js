@@ -8,7 +8,7 @@ const Log = require('../index')
 
 const consoleLog = jest.spyOn(global.console, 'log')
 
-beforeEach(consoleLog.mockReset)
+beforeEach(consoleLog.mockClear)
 
 afterAll(() => consoleLog.mockRestore())
 
@@ -20,7 +20,10 @@ const verify = (f) => {
 
 const hasRightLevel = (log, expectedLevel) => {
   log('test')
-  verify(x => expect(x.message).toBe('test'))
+  verify(x => {
+    expect(x.message).toBe('test')
+    expect(x.level).toBe(expectedLevel)
+  })
 }
 
 const paramsAreIncluded = log => {
@@ -65,7 +68,7 @@ const enabledAt = (log, enabledLevels) => {
   const allLevels = [ 'DEBUG', 'INFO', 'WARN', 'ERROR' ]
   allLevels.forEach(level => {
     process.env.LOG_LEVEL = level
-    consoleLog.mockReset()
+    consoleLog.mockClear()
     log('test')
     if (expected.has(level)) {
       expect(consoleLog).toBeCalled()      
@@ -108,3 +111,21 @@ test('Debug logs are enabled at DEBUG level', () => enabledAt(Log.debug, [ 'DEBU
 test('Info logs are enabled at DEBUG and INFO levels', () => enabledAt(Log.info,  [ 'DEBUG', 'INFO' ]))
 test('Warn logs are enabled at DEBUG, INFO and WARN levels', () => enabledAt(Log.warn,  [ 'DEBUG', 'INFO', 'WARN' ]))
 test('Error logs are enabled at all levels', () => enabledAt(Log.error, [ 'DEBUG', 'INFO', 'WARN', 'ERROR' ]))
+
+test('enableDebug() temporarily enables logging at DEBUG level', () => {
+  process.env.LOG_LEVEL = 'INFO'
+
+  const rollback = Log.enableDebug()
+
+  Log.debug('this should be logged')
+
+  verify(x => expect(x.message).toBe('this should be logged'))
+
+  consoleLog.mockClear()
+
+  rollback()  // back to INFO logging
+
+  Log.debug('this should not be logged')
+
+  expect(consoleLog).not.toBeCalled()
+})

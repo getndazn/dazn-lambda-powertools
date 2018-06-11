@@ -34,7 +34,7 @@ test('When there are no correlation IDs, MessageAttributes is empty', async () =
 test('Correlation IDs are forwarded in MessageAttributes', async () => {
   CorrelationIds.replaceAllWith({
     'x-correlation-id': 'id',
-    'Debug-Log-Enabled': 'true'
+    'debug-log-enabled': 'true'
   })
 
   const params = {
@@ -51,7 +51,7 @@ test('Correlation IDs are forwarded in MessageAttributes', async () => {
         DataType: 'String',
         StringValue: 'id'
       },
-      'Debug-Log-Enabled': {
+      'debug-log-enabled': {
         DataType: 'String',
         StringValue: 'true'
       }
