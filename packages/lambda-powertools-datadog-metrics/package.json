@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@perform/lambda-powertools-datadog-metrics",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Records metrics with Datadog, supports both synchronous (via HTTP) and asynchronous (via Datadog's Lambda integration) modes. Defaults to asynchronous mode.",
   "main": "index.js",
   "scripts": {
