@@ -1,15 +1,15 @@
 {
   "private": true,
   "name": "@perform/lambda-powertools-pattern-kinesis",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Template for a Kinesis function",
   "main": "index.js",
   "scripts": {},
   "author": "Yan Cui",
   "dependencies": {
-    "@perform/lambda-powertools-middleware-correlation-ids": "^0.2.2",
-    "@perform/lambda-powertools-middleware-flush-datadog-metrics": "^0.2.2",
-    "@perform/lambda-powertools-middleware-sample-logging": "^0.2.2",
+    "@perform/lambda-powertools-middleware-correlation-ids": "^0.2.3",
+    "@perform/lambda-powertools-middleware-flush-datadog-metrics": "^0.2.3",
+    "@perform/lambda-powertools-middleware-sample-logging": "^0.2.3",
     "middy": "^0.15.0"
   },
   "devDependencies": {
