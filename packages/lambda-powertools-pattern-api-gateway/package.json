@@ -1,14 +1,14 @@
 {
   "private": true,
   "name": "@perform/lambda-powertools-pattern-api-gateway",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "Template for an API Gateway function",
   "main": "index.js",
   "scripts": {},
   "author": "Yan Cui",
   "dependencies": {
-    "@perform/lambda-powertools-middleware-correlation-ids": "^0.2.0",
-    "@perform/lambda-powertools-middleware-sample-logging": "^0.2.0",
+    "@perform/lambda-powertools-middleware-correlation-ids": "^0.2.2",
+    "@perform/lambda-powertools-middleware-sample-logging": "^0.2.2",
     "middy": "^0.15.0"
   },
   "devDependencies": {

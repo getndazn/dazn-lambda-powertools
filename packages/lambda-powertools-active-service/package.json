@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@perform/lambda-powertools-active-service",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "Utility module for creating an active service",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,7 @@
   },
   "author": "Yan Cui",
   "dependencies": {
-    "@perform/lambda-powertools-logger": "^0.2.0"
+    "@perform/lambda-powertools-logger": "^0.2.2"
   },
   "devDependencies": {
     "bluebird": "^3.5.1",
