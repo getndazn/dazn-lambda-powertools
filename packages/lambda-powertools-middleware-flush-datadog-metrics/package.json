@@ -5,10 +5,15 @@
   "description": "Middy middleware to flush any (synchronous) datadog metrics that have been collected",
   "main": "index.js",
   "scripts": {
+    "test": "jest"
   },
   "author": "Yan Cui",
   "dependencies": {
     "@perform/lambda-powertools-logger": "^0.1.0",
     "datadog-metrics": "^0.8.1"
+  },
+  "devDependencies": {
+    "jest": "^23.1.0",
+    "middy": "^0.15.6"
   }
 }

@@ -20,6 +20,7 @@ const flush = () => new Promise((resolve, reject) => {
       resolve()
     },
     (err) => {
+      // log and swallow the exception as we don't want it to bubble up
       Log.error('datadog metrics could not be flushed', {}, err)
       resolve()
     }
