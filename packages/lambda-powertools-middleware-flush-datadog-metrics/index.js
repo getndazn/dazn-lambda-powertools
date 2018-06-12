@@ -13,6 +13,8 @@ const DEFAULT_TAGS = [
   `environment:${ENV}`
 ]
 
+Log.debug('default metrics tags', { tags: DEFAULT_TAGS })
+
 const flush = () => new Promise((resolve, reject) => {
   Metrics.flush(
     () => {
@@ -30,12 +32,18 @@ const flush = () => new Promise((resolve, reject) => {
 module.exports = ({ prefix }) => {
   return {
     before: (handler, next) => {
-      Metrics.init({
+      const initOptions = {
         apiKey: process.env.DATADOG_API_KEY,
         prefix: prefix,
         defaultTags: DEFAULT_TAGS,
         flushIntervalSeconds: 0
-      })
+      }
+
+      try {
+        Metrics.init(initOptions)
+      } catch (err) {
+        Log.error('failed to initialize datadog-metrics package', { initOptions }, err)
+      }      
 
       next()
     },

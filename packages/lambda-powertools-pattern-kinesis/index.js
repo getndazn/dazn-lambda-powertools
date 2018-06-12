@@ -5,7 +5,7 @@ const flushMetrics = require('@perform/lambda-powertools-middleware-flush-datado
 
 module.exports = f => {
   return middy(f)
-    .use(flushMetrics())
+    .use(flushMetrics({ prefix: process.env.AWS_LAMBDA_FUNCTION_NAME }))
     .use(captureCorrelationIds({ sampleDebugLogRate: 0.01 }))
     .use(sampleLogging({ sampleRate: 0.01 }))    
 }
