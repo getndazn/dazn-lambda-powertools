@@ -1,0 +1,74 @@
+service: lambda-powertools-demo
+
+plugins:
+  - serverless-iam-roles-per-function
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  region: eu-west-2
+  environment:
+    STAGE: dev
+    DATADOG_API_KEY: idunnoknow
+
+functions:
+  api-a:
+    handler: functions/api-a.handler
+    events:
+      - http:
+          path: /
+          method: get
+    iamRoleStatements:
+      - Effect: Allow
+        Action: kinesis:PutRecord
+        Resource: 
+          Fn::GetAtt:
+            - KinesisStream
+            - Arn
+  
+  api-b:
+    handler: functions/api-b.handler
+    events:
+      - http:
+          path: /
+          method: post
+
+  kinesis:
+    handler: functions/kinesis.handler
+    events:
+      - stream:
+          type: kinesis
+          arn:
+            Fn::GetAtt:
+              - KinesisStream
+              - Arn
+    environment:
+      TOPIC_ARN:
+        Ref: SnsTopic
+    iamRoleStatements:
+      - Effect: Allow
+        Action: sns:Publish
+        Resource:
+          Ref: SnsTopic
+
+  sns:
+    handler: functions/sns.handler
+    events:
+      - sns: 
+          arn:
+            Ref: SnsTopic
+          topicName: lambda-powertools-demo
+
+resources:
+  Resources:
+    KinesisStream:
+      Type: AWS::Kinesis::Stream
+      Properties: 
+        Name: lambda-powertools-demo
+        ShardCount: 1
+
+    SnsTopic:
+      Type: AWS::SNS::Topic      
+      Properties: 
+        DisplayName: lambda-powertools-demo
+        TopicName: lambda-powertools-demo

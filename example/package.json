@@ -1,0 +1,25 @@
+{
+  "name": "@perform/lambda-powertools-demo",
+  "version": "0.1.0",
+  "description": "Example serverless app to demonstrate the powertools",
+  "scripts": {},
+  "author": "Yan Cui",
+  "dependencies": {
+    "@perform/lambda-powertools-correlation-ids": "^0.2.12",
+    "@perform/lambda-powertools-datadog-metrics": "^0.2.12",
+    "@perform/lambda-powertools-http-client": "^0.2.12",
+    "@perform/lambda-powertools-kinesis-client": "^0.2.12",
+    "@perform/lambda-powertools-logger": "^0.2.12",
+    "@perform/lambda-powertools-middleware-correlation-ids": "^0.2.12",
+    "@perform/lambda-powertools-middleware-flush-datadog-metrics": "^0.2.12",
+    "@perform/lambda-powertools-middleware-sample-logging": "^0.2.12",
+    "@perform/lambda-powertools-pattern-api-gateway": "^0.2.12",
+    "@perform/lambda-powertools-pattern-kinesis": "^0.2.12",
+    "@perform/lambda-powertools-pattern-sns": "^0.2.12",
+    "@perform/lambda-powertools-sns-client": "^0.2.12",
+    "uuid": "^3.2.1"
+  },
+  "devDependencies": {
+    "serverless-iam-roles-per-function": "^1.0.1"
+  }
+}
