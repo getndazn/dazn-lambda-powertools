@@ -1,8 +1,5 @@
 const Metrics = require('../datadog-metrics-async')
 
-const now = Date.now()
-Date.now = jest.fn().mockReturnValue(now)
-
 const consoleLog = jest.spyOn(global.console, 'log')
 
 beforeEach(consoleLog.mockReset)
@@ -16,6 +13,8 @@ const expectLogLike = regexPattern => {
 }
 
 const run = (f, type) => {
+  const now = Date.now()
+  
   test(`When we run Metrics.${type}, it should be logged to console`, () => {
     f('test', 42)
     expectLogLike(`MONITORING\|${now}\|42\|${type}\|test\|#`)
@@ -38,7 +37,60 @@ const run = (f, type) => {
 }
 
 describe('async client', () => {
+  const now = Date.now()
+  const DateNow = Date.now
+  Date.now = jest.fn().mockReturnValue(now)
+
+  afterAll(() => { 
+    Date.now = DateNow
+  })
+
   run(Metrics.gauge, 'gauge')
   run(Metrics.increment, 'count')
   run(Metrics.histogram, 'histogram')
+})
+
+// broken this out to be a separate describe as we can't mock `Date.now()` here
+// otherwise it won't give us the duration of the function
+describe('async client trackExecTime', () => {
+  test('Metrics.trackExecTime should record execution time of synchronous functions', () => {
+    const start = Date.now()
+    let end
+    const f = () => {
+      let timeSinceStart = 0
+      do {
+        timeSinceStart = Date.now() - start
+      } while (timeSinceStart < 10)
+
+      end = start + timeSinceStart
+
+      return 42
+    }
+    
+    const key = 'Metrics.trackExecTime.sync'
+    const answer = Metrics.trackExecTime(f, key)
+  
+    expect(answer).toBe(42)
+    expectLogLike(`MONITORING\|${end}\|10\|histogram\|${key}\|#`)
+  })
+  
+  test('Metrics.trackExecTime should record execution time of asynchronous functions', async () => {
+    const start = Date.now()
+    let end, duration
+    const f = () => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          end = Date.now()
+          duration = end - start
+          resolve(42)
+        }, 10)
+      })
+    }
+  
+    const key = 'Metrics.trackExecTime.async'
+    const answer = await Metrics.trackExecTime(f, key)
+  
+    expect(answer).toBe(42)
+    expectLogLike(`MONITORING\|${end}\|${duration}\|histogram\|${key}\|#`)
+  })
 })
