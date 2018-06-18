@@ -19,9 +19,9 @@ function addCorrelationIds(messageAttributes) {
 
 function publish(params, cb) {
   const newMessageAttributes = addCorrelationIds(params.MessageAttributes)
-  params = Object.assign(params, { MessageAttributes: newMessageAttributes })
+  const newParams = Object.assign({}, params, { MessageAttributes: newMessageAttributes })
 
-  return SNS.publish(params, cb)
+  return SNS.publish(newParams, cb)
 }
 
 const client = Object.assign({}, SNS, { publish })

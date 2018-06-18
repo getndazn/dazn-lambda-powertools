@@ -17,7 +17,7 @@ function tryJsonParse(data) {
 }
 
 function addCorrelationIds(data) {
-  // only do with with JSON string data
+  // only do this with JSON string data
   const payload = tryJsonParse(data)
   if (!payload) {
     return data
@@ -41,9 +41,9 @@ function putRecords(params, cb) {
     return Object.assign({}, record, { Data: newData })
   })
 
-  params = Object.assign({}, params, { Records: newRecords })
+  const newParams = Object.assign({}, params, { Records: newRecords })
 
-  return Kinesis.putRecords(params, cb)
+  return Kinesis.putRecords(newParams, cb)
 }
 
 const client = Object.assign({}, Kinesis, { putRecord, putRecords })
