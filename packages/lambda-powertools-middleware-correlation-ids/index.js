@@ -1,6 +1,9 @@
 const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
 const Log = require('@perform/lambda-powertools-logger')
 
+const X_CORRELATION_ID  = 'x-correlation-id'
+const DEBUG_LOG_ENABLED = 'debug-log-enabled'
+
 function captureHttp({ headers }, { awsRequestId }, sampleDebugLogRate) {
   if (!headers) {
    Log.warn(`Request ${awsRequestId} is missing headers`)
@@ -14,8 +17,8 @@ function captureHttp({ headers }, { awsRequestId }, sampleDebugLogRate) {
     }
   }
  
-  if (!correlationIds['x-correlation-id']) {
-    correlationIds['x-correlation-id'] = awsRequestId
+  if (!correlationIds[X_CORRELATION_ID]) {
+    correlationIds[X_CORRELATION_ID] = awsRequestId
   }
 
   // forward the original User-Agent on
@@ -23,10 +26,10 @@ function captureHttp({ headers }, { awsRequestId }, sampleDebugLogRate) {
     correlationIds['User-Agent'] = headers['User-Agent']
   }
 
-  if (headers['debug-log-enabled']) {
-    correlationIds['debug-log-enabled'] = headers['debug-log-enabled']
+  if (headers[DEBUG_LOG_ENABLED]) {
+    correlationIds[DEBUG_LOG_ENABLED] = headers[DEBUG_LOG_ENABLED]
   } else {
-    correlationIds['debug-log-enabled'] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
+    correlationIds[DEBUG_LOG_ENABLED] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
   }
 
   CorrelationIds.replaceAllWith(correlationIds)
@@ -47,17 +50,17 @@ function captureSns({ Records }, { awsRequestId }, sampleDebugLogRate) {
       correlationIds['User-Agent'] = msgAttributes['User-Agent'].Value
     }
 
-    if (msgAttribute === 'debug-log-enabled') {
-      correlationIds['debug-log-enabled'] = msgAttributes['debug-log-enabled'].Value
+    if (msgAttribute === DEBUG_LOG_ENABLED) {
+      correlationIds[DEBUG_LOG_ENABLED] = msgAttributes[DEBUG_LOG_ENABLED].Value
     }
   }
  
-  if (!correlationIds['x-correlation-id']) {
-    correlationIds['x-correlation-id'] = awsRequestId
+  if (!correlationIds[X_CORRELATION_ID]) {
+    correlationIds[X_CORRELATION_ID] = awsRequestId
   }
 
-  if (!correlationIds['debug-log-enabled']) {
-    correlationIds['debug-log-enabled'] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
+  if (!correlationIds[DEBUG_LOG_ENABLED]) {
+    correlationIds[DEBUG_LOG_ENABLED] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
   }
 
   CorrelationIds.replaceAllWith(correlationIds)
@@ -77,15 +80,15 @@ function captureKinesis({ Records }, context, sampleDebugLogRate) {
 
       delete event.__context__
 
-      if (!correlationIds['x-correlation-id']) {
-        correlationIds['x-correlation-id'] = awsRequestId
+      if (!correlationIds[X_CORRELATION_ID]) {
+        correlationIds[X_CORRELATION_ID] = awsRequestId
       }
 
-      if (!correlationIds['debug-log-enabled']) {
-        correlationIds['debug-log-enabled'] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
+      if (!correlationIds[DEBUG_LOG_ENABLED]) {
+        correlationIds[DEBUG_LOG_ENABLED] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
       }
 
-      let debugLogEnabled = correlationIds['debug-log-enabled'] === 'true'
+      const debugLogEnabled = correlationIds[DEBUG_LOG_ENABLED] === 'true'
       let debugLogRollback = undefined
       let oldCorrelationIds = undefined
 
@@ -115,7 +118,7 @@ function captureKinesis({ Records }, context, sampleDebugLogRate) {
         if (debugLogEnabled) {
           debugLogRollback = Log.enableDebug()
         }
-      };
+      }
 
       // switches the current correlation IDs to what were there previously
       event.unscope = () => {
@@ -138,6 +141,28 @@ function captureKinesis({ Records }, context, sampleDebugLogRate) {
   CorrelationIds.replaceAllWith({ awsRequestId })
 }
 
+function captureContextField({ __context__ }, { awsRequestId }, sampleDebugLogRate) {
+  let correlationIds = __context__ || {}
+  correlationIds.awsRequestId = awsRequestId
+  if (!correlationIds[X_CORRELATION_ID]) {
+    correlationIds[X_CORRELATION_ID] = awsRequestId
+  }
+
+  if (!correlationIds[DEBUG_LOG_ENABLED]) {
+    correlationIds[DEBUG_LOG_ENABLED] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
+  }
+
+  CorrelationIds.replaceAllWith(correlationIds)
+}
+
+function initCorrelationIds({ awsRequestId }, sampleDebugLogRate) {
+  const correlationIds = { awsRequestId }
+  correlationIds[X_CORRELATION_ID] = awsRequestId
+  correlationIds[DEBUG_LOG_ENABLED] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
+
+  CorrelationIds.replaceAllWith(correlationIds)
+}
+
 function isApiGatewayEvent(event) {
   return event.hasOwnProperty('httpMethod')
 }
@@ -156,14 +181,18 @@ function isSnsEvent(event) {
 
 function isKinesisEvent(event) {
   if (!event.hasOwnProperty('Records')) {
-    return false;
+    return false
   }
   
   if (!Array.isArray(event.Records)) {
-    return false;
+    return false
   }
 
   return event.Records[0].eventSource === 'aws:kinesis'
+}
+
+function hasContextField(event) {
+  return event.hasOwnProperty('__context__')
 }
 
 module.exports = ({ sampleDebugLogRate }) => {
@@ -179,6 +208,10 @@ module.exports = ({ sampleDebugLogRate }) => {
         captureSns(event, context, sampleDebugLogRate)
       } else if (isKinesisEvent(event)) {
         captureKinesis(event, context, sampleDebugLogRate)
+      } else if (hasContextField(event)) {
+        captureContextField(event, context, sampleDebugLogRate)
+      } else {
+        initCorrelationIds(context, sampleDebugLogRate)
       }
       
       next()

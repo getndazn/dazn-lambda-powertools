@@ -39,6 +39,13 @@ const genSnsEvent = (correlationIDs = {}) => {
   return event
 }
 
+const genSfnEvent = (correlationIDs = {}) => {
+  let event = require('./sfn.json')
+  Object.assign(event, { __context__: correlationIDs })
+
+  return event
+}
+
 const standardTests = (genEvent) => {
   test('when sampleDebugLogRate is 0, debug-log-enabled is always set to false', () => {
     const requestId = uuid()
@@ -91,3 +98,5 @@ const standardTests = (genEvent) => {
 describe('API Gateway', () => standardTests(genApiGatewayEvent))
 
 describe('SNS', () => standardTests(genSnsEvent))
+
+describe('SFN', () => standardTests(genSfnEvent))
