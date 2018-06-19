@@ -70,3 +70,14 @@ test('Correlation IDs are forwarded in a __context__ field', async () => {
   expect(actualParams.name).toBe('has-context')
   expect(JSON.parse(actualParams.input)).toEqual(expectedInput)
 })
+
+test('When payload is not JSON, request is not modified', async () => {
+  const params = {
+    stateMachineArn: 'sfn-arn',
+    input: 'dGhpcyBpcyBub3QgSlNPTg==',
+    name: 'not-json'
+  }
+  await SFN.startExecution(params).promise()
+
+  expect(mockStartExecution).toBeCalledWith(params, undefined)
+})

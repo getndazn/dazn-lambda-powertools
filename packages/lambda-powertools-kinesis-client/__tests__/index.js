@@ -85,6 +85,16 @@ describe('PutRecord', () => {
       expect(x['debug-log-enabled']).toBe('true')
     })
   })
+
+  test('When payload is not JSON, request is not modified', async () => {
+    const params = {
+      Data: 'dGhpcyBpcyBub3QgSlNPTg==',
+      StreamName: 'test'
+    }
+    await Kinesis.putRecord(params).promise()
+  
+    expect(mockPutRecord).toBeCalledWith(params, undefined)
+  })
 })
 
 describe('PutRecords', () => {
@@ -102,5 +112,19 @@ describe('PutRecords', () => {
       expect(x['x-correlation-id']).toBe('id')
       expect(x['debug-log-enabled']).toBe('true')
     })
+  })
+
+  test('When payloads are not JSON, request is not modified', async () => {
+    const params = {
+      Records: [
+        { Data: 'dGhpcyBpcyBub3QgSlNPTg==' },
+        { Data: 'dGhpcyBpcyBhbHNvIG5vdCBKU09O' },
+        { Data: 'c29ycnksIHN0aWxsIG5vdCBKU09O' }
+      ],
+      StreamName: 'test'
+    }
+    await Kinesis.putRecords(params).promise()
+  
+    expect(mockPutRecords).toBeCalledWith(params, undefined)
   })
 })
