@@ -1,10 +1,10 @@
 const Log = require('@perform/lambda-powertools-logger')
-const apiGateway = require('@perform/lambda-powertools-pattern-api-gateway')
+const apiGateway = require('@perform/lambda-powertools-pattern-basic')
 
-module.exports.handler = apiGateway(async (event, context, callback) => {
+module.exports.handler = apiGateway(async (event, context) => {
   const host = event.headers.Host
 
   Log.debug(`the current host is: ${host}`)
 
-  callback(null, { statusCode: 202 })
+  return { statusCode: 202 }
 })

@@ -1,12 +1,13 @@
 const Log = require('@perform/lambda-powertools-logger')
 const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
-const Datadog = require('@perform/lambda-powertools-datadog-metrics')
+const Datadog = require('@perform/dazn-datadog-metrics')
 const HTTP = require('@perform/lambda-powertools-http-client')
 const Kinesis = require('@perform/lambda-powertools-kinesis-client')
-const apiGateway = require('@perform/lambda-powertools-pattern-api-gateway')
+const apiGateway = require('@perform/lambda-powertools-pattern-basic')
 const uuid = require('uuid/v4')
 
-module.exports.handler = apiGateway(async (event, context, callback) => {
+module.exports.handler = apiGateway(async (event, context) => {
+  Datadog.gauge('api-a', 1)
   const host = event.headers.Host
 
   Log.debug(`the current host is: ${host}`)
@@ -35,13 +36,16 @@ module.exports.handler = apiGateway(async (event, context, callback) => {
   }
 
   try {
-    await Kinesis.putRecord(putRecordReq).promise()
+    await Datadog.trackExecTime(
+      () => Kinesis.putRecord(putRecordReq).promise(),
+      'Kinesis.putRecord'
+    )
   } catch (err) {
     Log.error('failed to put record to Kinesis', { putRecordReq }, err)
   }
 
-  callback(null, { 
+  return { 
     statusCode: 200, 
     body: JSON.stringify({ message: 'all done' }) 
-  })
+  }
 })

@@ -2,6 +2,8 @@ service: lambda-powertools-demo
 
 plugins:
   - serverless-iam-roles-per-function
+  - serverless-step-functions
+  - serverless-pseudo-parameters
 
 provider:
   name: aws
@@ -9,7 +11,8 @@ provider:
   region: eu-west-2
   environment:
     STAGE: dev
-    DATADOG_API_KEY: idunnoknow
+    DATADOG_API_KEY: idunno
+    DATADOG_PREFIX: lambda-powertools-demo.
 
 functions:
   api-a:
@@ -58,6 +61,46 @@ functions:
           arn:
             Ref: SnsTopic
           topicName: lambda-powertools-demo
+    environment:
+      STATE_MACHINE_ARN:
+        Ref: LambdaPowertoolsDemo
+    iamRoleStatements:
+      - Effect: Allow
+        Action: states:StartExecution
+        Resource: 
+          Ref: LambdaPowertoolsDemo
+      - Effect: Allow
+        Action: lambda:invoke
+        Resource:
+          Ref: StandDashaloneLambdaFunction
+
+  stand-alone:
+    handler: functions/stand-alone.handler
+
+  add:
+    handler: functions/add.handler
+
+  double:
+    handler: functions/double.handler
+    
+stepFunctions:
+  stateMachines:
+    lambda-powertools-demo:      
+      name: lambdaPowertoolsDemo
+      definition:
+        Comment: A demo to show off the Lambda powertools packages
+        StartAt: Add
+        States:
+          Add:
+            Type: Task
+            Resource: arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:service}-dev-add
+            ResultPath: $.z
+            Next: Double
+          Double:
+            Type: Task
+            Resource: arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:service}-dev-double
+            ResultPath: $.result
+            End: true
 
 resources:
   Resources:

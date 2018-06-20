@@ -1,8 +1,8 @@
 const Log = require('@perform/lambda-powertools-logger')
 const SNS = require('@perform/lambda-powertools-sns-client')
-const kinesisProcessor = require('@perform/lambda-powertools-pattern-kinesis')
+const kinesisProcessor = require('@perform/lambda-powertools-pattern-basic')
 
-module.exports.handler = kinesisProcessor(async (event, context, callback) => {
+module.exports.handler = kinesisProcessor(async (event, context) => {
   const events = context.parsedKinesisEvents
 
   for (const evt of events) {
@@ -18,6 +18,4 @@ module.exports.handler = kinesisProcessor(async (event, context, callback) => {
 
     evt.unscope() // and you have to unscope at the end...
   }
-
-  callback(null)
 })
