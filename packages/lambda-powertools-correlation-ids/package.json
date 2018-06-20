@@ -1,6 +1,6 @@
 {
   "name": "@perform/lambda-powertools-correlation-ids",
-  "version": "0.2.12",
+  "version": "0.3.0",
   "description": "Module for recording correlation IDs",
   "main": "index.js",
   "scripts": {

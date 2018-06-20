@@ -1,6 +1,6 @@
 {
   "name": "@perform/lambda-powertools-http-client",
-  "version": "0.2.12",
+  "version": "0.3.0",
   "description": "HTTP client that supports forwarding correlation IDs (captured via @perform/lambda-powertools-correlation-ids) and auto-records metrics",
   "main": "index.js",
   "scripts": {
@@ -8,8 +8,8 @@
   },
   "author": "Yan Cui",
   "dependencies": {
-    "@perform/lambda-powertools-correlation-ids": "^0.2.12",
     "@perform/dazn-datadog-metrics": "^1.0.0",
+    "@perform/lambda-powertools-correlation-ids": "^0.3.0",
     "superagent": "^3.8.3",
     "superagent-promise": "^1.1.0"
   },
