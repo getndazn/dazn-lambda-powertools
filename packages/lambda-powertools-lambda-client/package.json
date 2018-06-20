@@ -1,6 +1,6 @@
 {
   "name": "@perform/lambda-powertools-lambda-client",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Lambda client wrapper that knows how to forward correlation IDs (captured via @perform/lambda-powertools-correlation-ids)",
   "main": "index.js",
   "scripts": {
@@ -8,8 +8,8 @@
   },
   "author": "Yan Cui",
   "dependencies": {
-    "@perform/lambda-powertools-correlation-ids": "^0.5.0",
-    "@perform/lambda-powertools-logger": "^0.5.0",
+    "@perform/lambda-powertools-correlation-ids": "^0.6.0",
+    "@perform/lambda-powertools-logger": "^0.6.0",
     "aws-sdk": "^2.246.1"
   },
   "devDependencies": {

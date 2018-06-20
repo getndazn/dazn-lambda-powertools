@@ -1,7 +1,7 @@
 {
-  "name": "@perform/lambda-powertools-pattern-step-functions",
+  "name": "@perform/lambda-powertools-pattern-basic",
   "version": "0.6.0",
-  "description": "Template for a Step Functions function",
+  "description": "Basic template that configures a 1% smaple rate for debug logs",
   "main": "index.js",
   "scripts": {},
   "author": "Yan Cui",
