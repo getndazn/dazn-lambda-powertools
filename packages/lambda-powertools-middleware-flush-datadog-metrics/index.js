@@ -43,7 +43,7 @@ module.exports = ({ prefix }) => {
         Metrics.init(initOptions)
       } catch (err) {
         Log.error('failed to initialize datadog-metrics package', { initOptions }, err)
-      }      
+      }
 
       next()
     },
