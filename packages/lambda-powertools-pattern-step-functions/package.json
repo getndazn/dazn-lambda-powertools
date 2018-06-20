@@ -1,0 +1,16 @@
+{
+  "name": "@perform/lambda-powertools-pattern-step-functions",
+  "version": "0.5.0",
+  "description": "Template for a Step Functions function",
+  "main": "index.js",
+  "scripts": {},
+  "author": "Yan Cui",
+  "dependencies": {
+    "@perform/lambda-powertools-middleware-correlation-ids": "^0.5.0",
+    "@perform/lambda-powertools-middleware-sample-logging": "^0.5.0",
+    "middy": "^0.15.0"
+  },
+  "devDependencies": {
+    "jest": "^23.1.0"
+  }
+}
