@@ -12,15 +12,9 @@ An integrated suite of powertools for Lambda functions to make it effortless for
 
 * HTTP requests always report both latency as well as response count metrics
 
-## Design goal
-
-Compliance with our guidelines around logging and monitoring should be the default behaviour. These tools make it simple for you to **do the right thing** and gets out of your way as much as possible.
-
-See the README for each of these tools to find out how to use them.
-
 ## Overview of available tools
 
-* [logger](/packages/lambda-powertools-logger): integrates with other packages to support correlation IDs, configurable log level, and sampling (only enable debug logs on 1% of invocations)
+* [logger](/packages/lambda-powertools-logger): structured logging with JSON, configurable log levels, and integrates with other tools to support correlation IDs and sampling (only enable debug logs on 1% of invocations)
 
 * [correlation IDs](/packages/lambda-powertools-correlation-ids): create and store correlation IDs that follow our naming convention
 
@@ -39,6 +33,26 @@ See the README for each of these tools to find out how to use them.
 * [Lambda client](/packages/lambda-powertools-sns-client): Lambda client that automatically forwards any correlation IDs you have captured or created when you invokes a Lambda function directly
 
 * [basic template for a function](/packages/lambda-powertools-pattern-basic): wrapper for your function that applies and configures the function to work well with datadog metrics and sample logging
+
+## Design goal
+
+Compliance with our guidelines around logging and monitoring should be the default behaviour. These tools make it simple for you to **do the right thing** and **gets out of your way** as much as possible.
+
+Individual they are useful on their own right, but together they're so much more!
+
+The middlewares capture incoming correlation IDs, and the logger automatically includes them in every log message, and the other clients (HTTP, Kinesis, SNS, etc.) would also automatically forward them on to external systems.
+
+Even if your function doens't do anything with correlation IDs, the tools make sure that it behalves correctly as these correlation IDs flows through it.
+
+![](powertools-illustrated.png)
+
+### Did you consider monkey-patching the clients instead?
+
+Instead of forcing you to use our own AWS clients, we could have monkey patched the AWS SDK clients (which we already do in the tests). We can also monkey patch Node's `http` module (like what [Nock](https://github.com/node-nock/nock) does) to intercept HTTP requests and inject correlation IDs as HTTP headers.
+
+We can apply these monkey patching when you apply the correlation IDs middleware, and your function would automagically forward correlation IDs without having to use our own client libraries. That way, as a user of the tools, I can use whatever HTTP client I wish, and can use the standard SDK clients as well.
+
+We did entertain this idea, but I wanted to leave at least one decision for you to make. The rationale is that when things go wrong (e.g. unhandled error, or bug in our wrapper code) or when they don't work as expected (e.g. you're using an AWS SDK client that we don't support yet), at least you have that one decision (in the form of a `require` statement) to start debugging.
 
 ## Useful Lerna CLI commands
 
