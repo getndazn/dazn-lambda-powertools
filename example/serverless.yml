@@ -70,9 +70,11 @@ functions:
         Resource: 
           Ref: LambdaPowertoolsDemo
       - Effect: Allow
-        Action: lambda:invoke
+        Action: lambda:InvokeFunction
         Resource:
-          Ref: StandDashaloneLambdaFunction
+          Fn::GetAtt: 
+            - StandDashaloneLambdaFunction
+            - Arn
 
   stand-alone:
     handler: functions/stand-alone.handler
