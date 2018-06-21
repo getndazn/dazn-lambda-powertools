@@ -4,9 +4,7 @@ An integrated suite of powertools for Lambda functions to make it effortless for
 
 * support correlation IDs
 
-* debug logs are turned off in production
-
-* debug logs are sampled for 1% of invocations
+* debug logs are turned off in production, and are instead sampled for 1% of invocations
 
 * debug logging decisions are respected by all the functions on a call chain
 
@@ -38,7 +36,7 @@ An integrated suite of powertools for Lambda functions to make it effortless for
 
 Compliance with our guidelines around logging and monitoring should be the default behaviour. These tools make it simple for you to **do the right thing** and **gets out of your way** as much as possible.
 
-Individual they are useful on their own right, but together they're so much more!
+Individually they are useful on their own right, but together they're so much more useful!
 
 The middlewares capture incoming correlation IDs, and the logger automatically includes them in every log message, and the other clients (HTTP, Kinesis, SNS, etc.) would also automatically forward them on to external systems.
 
