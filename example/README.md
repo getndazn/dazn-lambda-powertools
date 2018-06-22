@@ -4,3 +4,6 @@ Demo project to show off the capabilities of the powertools, illustrating how co
 
 ![](architecture.png)
 
+See it in action in this lovingly crafted short video:
+
+[![](https://img.youtube.com/vi/enmWTil-y7E/0.jpg)](https://www.youtube.com/watch?v=enmWTil-y7E)
