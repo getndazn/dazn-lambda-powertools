@@ -1,6 +1,6 @@
-const AWS            = require('aws-sdk')
-const Kinesis        = new AWS.Kinesis()
-const Log            = require('@perform/lambda-powertools-logger')
+const AWS = require('aws-sdk')
+const client = new AWS.Kinesis()
+const Log = require('@perform/lambda-powertools-logger')
 const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
 
 function tryJsonParse(data) {
@@ -28,24 +28,25 @@ function addCorrelationIds(data) {
   return JSON.stringify(newData)
 }
 
-function putRecord(params, cb) {
+const originalPutRecord = client.putRecord
+client.putRecord = function () {
+  const params = arguments[0]
   const newData = addCorrelationIds(params.Data)
-  params = Object.assign({}, params, { Data: newData })
+  arguments[0] = Object.assign({}, params, { Data: newData })
 
-  return Kinesis.putRecord(params, cb)
+  return originalPutRecord.apply(this, arguments)
 }
 
-function putRecords(params, cb) {
+const originalPutRecords = client.putRecords
+client.putRecords = function () {
+  const params = arguments[0]
   const newRecords = params.Records.map(record => {
     const newData = addCorrelationIds(record.Data)
     return Object.assign({}, record, { Data: newData })
   })
+  arguments[0] = Object.assign({}, params, { Records: newRecords })
 
-  const newParams = Object.assign({}, params, { Records: newRecords })
-
-  return Kinesis.putRecords(newParams, cb)
+  return originalPutRecords.apply(this, arguments)
 }
-
-const client = Object.assign({}, Kinesis, { putRecord, putRecords })
 
 module.exports = client

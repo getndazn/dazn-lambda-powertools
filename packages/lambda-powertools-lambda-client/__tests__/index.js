@@ -92,7 +92,7 @@ describe('invoke', () => {
 
     await Lambda.invoke(params).promise()
 
-    expect(mockInvoke).toBeCalledWith(params, undefined)
+    expect(mockInvoke).toBeCalledWith(params)
   })
 })
 
@@ -119,6 +119,6 @@ describe('invoke async', () => {
 
     await Lambda.invokeAsync(params).promise()
 
-    expect(mockInvokeAsync).toBeCalledWith(params, undefined)
+    expect(mockInvokeAsync).toBeCalledWith(params)
   })
 })

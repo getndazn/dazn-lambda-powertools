@@ -28,7 +28,7 @@ test('When there are no correlation IDs, MessageAttributes is empty', async () =
     Message: 'test',
     TopicArn: 'topic-arn',
     MessageAttributes: {}
-  }, undefined)
+  })
 })
 
 test('Correlation IDs are forwarded in MessageAttributes', async () => {
@@ -56,5 +56,5 @@ test('Correlation IDs are forwarded in MessageAttributes', async () => {
         StringValue: 'true'
       }
     }
-  }, undefined)
+  })
 })

@@ -1,6 +1,6 @@
 {
   "name": "@perform/lambda-powertools-middleware-sample-logging",
-  "version": "0.6.0",
+  "version": "0.6.4",
   "description": "Middy middleware to sample debug logs for a configurable % of invocations",
   "main": "index.js",
   "scripts": {
@@ -8,8 +8,8 @@
   },
   "author": "Yan Cui",
   "dependencies": {
-    "@perform/lambda-powertools-correlation-ids": "^0.6.0",
-    "@perform/lambda-powertools-logger": "^0.6.0"
+    "@perform/lambda-powertools-correlation-ids": "^0.6.4",
+    "@perform/lambda-powertools-logger": "^0.6.4"
   },
   "devDependencies": {
     "jest": "^23.1.0",

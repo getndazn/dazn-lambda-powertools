@@ -1,6 +1,6 @@
-const AWS            = require('aws-sdk')
-const SFN            = new AWS.StepFunctions()
-const Log            = require('@perform/lambda-powertools-logger')
+const AWS = require('aws-sdk')
+const client = new AWS.StepFunctions()
+const Log = require('@perform/lambda-powertools-logger')
 const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
 
 function tryJsonParse(input) {
@@ -28,13 +28,13 @@ function addCorrelationIds(input) {
   return JSON.stringify(newPayload)
 }
 
-function startExecution(params, cb) {
+var originalStartExecution = client.startExecution
+client.startExecution = function () {
+  const params = arguments[0]
   const newInput = addCorrelationIds(params.input)
-  const newParams = Object.assign({}, params, { input: newInput })
+  arguments[0] = Object.assign({}, params, { input: newInput })
 
-  return SFN.startExecution(newParams, cb)
+  return originalStartExecution.apply(this, arguments)
 }
-
-const client = Object.assign({}, SFN, { startExecution })
 
 module.exports = client

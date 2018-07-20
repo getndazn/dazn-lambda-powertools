@@ -93,7 +93,7 @@ describe('PutRecord', () => {
     }
     await Kinesis.putRecord(params).promise()
   
-    expect(mockPutRecord).toBeCalledWith(params, undefined)
+    expect(mockPutRecord).toBeCalledWith(params)
   })
 })
 
@@ -125,6 +125,6 @@ describe('PutRecords', () => {
     }
     await Kinesis.putRecords(params).promise()
   
-    expect(mockPutRecords).toBeCalledWith(params, undefined)
+    expect(mockPutRecords).toBeCalledWith(params)
   })
 })

@@ -1,6 +1,6 @@
-const AWS            = require('aws-sdk')
-const Lambda         = new AWS.Lambda()
-const Log            = require('@perform/lambda-powertools-logger')
+const AWS = require('aws-sdk')
+const client = new AWS.Lambda()
+const Log = require('@perform/lambda-powertools-logger')
 const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
 
 function tryJsonParse(input) {
@@ -28,20 +28,22 @@ function addCorrelationIds(input) {
   return JSON.stringify(newPayload)
 }
 
-function invoke(params, cb) {
+const originalInvoke = client.invoke
+client.invoke = function () {
+  const params = arguments[0]
   const newPayload = addCorrelationIds(params.Payload)
-  const newParams = Object.assign({}, params, { Payload: newPayload })
+  arguments[0] = Object.assign({}, params, { Payload: newPayload })
 
-  return Lambda.invoke(newParams, cb)
+  return originalInvoke.apply(this, arguments)
 }
 
-function invokeAsync(params, cb) {
+const originalInvokeAsync = client.invokeAsync
+client.invokeAsync = function () {
+  const params = arguments[0]
   const newPayload = addCorrelationIds(params.InvokeArgs)
-  const newParams = Object.assign({}, params, { InvokeArgs: newPayload })
+  arguments[0] = Object.assign({}, params, { InvokeArgs: newPayload })
 
-  return Lambda.invokeAsync(newParams, cb)
+  return originalInvokeAsync.apply(this, arguments)
 }
-
-const client = Object.assign({}, Lambda, { invoke, invokeAsync })
 
 module.exports = client

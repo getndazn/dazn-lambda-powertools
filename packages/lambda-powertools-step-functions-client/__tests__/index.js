@@ -79,5 +79,5 @@ test('When payload is not JSON, request is not modified', async () => {
   }
   await SFN.startExecution(params).promise()
 
-  expect(mockStartExecution).toBeCalledWith(params, undefined)
+  expect(mockStartExecution).toBeCalledWith(params)
 })
