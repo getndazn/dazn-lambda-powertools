@@ -1,6 +1,6 @@
 {
   "name": "@perform/lambda-powertools-logger",
-  "version": "0.6.4",
+  "version": "0.7.0",
   "description": "Logger that is tightly integrated with the rest of the lambda-powertools",
   "main": "index.js",
   "types": "index.d.ts",
@@ -9,7 +9,7 @@
   },
   "author": "Yan Cui",
   "dependencies": {
-    "@perform/lambda-powertools-correlation-ids": "^0.6.4"
+    "@perform/lambda-powertools-correlation-ids": "^0.7.0"
   },
   "devDependencies": {
     "jest": "^23.1.0"
