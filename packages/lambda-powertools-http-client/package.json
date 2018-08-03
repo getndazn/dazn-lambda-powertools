@@ -16,5 +16,8 @@
   "devDependencies": {
     "jest": "^23.1.0",
     "nock": "^9.3.0"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }

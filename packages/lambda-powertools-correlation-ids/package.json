@@ -9,5 +9,8 @@
   "author": "Yan Cui",
   "devDependencies": {
     "jest": "^23.1.0"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
