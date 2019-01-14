@@ -1,22 +1,22 @@
 {
   "Records": [
     {
-      "EventVersion": "1.0",
-      "EventSubscriptionArn": "arn:aws:sns:EXAMPLE",
       "EventSource": "aws:sns",
+      "EventVersion": "1.0",
+      "EventSubscriptionArn": "arn:aws:sns:us-east-1:144992683770:sqs-test:1de58f75-0c1a-45c6-a3c4-9318aae9b9e8",
       "Sns": {
-        "SignatureVersion": "1",
-        "Timestamp": "1970-01-01T00:00:00.000Z",
-        "Signature": "EXAMPLE",
-        "SigningCertUrl": "EXAMPLE",
-        "MessageId": "95df01b4-ee98-5cb9-9903-4c221d41eb5e",
-        "Message": "{\"hello\":\"world\"}",
-        "MessageAttributes": {          
-        },
         "Type": "Notification",
-        "UnsubscribeUrl": "EXAMPLE",
-        "TopicArn": "arn:aws:sns:EXAMPLE",
-        "Subject": "TestInvoke"
+        "MessageId": "1ce4abfa-a487-54b2-8294-ff4a8dd15e72",
+        "TopicArn": "arn:aws:sns:us-east-1:144992683770:sqs-test",
+        "Subject": "test",
+        "Message": "hello from SNS",
+        "Timestamp": "2019-01-09T16:53:42.569Z",
+        "SignatureVersion": "1",
+        "Signature": "oLtWBp6oRRqzLBM8qOB+Qk2xmH3xN86eMlVsxx/1U9VlQS7h9j9DaZ77/6WiSclfyRx/1vBKi1mYwWb12i0YX9KRJi+WUhxCCIcS5L6ff8Eu4jmbHCL1q0LKKnrECMJsc6VYmY6i9+bBSl7P1rX222LvIZ/jyHuR+1AjAKXF30rk9QWIf+SdFVykVeC5b15uAYKtpy9uY60oJf/78bqcObUI8adjfF0XlHLn7ld+SRAnsLUw+Thd5q0M8IyTWSulvYAMeyflmLUNfCxnbOig4VtIiyA6GYvI7n9473RuyCUC4MBwU5bMjJCJX/OrubSgZQFdHVgSZslXADVRL6/Dqw==",
+        "SigningCertUrl": "https://sns.us-east-1.amazonaws.com/SimpleNotificationService-ac565b8b1a6c5d002d285f9598aa1d9b.pem",
+        "UnsubscribeUrl": "https://sns.us-east-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-east-1:144992683770:sqs-test:1de58f75-0c1a-45c6-a3c4-9318aae9b9e8",
+        "MessageAttributes": {          
+        }
       }
     }
   ]
