@@ -10,6 +10,8 @@ Main features:
 
 * supports SNS events (message attributes)
 
+* supports SQS events (message attributes)
+
 * supports Kinesis events (looks for a `__context__` property in the JSON payload)
 
 * supports direct invocations and Step Function tasks (looks for a `__context__` property in the JSON event)
