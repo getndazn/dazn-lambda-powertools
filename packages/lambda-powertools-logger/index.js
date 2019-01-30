@@ -56,7 +56,7 @@ function log (levelName, message, params) {
 
   const context = getContext()
   let logMsg = Object.assign({}, context, params)
-  logMsg.level = levelName
+  logMsg.sLevel = levelName
   logMsg.message = message
 
   console.log(JSON.stringify(logMsg))

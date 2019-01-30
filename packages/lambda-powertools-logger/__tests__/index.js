@@ -22,7 +22,7 @@ const hasRightLevel = (log, expectedLevel) => {
   log('test')
   verify(x => {
     expect(x.message).toBe('test')
-    expect(x.level).toBe(expectedLevel)
+    expect(x.sLevel).toBe(expectedLevel)
   })
 }
 
@@ -48,7 +48,7 @@ const defaultContextsAreIncluded = log => {
 const paramsCannotOverrideLevelAndMessage = log => {
   log('test', { level: 'london bridge is falling down', message: 'should not see this!' })
   verify(x => {
-    expect(x.level).not.toBe('london bridge is falling down')
+    expect(x.sLevel).not.toBe('london bridge is falling down')
     expect(x.message).toBe('test')
   })
 }
