@@ -18,10 +18,11 @@ const verify = (f) => {
   f(log)
 }
 
-const hasRightLevel = (log, expectedLevel) => {
+const hasRightLevel = (log, expectedSLevel, expectedLevel) => {
   log('test')
   verify(x => {
     expect(x.message).toBe('test')
+    expect(x.sLevel).toBe(expectedSLevel)
     expect(x.level).toBe(expectedLevel)
   })
 }
@@ -48,7 +49,7 @@ const defaultContextsAreIncluded = log => {
 const paramsCannotOverrideLevelAndMessage = log => {
   log('test', { level: 'london bridge is falling down', message: 'should not see this!' })
   verify(x => {
-    expect(x.level).not.toBe('london bridge is falling down')
+    expect(x.sLevel).not.toBe('london bridge is falling down')
     expect(x.message).toBe('test')
   })
 }
@@ -84,10 +85,10 @@ test('Logs are captured as JSON', () => {
   verify(log => expect(log.message).toBe('test'))
 })
 
-test('Debug logs have "level" of "DEBUG"', () => hasRightLevel(Log.debug, 'DEBUG'))
-test('Info logs have "level" of "INFO"',   () => hasRightLevel(Log.debug, 'DEBUG'))
-test('Warn logs have "level" of "WARN"',   () => hasRightLevel(Log.warn, 'WARN'))
-test('Error logs have "level" of "ERROR"', () => hasRightLevel(Log.error, 'ERROR'))
+test('Debug logs have "level" of "DEBUG"', () => hasRightLevel(Log.debug, 'DEBUG', 20))
+test('Info logs have "level" of "INFO"',   () => hasRightLevel(Log.info, 'INFO', 30))
+test('Warn logs have "level" of "WARN"',   () => hasRightLevel(Log.warn, 'WARN', 40))
+test('Error logs have "level" of "ERROR"', () => hasRightLevel(Log.error, 'ERROR', 50))
 
 test('Default contexts (region, funciton, env) are included in debug logs', () => defaultContextsAreIncluded(Log.debug))
 test('Default contexts (region, funciton, env) are included in info logs',  () => defaultContextsAreIncluded(Log.debug))
