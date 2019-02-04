@@ -1,10 +1,12 @@
 const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
 
+// Levels here are identical to bunyan practices
+// https://github.com/trentm/node-bunyan#levels
 const LogLevels = {
-  DEBUG : 0,
-  INFO  : 1,
-  WARN  : 2,
-  ERROR : 3
+  DEBUG : 20,
+  INFO  : 30,
+  WARN  : 40,
+  ERROR : 50
 }
 
 // most of these are available through the Node.js execution environment for Lambda
@@ -56,7 +58,7 @@ function log (levelName, message, params) {
 
   const context = getContext()
   let logMsg = Object.assign({}, context, params)
-  logMsg.level = LogLevels[levelName] * 10 + 20
+  logMsg.level = LogLevels[levelName]
   logMsg.sLevel = levelName
   logMsg.message = message
 
