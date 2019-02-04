@@ -81,7 +81,7 @@ lerna version minor --no-git-tag-version --yes
 ### publishing all packages
 
 ```
-lerna publish --skip-git --skip-npm --force-publish * --yes && lerna exec -- npm publish
+lerna publish from-package --yes
 ```
 
 This command lets you choose the new version to increment to and makes it easy for you to follow semantic versioning.
