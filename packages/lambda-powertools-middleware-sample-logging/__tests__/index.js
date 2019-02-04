@@ -35,13 +35,15 @@ const debugLogWasEnabled = () => {
   expect(consoleLog).toBeCalled()
   const log = JSON.parse(consoleLog.mock.calls[0])
   expect(log.message).toBe('test')
-  expect(log.level).toBe('DEBUG')
+  expect(log.sLevel).toBe('DEBUG')
+  expect(log.level).toBe(20)
 }
 
 const errorLogWasWritten = (f) => {
   expect(consoleLog).toBeCalled()
   const log = JSON.parse(consoleLog.mock.calls[0])
-  expect(log.level).toBe('ERROR')
+  expect(log.sLevel).toBe('ERROR')
+  expect(log.level).toBe(50)
   expect(log.message).toBe('invocation failed')
 
   f(log)
