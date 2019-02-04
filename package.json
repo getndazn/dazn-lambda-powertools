@@ -3,6 +3,6 @@
 		"test": "lerna run test"
 	},
 	"devDependencies": {
-		"lerna": "^2.11.0"
+		"lerna": "^3.10.8"
 	}
 }
