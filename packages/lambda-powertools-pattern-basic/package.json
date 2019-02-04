@@ -1,13 +1,13 @@
 {
   "name": "@perform/lambda-powertools-pattern-basic",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "Basic template that configures a 1% smaple rate for debug logs",
   "main": "index.js",
   "scripts": {},
   "author": "Yan Cui",
   "dependencies": {
-    "@perform/lambda-powertools-middleware-correlation-ids": "^0.8.0",
-    "@perform/lambda-powertools-middleware-sample-logging": "^0.8.0",
+    "@perform/lambda-powertools-middleware-correlation-ids": "^0.9.0",
+    "@perform/lambda-powertools-middleware-sample-logging": "^0.9.0",
     "middy": "^0.15.0"
   },
   "devDependencies": {

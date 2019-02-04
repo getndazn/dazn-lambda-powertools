@@ -72,6 +72,12 @@ lerna bootstrap
 lerna run test
 ```
 
+### bumping new version
+
+```
+lerna version minor --no-git-tag-version --yes
+```
+
 ### publishing all packages
 
 ```
