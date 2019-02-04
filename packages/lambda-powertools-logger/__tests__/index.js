@@ -86,7 +86,7 @@ test('Logs are captured as JSON', () => {
 })
 
 test('Debug logs have "level" of "DEBUG"', () => hasRightLevel(Log.debug, 'DEBUG', 20))
-test('Info logs have "level" of "INFO"',   () => hasRightLevel(Log.debug, 'DEBUG', 20 ))
+test('Info logs have "level" of "INFO"',   () => hasRightLevel(Log.info, 'INFO', 30))
 test('Warn logs have "level" of "WARN"',   () => hasRightLevel(Log.warn, 'WARN', 40))
 test('Error logs have "level" of "ERROR"', () => hasRightLevel(Log.error, 'ERROR', 50))
 
