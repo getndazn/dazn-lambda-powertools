@@ -32,11 +32,11 @@ function getContext () {
 
 // default to debug if not specified
 function logLevelName() {
-  return process.env.LOG_LEVEL || 'DEBUG'
+  return (process.env.LOG_LEVEL || 'DEBUG').toUpperCase()
 }
 
 function isEnabled (level) {
-  return level >= LogLevels[logLevelName()]
+  return level >= (LogLevels[logLevelName()] || LogLevels.DEBUG)
 }
 
 function appendError(params, err) {

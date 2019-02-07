@@ -130,3 +130,52 @@ test('enableDebug() temporarily enables logging at DEBUG level', () => {
 
   expect(consoleLog).not.toBeCalled()
 })
+
+test('LOG_LEVEL env var is not case sensitive', () => {
+  const shouldBeLogged = (logLevel, log, expectedLevel) => {
+    process.env.LOG_LEVEL = logLevel
+    log('this should be logged')
+    verify(x => {
+      expect(x.message).toBe('this should be logged')
+      expect(x.sLevel).toBe(expectedLevel)
+    })
+
+    consoleLog.mockClear()
+  }
+
+  shouldBeLogged('debug', Log.debug, 'DEBUG')
+  shouldBeLogged('deBug', Log.debug, 'DEBUG')
+  shouldBeLogged('DeBug', Log.debug, 'DEBUG')
+
+  shouldBeLogged('info', Log.info, 'INFO')
+  shouldBeLogged('Info', Log.info, 'INFO')
+  shouldBeLogged('InfO', Log.info, 'INFO')
+
+  shouldBeLogged('warn', Log.warn, 'WARN')
+  shouldBeLogged('Warn', Log.warn, 'WARN')
+  shouldBeLogged('WarN', Log.warn, 'WARN')
+
+  shouldBeLogged('error', Log.error, 'ERROR')
+  shouldBeLogged('Error', Log.error, 'ERROR')
+  shouldBeLogged('ErroR', Log.error, 'ERROR')
+})
+
+test('misconfigured LOG_LEVEL env var is ignored and treated at DEBUG', () => {
+  const shouldBeLogged = (logLevel, log) => {
+    process.env.LOG_LEVEL = logLevel
+    log('this should be logged')
+    verify(x => expect(x.message).toBe('this should be logged'))
+
+    consoleLog.mockClear()
+  }
+
+  shouldBeLogged('bedug', Log.debug)
+  shouldBeLogged('bedug', Log.info)
+  shouldBeLogged('bedug', Log.warn)
+  shouldBeLogged('bedug', Log.error)
+
+  shouldBeLogged('inf0', Log.debug)
+  shouldBeLogged('inf0', Log.info)
+  shouldBeLogged('inf0', Log.warn)
+  shouldBeLogged('inf0', Log.error)
+})
