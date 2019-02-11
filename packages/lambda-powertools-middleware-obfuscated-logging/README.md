@@ -1,4 +1,4 @@
-# lambda-powertools-middleware-sample-logging
+# lambda-powertools-middleware-obfuscated-logging
 
 A [Middy](https://github.com/middyjs/middy) middleware that will enable debug logging for a configurable % of invocations. Defaults is 1%.
 
