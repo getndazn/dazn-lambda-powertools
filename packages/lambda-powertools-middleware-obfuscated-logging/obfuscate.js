@@ -1,4 +1,4 @@
-const { flow, map, filter, isUndefined, toString, reduce, forEach, get } = require("lodash/fp");
+const { flow, map, filter, isUndefined, toString, reduce, forEach, get, merge } = require("lodash/fp");
 
 const mapChildren = field => key => {
   const newField = get(key)(field);
@@ -85,5 +85,6 @@ module.exports = (event, fieldsToObfuscate) => {
     map(mapObfuscate),
     reduce(reduceToObfuscatedEvent(event), {})
   )(fieldsToObfuscate);
-  return { ...event, ...obfuscatedObject };
+
+  return merge(event, obfuscatedObject)
 };

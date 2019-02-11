@@ -67,14 +67,14 @@ This will recursively filter every object and subobjects
 
 ```js
 const middy = require('middy')
-const sampleLogging = require('@perform/lambda-powertools-middleware-sample-logging')
+const obfuscatedLogging = require('@perform/lambda-powertools-middleware-sample-logging')
 
 const handler = async (event, context) => {
   return 42
 }
 
 module.exports = middy(handler)
-  .use(sampleLogging({ sampleRate: 0.01 }))
+  .use(obfuscatedLogging({ sampleRate: 0.01, obfuscationFilters: ["example.example"] }))
 }
 ```
 

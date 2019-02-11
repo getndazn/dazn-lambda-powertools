@@ -39,7 +39,6 @@ module.exports = ({ sampleRate, obfuscationFilters }) => {
       const awsRequestId = handler.context.awsRequestId
       const obfuscatedEvent = obfuscateFields(handler.event, obfuscationFilters)
       const invocationEvent = JSON.stringify(obfuscatedEvent)
-      console.log("InvocationEvent", invocationEvent)
       Log.error('invocation failed', { awsRequestId, invocationEvent }, handler.error)
       
       next(handler.error)
