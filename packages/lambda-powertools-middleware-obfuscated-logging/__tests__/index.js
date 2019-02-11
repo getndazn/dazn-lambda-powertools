@@ -87,7 +87,7 @@ test ('should obfuscate events using the filter', () => {
   invokeFailureHandler(event, awsRequestId, 0.01, ["test"])
   errorLogWasWritten(x => {
     const json = JSON.parse(x.invocationEvent);
-    expect(json.test).toEqual('***');
+    expect(json.test).toEqual('******');
   });
 })
 
@@ -98,8 +98,8 @@ test ('should obfuscate events with arrays using the filter', () => {
   invokeFailureHandler(event, awsRequestId, 0.01, ["test.*.foo"])
   errorLogWasWritten(x => {
     const json = JSON.parse(x.invocationEvent);
-    expect(json.test[0].foo).toEqual('***');
-    expect(json.test[1].foo).toEqual('***');
+    expect(json.test[0].foo).toEqual('******');
+    expect(json.test[1].foo).toEqual('******');
   });
 })
 
@@ -110,7 +110,7 @@ test ('should obfuscate events with multipleArrays arrays using the filter', () 
   invokeFailureHandler(event, awsRequestId, 0.01, ["test.*.foo.bar.*.baz"])
   errorLogWasWritten(x => {
     const json = JSON.parse(x.invocationEvent);
-    expect(json.test[0].foo.bar[0].baz[0]).toEqual('****');
+    expect(json.test[0].foo.bar[0].baz[0]).toEqual('******');
   });
 })
 
@@ -121,7 +121,7 @@ test ('should obfuscate every field on an object using the filter', () => {
   invokeFailureHandler(event, awsRequestId, 0.01, ["test.*.foo"])
   errorLogWasWritten(x => {
     const json = JSON.parse(x.invocationEvent);
-    expect(json.test[0].foo.bar[0].baz.bloop.blah).toEqual('****** ********* **');
+    expect(json.test[0].foo.bar[0].baz.bloop.blah).toEqual('******');
   });
 })
 

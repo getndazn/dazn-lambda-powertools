@@ -1,5 +1,7 @@
 const { flow, map, filter, isUndefined, toString, reduce, forEach, get, merge } = require("lodash/fp");
 
+const obfuscateStringField = key => ({ [key]: '******' });
+
 const mapChildren = field => key => {
   const newField = get(key)(field);
 
@@ -11,7 +13,7 @@ const mapChildren = field => key => {
     return { [key]: mapObject(newField) };
   }
 
-  return { [key]: toString(newField).replace(/[A-Z0-9]/gi, "*") };
+  return obfuscateStringField(key);
 };
 
 const mapObject = field => {
@@ -43,7 +45,7 @@ const mapObfuscate = tuple => {
     return { [objectKey]: mapObject(field) };
   }
 
-  return { [objectKey]: toString(field).replace(/[A-Z0-9]/gi, "*") };
+  return obfuscateStringField(key);
 };
 
 const getField = event => fieldName => {
