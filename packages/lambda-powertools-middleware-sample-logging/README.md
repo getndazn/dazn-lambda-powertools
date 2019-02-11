@@ -10,7 +10,7 @@ Main features:
 
 * enables debug logging for some % (defaults to 1%) of invocations
 
-* records an error log message with the invocation event as attribute when an invocation errors. These invocation errors may be obfuscated to avoid the leaking of Personal Identifiable Information. 
+* records an error log message with the invocation event as attribute when an invocation errors
 
 ## Getting Started
 
@@ -41,4 +41,4 @@ module.exports = middy(handler)
 }
 ```
 
-This middleware is often used alongside the `@perform/lambda-powertools-middleware-correlation-ids` middleware to implement sample logging. It's **recommended** that you use the `@perform/lambda-powertools-pattern-obfuscation` which configures both to enable debug logging at 1% of invocations.
+This middleware is often used alongside the `@perform/lambda-powertools-middleware-correlation-ids` middleware to implement sample logging. It's **recommended** that you use the `@perform/lambda-powertools-pattern-basic` which configures both to enable debug logging at 1% of invocations.
