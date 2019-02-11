@@ -110,7 +110,7 @@ test ('should obfuscate events with multipleArrays arrays using the filter', () 
   invokeFailureHandler(event, awsRequestId, 0.01, ["test.*.foo.bar.*.baz"])
   errorLogWasWritten(x => {
     const json = JSON.parse(x.invocationEvent);
-    expect(json[0].foo.bar[0].baz.bloop.blah).toEqual('****** ********* **');
+    expect(json.test[0].foo.bar[0].baz[0]).toEqual('****');
   });
 })
 
