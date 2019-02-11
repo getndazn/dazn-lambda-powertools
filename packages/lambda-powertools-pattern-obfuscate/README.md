@@ -1,4 +1,4 @@
-# lambda-powertools-pattern-basic
+# lambda-powertools-pattern-obfuscate
 
 A pattern that helps you follow our guidelines around logging and monitoring and be a good citizen in DAZN 2.0 :-) With added ability to obfuscate personal fields. 
 

@@ -29,17 +29,41 @@ Accepts a configuration object of the following shape:
 }
 ```
 
-
 ```js
   { 
     Records: [
-        { firstName: "personal" secondName: "identifiable" email: "inform@ti.on" }
+        { firstName: "personal" secondName: "identifiable" email: "inform@ti.on" },
+        { firstName: "second" secondName: "personal" email: "inform@ti.on" }
       ]
   }
 
-  To filter the above object you would pass 
+  // To filter the above object you would pass 
   const obfuscationFilter = ["Records.*.firstName", "Records.*.secondName", "Records.*.email"]
 ```
+
+The output would be... 
+
+```js
+{ 
+  Records: [
+      { firstName: "********" secondName: "************" email: "******@**.**" },
+      { firstName: "******" secondName: "********" email: "******@**.**" }
+    ]
+}
+```
+
+similarly, you can filter entire objects, for instance. 
+```js
+  const obfuscationFilter = ["Records.*.personal"]
+  { 
+    Records: [
+      { personal: { firstName: "********" secondName: "************" email: "******@**.**" } }.
+      { personal: { firstName: "******" secondName: "********" email: "******@**.**", address: { postcode: "******", street: "* ****** ***", country: "**" }}}
+    ]
+  }
+```
+
+This will recursively filter every object and subobjects
 
 ```js
 const middy = require('middy')
