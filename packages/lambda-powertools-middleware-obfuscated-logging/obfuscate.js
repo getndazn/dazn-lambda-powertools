@@ -26,6 +26,7 @@ const mapObject = field => {
 const mapArray = (key, field) => {
   return flow(
     map(field => getField(field)(key)),
+    filter(field => !isUndefined(field)),
     map(field => mapObfuscate(field))
   )(field);
 };
@@ -38,6 +39,8 @@ const mapObfuscate = tuple => {
     const startPoint = objectKey.indexOf(".*.");
     const newKey = objectKey.substr(startPoint + 3, objectKey.length);
     const oldKey = objectKey.substr(0, startPoint);
+    console.log(oldKey);
+    console.log(newKey);
     return convertToObject(oldKey, mapArray(newKey, field));
   }
 
@@ -45,7 +48,7 @@ const mapObfuscate = tuple => {
     return { [objectKey]: mapObject(field) };
   }
 
-  return obfuscateStringField(key);
+  return obfuscateStringField(objectKey);
 };
 
 const getField = event => fieldName => {
