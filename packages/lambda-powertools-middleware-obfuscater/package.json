@@ -1,12 +1,12 @@
 {
-  "name": "@perform/lambda-powertools-middleware-obfuscated-logging",
+  "name": "@perform/lambda-powertools-middleware-obfuscater",
   "version": "0.10.0",
-  "description": "Middy middleware to sample debug logs for a configurable % of invocations",
+  "description": "Middy middleware to obfuscate the event for logging",
   "main": "index.js",
   "scripts": {
     "test": "jest"
   },
-  "author": "Yan Cui",
+  "author": "Tom Rogers",
   "dependencies": {
     "@perform/lambda-powertools-correlation-ids": "^0.10.0",
     "@perform/lambda-powertools-logger": "^0.10.0",

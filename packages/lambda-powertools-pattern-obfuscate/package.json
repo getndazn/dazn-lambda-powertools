@@ -8,6 +8,7 @@
   "dependencies": {
     "@perform/lambda-powertools-middleware-correlation-ids": "^0.10.0",
     "@perform/lambda-powertools-middleware-sample-logging": "^0.10.0",
+    "@perform/lambda-powertools-middleware-obfuscater": "^0.10.0",
     "middy": "^0.15.0"
   },
   "devDependencies": {

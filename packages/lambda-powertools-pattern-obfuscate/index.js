@@ -1,5 +1,6 @@
 const middy = require('middy')
-const obfuscatedLogging = require('@perform/lambda-powertools-middleware-obfuscate-logging')
+const sampleLogging = require('@perform/lambda-powertools-middleware-sample-logging')
+const obfuscater = require('@perform/lambda-powertools-middleware-obfuscater')
 const captureCorrelationIds = require('@perform/lambda-powertools-middleware-correlation-ids')
 
 const AWS_REGION = process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION
@@ -16,5 +17,6 @@ process.env.DATADOG_TAGS = `awsRegion:${AWS_REGION},functionName:${FUNCTION_NAME
 module.exports = obfuscationFilters => f => {
   return middy(f)
     .use(captureCorrelationIds({ sampleDebugLogRate: 0.01 }))
-    .use(obfuscatedLogging({ sampleRate: 0.01, obfuscationFilters }))
+    .use(obfuscater({obfuscationFilters}))
+    .use(sampleLogging({ sampleRate: 0.01, obfuscationFilters }))
 }
