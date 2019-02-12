@@ -1,6 +1,17 @@
 const { flow, map, filter, isUndefined, reduce, forEach, get, merge } = require("lodash/fp");
 
-const originalEventObject = event => fieldName => {
+function convertToObfuscatedEvent(event, fieldsToObfuscate) {
+  const obfuscatedObject = flow(
+    map(getTupleFromFilterToEventField(event)),
+    filter(isDefined),
+    map(obfuscate),
+    reduce(reduceToObfuscatedEvent(event), {})
+  )(fieldsToObfuscate);
+
+  return merge(event, obfuscatedObject)
+}
+
+const getTupleFromFilterToEventField = event => fieldName => {
   const indexOfArray = fieldName.indexOf(".*.");
   const earliestField =
     indexOfArray > -1 ? fieldName.substr(0, indexOfArray) : fieldName;
@@ -41,7 +52,7 @@ const obfuscate = tuple => {
 
 const obfuscateArray = (key, arr) => {
   return flow(
-    map(field => originalEventObject(field)(key)),
+    map(field => getTupleFromFilterToEventField(field)(key)),
     filter(field => !isUndefined(field)),
     map(obfuscate)
   )(arr);
@@ -81,13 +92,6 @@ const reduceToObfuscatedEvent = event => (prev, curr) => {
   return prev;
 };
 
-module.exports = (event, fieldsToObfuscate) => {
-  const obfuscatedObject = flow(
-    map(originalEventObject(event)),
-    filter(field => !isUndefined(field)),
-    map(obfuscate),
-    reduce(reduceToObfuscatedEvent(event), {})
-  )(fieldsToObfuscate);
+const isDefined = field => !isUndefined(field)
 
-  return merge(event, obfuscatedObject)
-};
+module.exports = convertToObfuscatedEvent
