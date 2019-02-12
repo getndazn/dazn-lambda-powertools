@@ -10,7 +10,7 @@ Main features:
 
 * applies the `@perform/lambda-powertools-middleware-correlation-ids` middleware at 1% sample rate
 
-* applies the `@perform/lambda-powertools-middleware-obfuscated-logging` middleware at 1% sample rate
+* applies the `@perform/lambda-powertools-middleware-sample-logging` middleware at 1% sample rate
 
 * applies the `@perform/lambda-powertools-middleware-obfuscated-logging` middleware with passed obfuscation filters 
  

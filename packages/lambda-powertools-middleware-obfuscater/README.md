@@ -4,12 +4,6 @@ A [Middy](https://github.com/middyjs/middy) middleware that will enable debug lo
 
 Main features:
 
-* integrates with the `@perform/lambda-powertools-logger` package to enable debug logging
-
-* integrates with the `@perform/lambda-powertools-correlation-ids` package to allow sampling decision to flow through correlation IDs - i.e. enable debug logging at the edge, and the entire call chain will respect that decision
-
-* enables debug logging for some % (defaults to 1%) of invocations
-
 * records an error log message with the invocation event as attribute when an invocation errors. These invocation errors may be obfuscated to avoid the leaking of Personal Identifiable Information. 
 
 ## Getting Started
@@ -24,7 +18,6 @@ Accepts a configuration object of the following shape:
 
 ```js
 {
-  sampleRate: double [between 0 and 1]
   obfuscationFilter: string array formatted like ["object.key.to.obfuscate"]
 }
 ```
