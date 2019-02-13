@@ -23,7 +23,7 @@ const invokeHandler = (event, awsRequestId, sampleDebugLogRate, f) => {
 const invokeSqsHandler = (event, awsRequestId, sampleDebugLogRate, handlerF, recordF) => {
   const handler = middy((event, context, cb) => {
     // check the correlation IDs outside the context of a record are correct
-    handlerF(CorrelationIds.get()) 
+    handlerF(CorrelationIds.get())
 
     event.Records.forEach(record => {
       record.scopeToThis()
@@ -93,10 +93,10 @@ const genSqsEvent = (correlationIDs = {}) => {
   const event = require('./sqs.json')
 
   const messageAttributes = _.mapValues(correlationIDs, value => ({
-      stringValue: value,
-      stringListValues: [],
-      binaryListValues: [],
-      dataType: "String"
+    stringValue: value,
+    stringListValues: [],
+    binaryListValues: [],
+    dataType: 'String'
   }))
 
   const record = event.Records[0]
@@ -113,7 +113,7 @@ const genKinesisEvent = (correlationIDs = {}) => {
   }
 
   const record = event.Records[0]
-  record.kinesis.data = new Buffer(JSON.stringify(data)).toString('base64')
+  record.kinesis.data = Buffer.from(JSON.stringify(data), 'base64')
 
   return event
 }
@@ -133,7 +133,7 @@ const standardTests = (genEvent) => {
       expect(x['debug-log-enabled']).toBe('false')
     })
   })
-  
+
   test('when sampleDebugLogRate is 1, debug-log-enabled is always set to true', () => {
     const requestId = uuid()
     invokeHandler(genEvent(), requestId, 1, x => {
@@ -149,7 +149,7 @@ const standardTests = (genEvent) => {
       expect(x['awsRequestId']).toBe(requestId)
     })
   })
-  
+
   test('when correlation IDs are provided in the event, they are captured', () => {
     const id = uuid()
     const userId = uuid()
@@ -162,7 +162,7 @@ const standardTests = (genEvent) => {
     }
 
     const event = genEvent(correlationIds)
-  
+
     const requestId = uuid()
     invokeHandler(event, requestId, 0, x => {
       expect(x['x-correlation-id']).toBe(id)
@@ -177,7 +177,7 @@ const standardTests = (genEvent) => {
 const sqsTests = () => {
   test('when sampleDebugLogRate is 0, debug-log-enabled is always set to false', () => {
     const requestId = uuid()
-    invokeSqsHandler(genSqsEvent(), requestId, 0, 
+    invokeSqsHandler(genSqsEvent(), requestId, 0,
       x => {
         expect(x['awsRequestId']).toBe(requestId)
         expect(x['debug-log-enabled']).toBe('false')
@@ -187,10 +187,10 @@ const sqsTests = () => {
         expect(x['debug-log-enabled']).toBe('false')
       })
   })
-  
+
   test('when sampleDebugLogRate is 1, debug-log-enabled is always set to true', () => {
     const requestId = uuid()
-    invokeSqsHandler(genSqsEvent(), requestId, 1, 
+    invokeSqsHandler(genSqsEvent(), requestId, 1,
       x => {
         expect(x['awsRequestId']).toBe(requestId)
         expect(x['debug-log-enabled']).toBe('true')
@@ -209,13 +209,13 @@ const sqsTests = () => {
         expect(x['x-correlation-id']).toBe(requestId)
         expect(x['awsRequestId']).toBe(requestId)
       },
-      x => { 
+      x => {
         // correlation IDs at the record level should just take from the handler
         expect(x['x-correlation-id']).toBe(requestId)
         expect(x['awsRequestId']).toBe(requestId)
       })
   })
-  
+
   test('when correlation IDs are provided in the event, they are captured', () => {
     const id = uuid()
     const userId = uuid()
@@ -229,8 +229,8 @@ const sqsTests = () => {
 
     const event = genSqsEvent(correlationIds)
     const requestId = uuid()
-    invokeSqsHandler(event, requestId, 0, 
-      x => { 
+    invokeSqsHandler(event, requestId, 0,
+      x => {
         // correlation IDs at the handler level
         expect(x['x-correlation-id']).toBe(requestId)
         expect(x['awsRequestId']).toBe(requestId)
@@ -249,7 +249,7 @@ const sqsTests = () => {
 const kinesisTests = () => {
   test('when sampleDebugLogRate is 0, debug-log-enabled is always set to false', () => {
     const requestId = uuid()
-    invokeKinesisHandler(genKinesisEvent(), requestId, 0, 
+    invokeKinesisHandler(genKinesisEvent(), requestId, 0,
       x => {
         expect(x['awsRequestId']).toBe(requestId)
         expect(x['debug-log-enabled']).toBe('false')
@@ -259,10 +259,10 @@ const kinesisTests = () => {
         expect(x['debug-log-enabled']).toBe('false')
       })
   })
-  
+
   test('when sampleDebugLogRate is 1, debug-log-enabled is always set to true', () => {
     const requestId = uuid()
-    invokeKinesisHandler(genKinesisEvent(), requestId, 1, 
+    invokeKinesisHandler(genKinesisEvent(), requestId, 1,
       x => {
         expect(x['awsRequestId']).toBe(requestId)
         expect(x['debug-log-enabled']).toBe('true')
@@ -281,13 +281,13 @@ const kinesisTests = () => {
         expect(x['x-correlation-id']).toBe(requestId)
         expect(x['awsRequestId']).toBe(requestId)
       },
-      x => { 
+      x => {
         // correlation IDs at the record level should just take from the handler
         expect(x['x-correlation-id']).toBe(requestId)
         expect(x['awsRequestId']).toBe(requestId)
       })
   })
-  
+
   test('when correlation IDs are provided in the event, they are captured', () => {
     const id = uuid()
     const userId = uuid()
@@ -301,8 +301,8 @@ const kinesisTests = () => {
 
     const event = genKinesisEvent(correlationIds)
     const requestId = uuid()
-    invokeKinesisHandler(event, requestId, 0, 
-      x => { 
+    invokeKinesisHandler(event, requestId, 0,
+      x => {
         // correlation IDs at the handler level
         expect(x['x-correlation-id']).toBe(requestId)
         expect(x['awsRequestId']).toBe(requestId)

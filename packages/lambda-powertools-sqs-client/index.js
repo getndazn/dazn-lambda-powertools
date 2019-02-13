@@ -2,7 +2,7 @@ const AWS = require('aws-sdk')
 const client = new AWS.SQS()
 const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
 
-function addCorrelationIds(messageAttributes) {
+function addCorrelationIds (messageAttributes) {
   let attributes = {}
   let correlationIds = CorrelationIds.get()
   for (let key in correlationIds) {

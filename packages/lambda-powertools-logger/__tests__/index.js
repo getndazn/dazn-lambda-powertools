@@ -72,12 +72,11 @@ const enabledAt = (log, enabledLevels) => {
     consoleLog.mockClear()
     log('test')
     if (expected.has(level)) {
-      expect(consoleLog).toBeCalled()      
+      expect(consoleLog).toBeCalled()
     } else {
       expect(consoleLog).not.toBeCalled()
     }
   })
-
 }
 
 test('Logs are captured as JSON', () => {
@@ -86,31 +85,31 @@ test('Logs are captured as JSON', () => {
 })
 
 test('Debug logs have "level" of "DEBUG"', () => hasRightLevel(Log.debug, 'DEBUG', 20))
-test('Info logs have "level" of "INFO"',   () => hasRightLevel(Log.info, 'INFO', 30))
-test('Warn logs have "level" of "WARN"',   () => hasRightLevel(Log.warn, 'WARN', 40))
+test('Info logs have "level" of "INFO"', () => hasRightLevel(Log.info, 'INFO', 30))
+test('Warn logs have "level" of "WARN"', () => hasRightLevel(Log.warn, 'WARN', 40))
 test('Error logs have "level" of "ERROR"', () => hasRightLevel(Log.error, 'ERROR', 50))
 
 test('Default contexts (region, funciton, env) are included in debug logs', () => defaultContextsAreIncluded(Log.debug))
-test('Default contexts (region, funciton, env) are included in info logs',  () => defaultContextsAreIncluded(Log.debug))
-test('Default contexts (region, funciton, env) are included in warn logs',  () => defaultContextsAreIncluded(Log.debug))
+test('Default contexts (region, funciton, env) are included in info logs', () => defaultContextsAreIncluded(Log.debug))
+test('Default contexts (region, funciton, env) are included in warn logs', () => defaultContextsAreIncluded(Log.debug))
 test('Default contexts (region, funciton, env) are included in error logs', () => defaultContextsAreIncluded(Log.debug))
 
 test('Params are included in debug logs', () => paramsAreIncluded(Log.debug))
-test('Params are included in info logs',  () => paramsAreIncluded(Log.info))
-test('Params are included in warn logs',  () => paramsAreIncluded(Log.warn))
+test('Params are included in info logs', () => paramsAreIncluded(Log.info))
+test('Params are included in warn logs', () => paramsAreIncluded(Log.warn))
 test('Params are included in error logs', () => paramsAreIncluded(Log.error))
 
 test("Params can't override level and message [debug]", () => paramsCannotOverrideLevelAndMessage(Log.debug))
-test("Params can't override level and message [info]",  () => paramsCannotOverrideLevelAndMessage(Log.info))
-test("Params can't override level and message [warn]",  () => paramsCannotOverrideLevelAndMessage(Log.warn))
+test("Params can't override level and message [info]", () => paramsCannotOverrideLevelAndMessage(Log.info))
+test("Params can't override level and message [warn]", () => paramsCannotOverrideLevelAndMessage(Log.warn))
 test("Params can't override level and message [error]", () => paramsCannotOverrideLevelAndMessage(Log.error))
 
-test('Error details are included in warn logs',  () => errorsAreIncluded(Log.warn))
+test('Error details are included in warn logs', () => errorsAreIncluded(Log.warn))
 test('Error details are included in error logs', () => errorsAreIncluded(Log.error))
 
 test('Debug logs are enabled at DEBUG level', () => enabledAt(Log.debug, [ 'DEBUG' ]))
-test('Info logs are enabled at DEBUG and INFO levels', () => enabledAt(Log.info,  [ 'DEBUG', 'INFO' ]))
-test('Warn logs are enabled at DEBUG, INFO and WARN levels', () => enabledAt(Log.warn,  [ 'DEBUG', 'INFO', 'WARN' ]))
+test('Info logs are enabled at DEBUG and INFO levels', () => enabledAt(Log.info, [ 'DEBUG', 'INFO' ]))
+test('Warn logs are enabled at DEBUG, INFO and WARN levels', () => enabledAt(Log.warn, [ 'DEBUG', 'INFO', 'WARN' ]))
 test('Error logs are enabled at all levels', () => enabledAt(Log.error, [ 'DEBUG', 'INFO', 'WARN', 'ERROR' ]))
 
 test('enableDebug() temporarily enables logging at DEBUG level', () => {
@@ -124,7 +123,7 @@ test('enableDebug() temporarily enables logging at DEBUG level', () => {
 
   consoleLog.mockClear()
 
-  rollback()  // back to INFO logging
+  rollback() // back to INFO logging
 
   Log.debug('this should not be logged')
 

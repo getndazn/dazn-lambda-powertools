@@ -26,7 +26,7 @@ afterEach(() => {
 })
 
 const verifyPutRecordContext = async (f) => {
-  const data = JSON.stringify({ 
+  const data = JSON.stringify({
     eventType: 'wrote_test',
     username: 'theburningmonk'
   })
@@ -37,7 +37,7 @@ const verifyPutRecordContext = async (f) => {
   await Kinesis.putRecord(params).promise()
 
   expect(mockPutRecord).toBeCalled()
-  const [ actualParams, _ ] = mockPutRecord.mock.calls[0]
+  const actualParams = mockPutRecord.mock.calls[0][0]
   const actualData = JSON.parse(actualParams.Data)
   f(actualData.__context__)
 }
@@ -62,7 +62,7 @@ const verifyPutRecordsContext = async (f) => {
   await Kinesis.putRecords(params).promise()
 
   expect(mockPutRecords).toBeCalled()
-  const [ actualParams, _ ] = mockPutRecords.mock.calls[0]
+  const actualParams = mockPutRecords.mock.calls[0][0]
   actualParams.Records.forEach(record => {
     const actualData = JSON.parse(record.Data)
     f(actualData.__context__)
@@ -70,16 +70,16 @@ const verifyPutRecordsContext = async (f) => {
 }
 
 describe('PutRecord', () => {
-  test('When there are no correlation IDs, an empty __context__ is added to JSON payload', async () => {  
+  test('When there are no correlation IDs, an empty __context__ is added to JSON payload', async () => {
     await verifyPutRecordContext(x => expect(x).toEqual({}))
   })
-  
+
   test("When there are correlation IDs, they're forwarded in a __context__ property added to JSON payload", async () => {
     CorrelationIds.replaceAllWith({
       'x-correlation-id': 'id',
       'debug-log-enabled': 'true'
     })
-  
+
     await verifyPutRecordContext(x => {
       expect(x['x-correlation-id']).toBe('id')
       expect(x['debug-log-enabled']).toBe('true')
@@ -92,22 +92,22 @@ describe('PutRecord', () => {
       StreamName: 'test'
     }
     await Kinesis.putRecord(params).promise()
-  
+
     expect(mockPutRecord).toBeCalledWith(params)
   })
 })
 
 describe('PutRecords', () => {
-  test('When there are no correlation IDs, an empty __context__ is added to JSON payload', async () => {  
+  test('When there are no correlation IDs, an empty __context__ is added to JSON payload', async () => {
     await verifyPutRecordsContext(x => expect(x).toEqual({}))
   })
-  
+
   test("When there are correlation IDs, they're forwarded in a __context__ property added to JSON payload", async () => {
     CorrelationIds.replaceAllWith({
       'x-correlation-id': 'id',
       'debug-log-enabled': 'true'
     })
-  
+
     await verifyPutRecordsContext(x => {
       expect(x['x-correlation-id']).toBe('id')
       expect(x['debug-log-enabled']).toBe('true')
@@ -124,7 +124,7 @@ describe('PutRecords', () => {
       StreamName: 'test'
     }
     await Kinesis.putRecords(params).promise()
-  
+
     expect(mockPutRecords).toBeCalledWith(params)
   })
 })

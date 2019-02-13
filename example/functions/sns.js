@@ -1,6 +1,6 @@
 const Log = require('@perform/lambda-powertools-logger')
 const Lambda = require('@perform/lambda-powertools-lambda-client')
-const SFN  = require('@perform/lambda-powertools-step-functions-client')
+const SFN = require('@perform/lambda-powertools-step-functions-client')
 const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
 const snsProcessor = require('@perform/lambda-powertools-pattern-basic')
 

@@ -3,7 +3,7 @@ const client = new AWS.Kinesis()
 const Log = require('@perform/lambda-powertools-logger')
 const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
 
-function tryJsonParse(data) {
+function tryJsonParse (data) {
   if (typeof data !== 'string') {
     return null
   }
@@ -16,7 +16,7 @@ function tryJsonParse(data) {
   }
 }
 
-function addCorrelationIds(data) {
+function addCorrelationIds (data) {
   // only do this with JSON string data
   const payload = tryJsonParse(data)
   if (!payload) {

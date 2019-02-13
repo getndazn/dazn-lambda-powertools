@@ -37,13 +37,13 @@ const verifyInvokeWithCorrelationIds = async (funcName, correlationIds) => {
   await Lambda.invoke(params).promise()
 
   const expectedPayload = Object.assign(
-    {}, 
-    payload, 
+    {},
+    payload,
     { __context__: correlationIds }
   )
 
   expect(mockInvoke).toBeCalled()
-  const [actualParams, _] = mockInvoke.mock.calls[0]
+  const actualParams = mockInvoke.mock.calls[0][0]
   expect(actualParams.FunctionName).toBe(funcName)
   expect(actualParams.InvocationType).toBe('Event')
   expect(JSON.parse(actualParams.Payload)).toEqual(expectedPayload)
@@ -51,7 +51,7 @@ const verifyInvokeWithCorrelationIds = async (funcName, correlationIds) => {
 
 const verifyInvokeAsyncWithCorrelationIds = async (funcName, correlationIds) => {
   const payload = {
-    userId: 'theburningmonk'    
+    userId: 'theburningmonk'
   }
 
   const params = {
@@ -63,7 +63,7 @@ const verifyInvokeAsyncWithCorrelationIds = async (funcName, correlationIds) => 
   const expectedPayload = Object.assign({}, payload, { __context__: correlationIds })
 
   expect(mockInvokeAsync).toBeCalled()
-  const [actualParams, _] = mockInvokeAsync.mock.calls[0]
+  const actualParams = mockInvokeAsync.mock.calls[0][0]
   expect(actualParams.FunctionName).toBe(funcName)
   expect(JSON.parse(actualParams.InvokeArgs)).toEqual(expectedPayload)
 }
@@ -72,7 +72,7 @@ describe('invoke', () => {
   test('When there are no correlation IDs, __context__ is empty', async () => {
     await verifyInvokeWithCorrelationIds('no-context', {})
   })
-  
+
   test('Correlation IDs are forwarded in a __context__ field', async () => {
     const correlationIds = {
       'x-correlation-id': 'id',
@@ -100,7 +100,7 @@ describe('invoke async', () => {
   test('When there are no correlation IDs, __context__ is empty', async () => {
     await verifyInvokeAsyncWithCorrelationIds('no-context', {})
   })
-  
+
   test('Correlation IDs are forwarded in a __context__ field', async () => {
     const correlationIds = {
       'x-correlation-id': 'id',

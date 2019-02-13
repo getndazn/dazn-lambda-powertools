@@ -33,7 +33,9 @@ function getRequest (uri, method) {
 
 function setHeaders (request, headers) {
   const headerNames = Object.keys(headers)
-  headerNames.forEach(h => request = request.set(h, headers[h]))
+  headerNames.forEach(h => {
+    request = request.set(h, headers[h])
+  })
 
   return request
 }
@@ -42,7 +44,7 @@ function setQueryStrings (request, qs) {
   if (!qs) {
     return request
   }
-  
+
   return request.query(qs)
 }
 
@@ -54,7 +56,7 @@ function setBody (request, body) {
   return request.send(body)
 }
 
-// options: { 
+// options: {
 //    uri     : string
 //    method  : GET (default) | POST | PUT | HEAD
 //    headers : object
@@ -85,7 +87,7 @@ const Req = (options) => {
   request = setBody(request, options.body)
 
   const start = new Date().getTime()
-  const url = URL.parse(options.uri)
+  const url = new URL.URL(options.uri)
   const metricName = options.methicName || url.hostname + '.response'
   const requestMetricTags = [
     `method:${method}`,
@@ -102,7 +104,7 @@ const Req = (options) => {
     Metrics.histogram(`${metricName}.latency`, latency, metricTags)
     Metrics.increment(`${metricName}.${status}`, 1, metricTags)
   }
-  
+
   return request
     .then(resp => {
       recordMetrics(resp)
@@ -116,7 +118,7 @@ const Req = (options) => {
           throw e.response.error
         }
       }
-      
+
       // non-http error
       throw e
     })
