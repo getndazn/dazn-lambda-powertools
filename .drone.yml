@@ -1,0 +1,21 @@
+pipeline:
+  npm-auth:
+    image: robertstettner/drone-npm-auth
+    secrets: [ npm_token ]
+    when:
+      event: [ push, deployment ]
+  test:
+    image: node:carbon-jessie
+    when:
+      event: push
+    commands:
+    - npm i
+    - npm test
+  publish:
+    image: node:carbon-jessie
+    secrets: [ github_token ]
+    when:
+      event: push
+      branch: master
+    commands:
+    - npm run new-version
