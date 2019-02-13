@@ -1,8 +1,11 @@
 {
 		"scripts": {
 				"install": "lerna bootstrap",
-				"test:lint": "eslint .",
-				"test": "lerna run --concurrency 2 test -- -- --config=../../jest.config.js"
+        "test:lint": "eslint .",        
+        "test": "lerna run --concurrency 2 test -- -- --config=../../jest.config.js",
+        "diff": "lerna diff",
+        "new-version": "lerna version --conventional-commits --yes",
+        "publis": "lerna publish from-package --yes"
 		},
 		"devDependencies": {
 				"coveralls": "^3.0.2",
