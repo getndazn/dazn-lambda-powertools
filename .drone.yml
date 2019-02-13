@@ -9,7 +9,7 @@ pipeline:
     when:
       event: push
     commands:
-    - npm i
+    - npm run install
     - npm test
   publish:
     image: node:carbon-jessie
