@@ -22,7 +22,7 @@ const DEFAULT_CONTEXT = {
 function getContext () {
   // if there's a global variable for all the current request context then use it
   const correlationIds = CorrelationIds.get()
-  if (correlationIds) {
+  if (Object.keys(correlationIds).length > 0) {
     // note: this is a shallow copy, which is ok as we're not going to mutate anything
     return Object.assign({}, DEFAULT_CONTEXT, correlationIds)
   }

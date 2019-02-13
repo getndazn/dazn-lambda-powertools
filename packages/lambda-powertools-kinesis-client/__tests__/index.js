@@ -127,4 +127,18 @@ describe('PutRecords', () => {
 
     expect(mockPutRecords).toBeCalledWith(params)
   })
+
+  test('When payloads are binary, request is not modified', async () => {
+    const params = {
+      Records: [
+        { Data: Buffer.from('dGhpcyBpcyBub3QgSlNPTg==', 'base64') },
+        { Data: Buffer.from('dGhpcyBpcyBhbHNvIG5vdCBKU09O', 'base64') },
+        { Data: Buffer.from('c29ycnksIHN0aWxsIG5vdCBKU09O', 'base64') }
+      ],
+      StreamName: 'test'
+    }
+    await Kinesis.putRecords(params).promise()
+
+    expect(mockPutRecords).toBeCalledWith(params)
+  })
 })

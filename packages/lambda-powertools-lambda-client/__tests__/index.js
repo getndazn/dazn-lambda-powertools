@@ -94,6 +94,18 @@ describe('invoke', () => {
 
     expect(mockInvoke).toBeCalledWith(params)
   })
+
+  test('When payload is binary, request is not modified', async () => {
+    const params = {
+      FunctionName: 'binary',
+      InvocationType: 'Event',
+      Payload: Buffer.from('dGhpcyBpcyBub3QgSlNPTg==', 'base64')
+    }
+
+    await Lambda.invoke(params).promise()
+
+    expect(mockInvoke).toBeCalledWith(params)
+  })
 })
 
 describe('invoke async', () => {
@@ -115,6 +127,17 @@ describe('invoke async', () => {
     const params = {
       FunctionName: 'not-json',
       InvokeArgs: 'dGhpcyBpcyBub3QgSlNPTg=='
+    }
+
+    await Lambda.invokeAsync(params).promise()
+
+    expect(mockInvokeAsync).toBeCalledWith(params)
+  })
+
+  test('When payload is binary, request is not modified', async () => {
+    const params = {
+      FunctionName: 'binary',
+      InvokeArgs: Buffer.from('dGhpcyBpcyBub3QgSlNPTg==', 'base64')
     }
 
     await Lambda.invokeAsync(params).promise()

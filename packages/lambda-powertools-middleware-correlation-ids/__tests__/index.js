@@ -130,6 +130,7 @@ const standardTests = (genEvent) => {
     const requestId = uuid()
     invokeHandler(genEvent(), requestId, 0, x => {
       expect(x['awsRequestId']).toBe(requestId)
+      expect(x['x-correlation-id']).toBe(requestId)
       expect(x['debug-log-enabled']).toBe('false')
     })
   })
@@ -138,6 +139,7 @@ const standardTests = (genEvent) => {
     const requestId = uuid()
     invokeHandler(genEvent(), requestId, 1, x => {
       expect(x['awsRequestId']).toBe(requestId)
+      expect(x['x-correlation-id']).toBe(requestId)
       expect(x['debug-log-enabled']).toBe('true')
     })
   })
@@ -317,6 +319,32 @@ const kinesisTests = () => {
       })
   })
 }
+
+describe('correlation IDs are always initialized', () => {
+  test('when sampleDebugLogRate is 0, debug-log-enabled is always set to false', () => {
+    const requestId = uuid()
+    invokeHandler({}, requestId, 0, x => {
+      expect(x['awsRequestId']).toBe(requestId)
+      expect(x['debug-log-enabled']).toBe('false')
+    })
+  })
+
+  test('when sampleDebugLogRate is 1, debug-log-enabled is always set to true', () => {
+    const requestId = uuid()
+    invokeHandler({}, requestId, 1, x => {
+      expect(x['awsRequestId']).toBe(requestId)
+      expect(x['debug-log-enabled']).toBe('true')
+    })
+  })
+
+  test('correlation ID is always initialized from the awsRequestId', () => {
+    const requestId = uuid()
+    invokeHandler({}, requestId, 0, x => {
+      expect(x['x-correlation-id']).toBe(requestId)
+      expect(x['awsRequestId']).toBe(requestId)
+    })
+  })
+})
 
 describe('API Gateway', () => standardTests(genApiGatewayEvent))
 

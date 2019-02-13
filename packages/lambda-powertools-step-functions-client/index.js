@@ -4,10 +4,6 @@ const Log = require('@perform/lambda-powertools-logger')
 const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
 
 function tryJsonParse (input) {
-  if (typeof input !== 'string') {
-    return null
-  }
-
   try {
     return JSON.parse(input)
   } catch (err) {
