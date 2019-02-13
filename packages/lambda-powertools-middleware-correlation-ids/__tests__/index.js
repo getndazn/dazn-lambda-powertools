@@ -113,7 +113,7 @@ const genKinesisEvent = (correlationIDs = {}) => {
   }
 
   const record = event.Records[0]
-  record.kinesis.data = Buffer.from(JSON.stringify(data), 'base64')
+  record.kinesis.data = Buffer.from(JSON.stringify(data)).toString('base64')
 
   return event
 }
