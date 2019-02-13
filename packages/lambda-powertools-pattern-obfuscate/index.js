@@ -14,7 +14,7 @@ if (!process.env.DATADOG_PREFIX) {
 
 process.env.DATADOG_TAGS = `awsRegion:${AWS_REGION},functionName:${FUNCTION_NAME},functionVersion:${FUNCTION_VERSION},environment:${ENV}`
 
-module.exports = obfuscationFilters => f => {
+module.exports = (obfuscationFilters, f) => {
   return middy(f)
     .use(captureCorrelationIds({ sampleDebugLogRate: 0.01 }))
     .use(sampleLogging({ sampleRate: 0.01, obfuscationFilters }))

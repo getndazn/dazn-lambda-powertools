@@ -21,10 +21,9 @@ Install from NPM: `npm install @perform/lambda-powertools-pattern-obfuscate`
 ## API
 
 ```js
-const wrap = require('@perform/lambda-powertools-pattern-obfuscated')
-const obfuscatedWrap = wrap(['Records.*.firstName', 'Records.*.lastName'])
+const obfuscatedWrap = require('@perform/lambda-powertools-pattern-obfuscated')
 
-module.exports.handler = obfuscatedWrap(async (event, context) => {
+module.exports.handler = obfuscatedWrap(['Records.*.firstName', 'Records.*.lastName'], async (event, context) => {
   return 42
 })
 ```
