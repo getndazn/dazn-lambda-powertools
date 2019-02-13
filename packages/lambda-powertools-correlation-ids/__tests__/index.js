@@ -15,7 +15,7 @@ test('After adding a correlation ID I can get it back', () => {
 
   const ids = CorrelationIds.get()
   expect(ids).toHaveProperty('x-correlation-id')
-  expect(ids['x-correlation-id']).toBe("test")
+  expect(ids['x-correlation-id']).toBe('test')
 })
 
 test('Setting a correlation ID twice would override the existing value', () => {
@@ -24,7 +24,7 @@ test('Setting a correlation ID twice would override the existing value', () => {
 
   const ids = CorrelationIds.get()
   expect(ids).toHaveProperty('x-correlation-id')
-  expect(ids['x-correlation-id']).toBe("world")
+  expect(ids['x-correlation-id']).toBe('world')
 })
 
 test('replaceAllWith would replace all existing correlation IDs', () => {
@@ -38,10 +38,10 @@ test('replaceAllWith would replace all existing correlation IDs', () => {
 
   const ids = CorrelationIds.get()
   expect(ids).toHaveProperty('x-correlation-id')
-  expect(ids['x-correlation-id']).toBe("id")
+  expect(ids['x-correlation-id']).toBe('id')
   expect(ids).not.toHaveProperty('x-correlation-user-id')
   expect(ids).toHaveProperty('x-correlation-order-id')
-  expect(ids['x-correlation-order-id']).toBe("order")
+  expect(ids['x-correlation-order-id']).toBe('order')
 })
 
 test('clear would clear all existing correlation IDs', () => {

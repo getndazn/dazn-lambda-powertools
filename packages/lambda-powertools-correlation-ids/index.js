@@ -1,10 +1,14 @@
-let clearAll = () => global.CONTEXT = undefined
+let clearAll = () => {
+  global.CONTEXT = undefined
+}
 
-let replaceAllWith = ctx => global.CONTEXT = ctx
+let replaceAllWith = ctx => {
+  global.CONTEXT = ctx
+}
 
 let set = (key, value) => {
-  if (!key.startsWith("x-correlation-")) {
-    key = "x-correlation-" + key
+  if (!key.startsWith('x-correlation-')) {
+    key = 'x-correlation-' + key
   }
 
   if (!global.CONTEXT) {

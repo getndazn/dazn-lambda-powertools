@@ -19,7 +19,7 @@ afterEach(() => {
 
 test('When there are no correlation IDs, __context__ is empty', async () => {
   const input = {
-    userId: 'theburningmonk'    
+    userId: 'theburningmonk'
   }
 
   const params = {
@@ -32,7 +32,7 @@ test('When there are no correlation IDs, __context__ is empty', async () => {
   const expectedInput = Object.assign({}, input, { __context__: {} })
 
   expect(mockStartExecution).toBeCalled()
-  const [actualParams, _] = mockStartExecution.mock.calls[0]
+  const actualParams = mockStartExecution.mock.calls[0][0]
   expect(actualParams.stateMachineArn).toBe('sfn-arn')
   expect(actualParams.name).toBe('no-context')
   expect(JSON.parse(actualParams.input)).toEqual(expectedInput)
@@ -45,7 +45,7 @@ test('Correlation IDs are forwarded in a __context__ field', async () => {
   })
 
   const input = {
-    userId: 'theburningmonk'    
+    userId: 'theburningmonk'
   }
 
   const params = {
@@ -56,16 +56,17 @@ test('Correlation IDs are forwarded in a __context__ field', async () => {
   await SFN.startExecution(params).promise()
 
   const expectedInput = Object.assign(
-    {}, 
-    input, 
-    { __context__: {
-      'x-correlation-id': 'id',
-      'debug-log-enabled': 'true'
-    } 
-  })
+    {},
+    input,
+    {
+      __context__: {
+        'x-correlation-id': 'id',
+        'debug-log-enabled': 'true'
+      }
+    })
 
   expect(mockStartExecution).toBeCalled()
-  const [actualParams, _] = mockStartExecution.mock.calls[0]
+  const actualParams = mockStartExecution.mock.calls[0][0]
   expect(actualParams.stateMachineArn).toBe('sfn-arn')
   expect(actualParams.name).toBe('has-context')
   expect(JSON.parse(actualParams.input)).toEqual(expectedInput)

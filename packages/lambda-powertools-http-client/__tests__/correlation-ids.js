@@ -18,16 +18,16 @@ const verifyHeaders = async (userHeaders, f) => {
   nock(url).get('/').reply(200)
 
   await Req({
-    uri : url,
-    method : 'GET',
-    headers : userHeaders
+    uri: url,
+    method: 'GET',
+    headers: userHeaders
   })
 
   expect(mockRequest).toBeCalled()
 
-  // inspect the ClientRequest object returned for the HTTP headers we'll send 
+  // inspect the ClientRequest object returned for the HTTP headers we'll send
   // see https://nodejs.org/docs/latest-v8.x/api/http.html#http_class_http_clientrequest
-  
+
   const result = mockRequest.mock.results[0]
   expect(result.isThrow).toBe(false)
 

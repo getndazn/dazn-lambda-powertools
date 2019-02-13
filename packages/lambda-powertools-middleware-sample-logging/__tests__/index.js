@@ -19,7 +19,7 @@ const invokeSuccessHandler = (sampleRate) => {
   })
   handler.use(sampleLogMiddleware({ sampleRate }))
 
-  handler({}, { awsRequestId: 'test-id' }, (err, result) => {})
+  handler({}, { awsRequestId: 'test-id' }, () => {})
 }
 
 const invokeFailureHandler = (event, awsRequestId, sampleRate) => {
@@ -28,7 +28,7 @@ const invokeFailureHandler = (event, awsRequestId, sampleRate) => {
   })
   handler.use(sampleLogMiddleware({ sampleRate }))
 
-  handler(event, { awsRequestId }, (err, result) => {})
+  handler(event, { awsRequestId }, () => {})
 }
 
 const debugLogWasEnabled = () => {
@@ -78,5 +78,5 @@ test('when an invocation errors, an error log is always written', () => {
     expect(x.awsRequestId).toBe(awsRequestId)
     expect(x.invocationEvent).toBeDefined()
     expect(JSON.parse(x.invocationEvent)).toEqual(event)
-  })  
+  })
 })

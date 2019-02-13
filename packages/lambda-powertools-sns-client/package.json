@@ -12,9 +12,5 @@
     "aws-sdk": "^2.246.1"
   },
   "devDependencies": {
-    "jest": "^23.1.0"
-  },
-  "jest": {
-    "testEnvironment": "node"
   }
 }

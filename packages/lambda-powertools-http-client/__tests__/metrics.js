@@ -31,23 +31,24 @@ afterEach(() => {
 
 afterAll(mockRequest.mockRestore)
 
-const successReq = async () => {  
+const successReq = async () => {
   nock(url).get('/').reply(200)
 
   await Req({
-    uri : url,
-    method : 'GET'
+    uri: url,
+    method: 'GET'
   })
 
   expect(mockRequest).toBeCalled()
 }
 
-const failedReq = async () => {  
+const failedReq = async () => {
   nock(url).get('/').reply(500, { test: true })
 
   await Req({
-    uri : url,
-    method : 'GET'
+    uri: url,
+    method: 'GET'
+  // eslint-disable-next-line handle-callback-err
   }).catch(err => {
     // swallow the exception, we're only interested in the side-effects
     // of recording the metrics

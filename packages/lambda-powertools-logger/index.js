@@ -3,10 +3,10 @@ const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
 // Levels here are identical to bunyan practices
 // https://github.com/trentm/node-bunyan#levels
 const LogLevels = {
-  DEBUG : 20,
-  INFO  : 30,
-  WARN  : 40,
-  ERROR : 50
+  DEBUG: 20,
+  INFO: 30,
+  WARN: 40,
+  ERROR: 50
 }
 
 // most of these are available through the Node.js execution environment for Lambda
@@ -22,7 +22,7 @@ const DEFAULT_CONTEXT = {
 function getContext () {
   // if there's a global variable for all the current request context then use it
   const correlationIds = CorrelationIds.get()
-  if (correlationIds) {
+  if (Object.keys(correlationIds).length > 0) {
     // note: this is a shallow copy, which is ok as we're not going to mutate anything
     return Object.assign({}, DEFAULT_CONTEXT, correlationIds)
   }
@@ -31,7 +31,7 @@ function getContext () {
 }
 
 // default to debug if not specified
-function logLevelName() {
+function logLevelName () {
   return (process.env.LOG_LEVEL || 'DEBUG').toUpperCase()
 }
 
@@ -39,7 +39,7 @@ function isEnabled (level) {
   return level >= (LogLevels[logLevelName()] || LogLevels.DEBUG)
 }
 
-function appendError(params, err) {
+function appendError (params, err) {
   if (!err) {
     return params
   }
@@ -66,8 +66,8 @@ function log (levelName, message, params) {
 }
 
 module.exports.debug = (msg, params) => log('DEBUG', msg, params)
-module.exports.info  = (msg, params) => log('INFO',  msg, params)
-module.exports.warn  = (msg, params, error) => log('WARN',  msg, appendError(params, error))
+module.exports.info = (msg, params) => log('INFO', msg, params)
+module.exports.warn = (msg, params, error) => log('WARN', msg, appendError(params, error))
 module.exports.error = (msg, params, error) => log('ERROR', msg, appendError(params, error))
 
 module.exports.enableDebug = () => {
