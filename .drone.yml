@@ -9,8 +9,9 @@ pipeline:
     when:
       event: push
     commands:
-    - npm run install
-    - npm test
+      - npm i
+      - npm run install
+      - npm test
   publish:
     image: node:carbon-jessie
     secrets: [ github_token ]
@@ -18,4 +19,4 @@ pipeline:
       event: push
       branch: master
     commands:
-    - npm run new-version
+      - npm run new-version
