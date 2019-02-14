@@ -2,15 +2,17 @@ const { flow, map, filter, isUndefined, reduce, forEach, get, merge } = require(
 
 function convertToObfuscatedEvent(event, fieldsToObfuscate) {
   const obfuscatedObject = flow(
-    map(getTupleFromFilterToEventField(event)),
-    filter(isDefined),
-    map(obfuscate),
-    reduce(reduceToObfuscatedEvent(event), {})
+    map(getTupleFromFilterToEventField(event)), // Retrieve an object {[Filter]: [Field]}
+    filter(isDefined), // If nothing found in the event undefined is returned - filter these out. 
+    map(obfuscate), // Iterate recursively through the event obfuscating fields based on the filter
+    reduce(reduceToObfuscatedEvent(event), {}) // Reduce back to one object so that we can merge
   )(fieldsToObfuscate);
 
+  // Deep merge the event and obfuscation together - returning an obfuscated event
   return merge(event, obfuscatedObject)
 }
 
+// Returns an object in the form { [filter] : field} 
 const getTupleFromFilterToEventField = event => fieldName => {
   const indexOfArray = fieldName.indexOf(".*.");
   const earliestField =
@@ -19,6 +21,7 @@ const getTupleFromFilterToEventField = event => fieldName => {
   return field && { [fieldName]: field };
 };
 
+// Converts filters like "a.b.c" to { a: { b: "c" } }
 const convertStringReferenceToObject = (fieldName, field) => {
   const split = fieldName.split(".");
   const object = {};
