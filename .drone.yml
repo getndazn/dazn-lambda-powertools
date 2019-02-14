@@ -9,6 +9,7 @@ pipeline:
     when:
       event: push
     commands:
+      - cp ${DRONE_WORKSPACE:-.}/.npmrc ~/
       - npm i
       - npm run install
       - npm test
