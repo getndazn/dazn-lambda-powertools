@@ -59,3 +59,9 @@ typings/
 
 # next.js build output
 .next
+
+# vscode folders
+.vscode/
+
+# dstore
+.DS_Store

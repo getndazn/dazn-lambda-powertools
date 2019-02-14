@@ -18,5 +18,5 @@ module.exports = (obfuscationFilters, f) => {
   return middy(f)
     .use(captureCorrelationIds({ sampleDebugLogRate: 0.01 }))
     .use(sampleLogging({ sampleRate: 0.01, obfuscationFilters }))
-    .use(obfuscater({obfuscationFilters}))
+    .use(obfuscater({ obfuscationFilters }))
 }
