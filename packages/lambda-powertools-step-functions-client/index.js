@@ -3,11 +3,7 @@ const client = new AWS.StepFunctions()
 const Log = require('@perform/lambda-powertools-logger')
 const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
 
-function tryJsonParse(input) {
-  if (typeof input !== 'string') {
-    return null
-  }
-
+function tryJsonParse (input) {
   try {
     return JSON.parse(input)
   } catch (err) {
@@ -16,7 +12,7 @@ function tryJsonParse(input) {
   }
 }
 
-function addCorrelationIds(input) {
+function addCorrelationIds (input) {
   // only do this with JSON string data
   const payload = tryJsonParse(input)
   if (!payload) {

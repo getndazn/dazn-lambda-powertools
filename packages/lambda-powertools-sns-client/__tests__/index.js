@@ -17,7 +17,7 @@ afterEach(() => {
   CorrelationIds.clearAll()
 })
 
-test('When there are no correlation IDs, MessageAttributes is empty', async () => {  
+test('When there are no correlation IDs, MessageAttributes is empty', async () => {
   const params = {
     Message: 'test',
     TopicArn: 'topic-arn'

@@ -30,7 +30,7 @@ describe('SendMessage', () => {
       QueueUrl: 'queue-url'
     }
     await SQS.sendMessage(params).promise()
-  
+
     expect(mockSendMessage).toBeCalledWith({
       MessageBody: 'test',
       QueueUrl: 'queue-url',
@@ -71,7 +71,7 @@ describe('SendMessageBatch', () => {
       QueueUrl: 'queue-url'
     }
     await SQS.sendMessageBatch(params).promise()
-  
+
     expect(mockSendMessageBatch).toBeCalledWith({
       Entries: [
         { Id: '1', MessageBody: 'test-1', MessageAttributes: attributes },
@@ -81,7 +81,7 @@ describe('SendMessageBatch', () => {
     })
   }
 
-  test('When there are no correlation IDs, MessageAttributes is empty', async () => {  
+  test('When there are no correlation IDs, MessageAttributes is empty', async () => {
     await verifySendMessageBatch({})
   })
 

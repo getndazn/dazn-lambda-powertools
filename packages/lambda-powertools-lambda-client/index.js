@@ -3,7 +3,7 @@ const client = new AWS.Lambda()
 const Log = require('@perform/lambda-powertools-logger')
 const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
 
-function tryJsonParse(input) {
+function tryJsonParse (input) {
   if (typeof input !== 'string') {
     return null
   }
@@ -16,7 +16,7 @@ function tryJsonParse(input) {
   }
 }
 
-function addCorrelationIds(input) {
+function addCorrelationIds (input) {
   // only do this with JSON string data
   const payload = tryJsonParse(input)
   if (!payload) {

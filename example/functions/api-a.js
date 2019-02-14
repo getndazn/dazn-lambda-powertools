@@ -11,7 +11,6 @@ module.exports.handler = apiGateway(async (event, context) => {
   const host = event.headers.Host
 
   Log.debug(`the current host is: ${host}`)
-  
   const userId = uuid()
   // this is how you add new correlation IDs
   CorrelationIds.set('user-id', userId)
@@ -44,8 +43,8 @@ module.exports.handler = apiGateway(async (event, context) => {
     Log.error('failed to put record to Kinesis', { putRecordReq }, err)
   }
 
-  return { 
-    statusCode: 200, 
-    body: JSON.stringify({ message: 'all done' }) 
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: 'all done' })
   }
 })
