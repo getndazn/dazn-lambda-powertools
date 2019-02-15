@@ -59,7 +59,7 @@ const obfuscate = tuple => {
   }
 
   if (field instanceof Object) {
-    return { [objectKey]: obfuscateObject(field) }
+    return convertStringReferenceToObject(objectKey, obfuscateObject(field))
   }
 
   return obfuscateStringField(objectKey)
@@ -77,7 +77,7 @@ const obfuscateArray = (key, arr) => {
 const obfuscateObject = field => {
   return flow(
     map(obfuscateChildren(field)),
-    reduce((prev, curr) => ({ ...prev, ...curr }), {})
+    reduce((prev, curr) => (merge(prev, curr)), {})
   )(Object.keys(field))
 }
 
@@ -89,7 +89,7 @@ const obfuscateChildren = field => key => {
   }
 
   if (newField instanceof Object) {
-    return { [key]: obfuscateObject(newField) }
+    return convertStringReferenceToObject(key, obfuscateObject(newField))
   }
 
   return obfuscateStringField(key)
@@ -101,7 +101,7 @@ const reduceToObfuscatedEvent = event => (prev, curr) => {
   forEach(fieldName => {
     const field = get(fieldName)(curr) || get(fieldName)(event)
     if (field) {
-      prev = { ...prev, ...{ [fieldName]: field } }
+      prev = merge(prev, { [fieldName]: field })
     }
   })(Object.keys(curr))
 
