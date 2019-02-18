@@ -20,5 +20,6 @@ pipeline:
       event: push
       branch: master
     commands:
+      - git status
       - npm run new-version
       - npm run publish
