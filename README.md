@@ -30,7 +30,7 @@ An integrated suite of powertools for Lambda functions to make it effortless for
 
 * [Step Functions client](/packages/lambda-powertools-step-functions-client): Step Functions client that automatically forwards any correlation IDs you have captured or created when you start an execution
 
-* [Lambda client](/packages/lambda-powertools-sns-client): Lambda client that automatically forwards any correlation IDs you have captured or created when you invokes a Lambda function directly
+* [Lambda client](/packages/lambda-powertools-lambda-client): Lambda client that automatically forwards any correlation IDs you have captured or created when you invokes a Lambda function directly
 
 * [basic template for a function](/packages/lambda-powertools-pattern-basic): wrapper for your function that applies and configures the function to work well with datadog metrics and sample logging
 
