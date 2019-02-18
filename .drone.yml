@@ -19,8 +19,9 @@ pipeline:
     when:
       event: push
       branch: master
-    commands:
+    commands:      
       - git update-index --assume-unchanged package-lock.json
       - git status
+      - git config user.email "dazn-bot@dazn.com"
       - npm run new-version
       - npm run publish
