@@ -20,8 +20,7 @@ pipeline:
       event: push
       branch: master
     commands:
+      - git update-index --assume-unchanged package-lock.json
       - git status
-      - git config user.email "donot@push.me"
-      - git commit -am "Do not push me" --no-verify
       - npm run new-version
       - npm run publish
