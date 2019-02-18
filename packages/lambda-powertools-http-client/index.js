@@ -119,7 +119,6 @@ const Req = (options) => {
         }
       }
 
-      // non-http error
       throw e
     })
 }
