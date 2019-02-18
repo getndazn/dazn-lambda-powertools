@@ -20,8 +20,7 @@ pipeline:
       event: push
       branch: master
     commands:
-      - git config user.name
-      - git update-index --assume-unchanged package-lock.json
+      # - git update-index --assume-unchanged package-lock.json
       - git status
       - npm run new-version
       - npm run publish
