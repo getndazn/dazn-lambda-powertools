@@ -9,6 +9,8 @@
     "publish": "lerna publish from-package --yes"
   },
   "devDependencies": {
+    "@commitlint/cli": "^7.5.2",
+    "@commitlint/config-conventional": "^7.5.0",
     "coveralls": "^3.0.2",
     "eslint": "^5.13.0",
     "eslint-config-standard": "^12.0.0",
@@ -19,11 +21,12 @@
     "husky": "^1.3.1",
     "jest": "^23.1.0",
     "lerna": "^3.10.8",
-    "lint-staged": "^8.1.3"
+    "lint-staged": "^8.1.4"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "lint-staged": {
