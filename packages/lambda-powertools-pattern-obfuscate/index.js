@@ -21,5 +21,5 @@ module.exports = (obfuscationFilters, f, filterOnAfter = false) => {
     // but runs errors error1 > error2 > error 3.
     .use(obfuscater({ obfuscationFilters, filterOnAfter: false }))
     .use(sampleLogging({ sampleRate: 0.01, obfuscationFilters }))
-    .use(obfuscater({ obfuscationFilters, filterOnAfter: true }))
+    .use(obfuscater({ obfuscationFilters, filterOnAfter }))
 }
