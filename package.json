@@ -5,7 +5,7 @@
     "test:lint": "eslint .",
     "test": "lerna run --concurrency 2 test -- -- --config=../../jest.config.js",
     "diff": "lerna diff",
-    "new-version": "lerna version --conventional-commits --force-publish --no-commit-hooks --yes",
+    "new-version": "lerna version --conventional-commits --github-release --yes",
     "publish": "lerna publish from-package --yes"
   },
   "devDependencies": {

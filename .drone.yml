@@ -13,15 +13,24 @@ pipeline:
       - npm i
       - npm run install
       - npm test
-  publish:
+  new-version:
     image: node:carbon-jessie
     secrets: [ github_token ]
     when:
       event: push
       branch: master
-    commands:      
-      - git update-index --assume-unchanged package-lock.json
+    commands:
       - git status
+      # git complains if you don't set an email for some reason
       - git config user.email "dazn-bot@dazn.com"
+      # lerna version --github-release needs the GH_TOKEN, not GITHUB_TOKEN
+      - export GH_TOKEN=$GITHUB_TOKEN
       - npm run new-version
+  publish:
+    image: node:carbon-jessie
+    secrets: [ npm_token ]
+    when:
+      event: push
+      branch: master
+    commands:
       - npm run publish
