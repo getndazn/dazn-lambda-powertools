@@ -82,4 +82,5 @@ test('should obfuscate objects when it exists in one object in an array, but not
   const obfuscatedEvent = invokeObfuscater(event, ['test.*.Baz'])
   expect(obfuscatedEvent.test[0].Baz).toEqual('******')
   expect(obfuscatedEvent.test[1].Baz).toBeUndefined()
+  expect(obfuscatedEvent.test[1].foo).toEqual('Bar')
 })
