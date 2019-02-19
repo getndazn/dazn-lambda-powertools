@@ -84,3 +84,20 @@ test('should obfuscate objects when it exists in one object in an array, but not
   expect(obfuscatedEvent.test[1].Baz).toBeUndefined()
   expect(obfuscatedEvent.test[1].foo).toEqual('Bar')
 })
+
+test('should obfuscate representative examples', () => {
+  const event = require('./fixture/fixture.json')
+  const expectedOutcome = require('./fixture/expected.json')
+  const converted = invokeObfuscater(event, [
+    'Records.*.dynamodb.NewImage.firstName',
+    'Records.*.dynamodb.NewImage.lastName',
+    'Records.*.dynamodb.NewImage.email',
+    'Records.*.dynamodb.NewImage.ipAddress',
+    'Records.*.dynamodb.OldImage.firstName',
+    'Records.*.dynamodb.OldImage.lastName',
+    'Records.*.dynamodb.OldImage.email',
+    'Records.*.dynamodb.OldImage.ipAddress'
+  ])
+
+  expect(converted).toEqual(expectedOutcome)
+})
