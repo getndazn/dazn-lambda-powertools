@@ -12,7 +12,6 @@ const {
 function convertToObfuscatedEvent (event, fieldsToObfuscate) {
   const obfuscatedObject = flow(
     map(getTupleFromFilterToEventField(event)), // Retrieve an object {[Filter]: [Field]}
-    filter(isDefined), // If nothing found in the event undefined is returned - filter these out.
     map(obfuscate), // Iterate recursively through the event obfuscating fields based on the filter
     reduce(reduceToObfuscatedEvent(event), {}) // Reduce back to one object so that we can merge
   )(fieldsToObfuscate)
@@ -27,7 +26,7 @@ const getTupleFromFilterToEventField = event => fieldName => {
   const earliestField =
     indexOfArray > -1 ? fieldName.substr(0, indexOfArray) : fieldName
   const field = get(earliestField)(event)
-  return field && { [fieldName]: field }
+  return { [fieldName]: field }
 }
 
 // Converts filters like "a.b.c" to { a: { b: "c" } }
@@ -47,6 +46,10 @@ const convertStringReferenceToObject = (fieldName, field) => {
 const obfuscate = tuple => {
   const objectKey = Object.keys(tuple)[0]
   const field = get(objectKey)(tuple)
+
+  if (field === undefined) {
+    return { [objectKey]: undefined }
+  }
 
   if (field instanceof Array) {
     const startPoint = objectKey.indexOf('.*.')
