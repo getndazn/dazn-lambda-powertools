@@ -72,18 +72,66 @@ lerna bootstrap
 lerna run test
 ```
 
-### bumping new version
+### create a new package
 
 ```
-lerna version minor --no-git-tag-version --yes
+lerna create <name of package>
 ```
 
-### publishing all packages
+and follow the instruction to bootstrap the new project.
+
+## Contribution Guide
+
+Step 1. Install [commitizen](https://github.com/commitizen/cz-cli).
 
 ```
-lerna publish from-package --yes
+npm install -g commitizen
 ```
 
-This command lets you choose the new version to increment to and makes it easy for you to follow semantic versioning.
+Step 2. Install [Visual Studio Code Commitizen Support](https://marketplace.visualstudio.com/items?itemName=KnisterPeter.vscode-commitizen) plugin for VS Code.
 
-Once published, don't forget to tag, commit and push to github.
+### Commit messages
+
+This project uses `Lerna version` and `Lerna publish` to publish NPM updates and generate [CHANGELOG](CHANGELOG.md). For these to work, it depends on [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0-beta.3).
+
+As such, when you create a PR, you should make sure your commits follow the convention of: `<type>[package name]: <description>`.
+
+For example:
+
+* A bug fix to `lambda-powertools-logger` should read:
+
+```text
+fix(logger): some description.
+```
+
+* A new feature to `lambda-powertools-middleware-correlation-ids` should read:
+
+```text
+feat(middleware-correlation-ids): some description.
+```
+
+* A new breaking change to `lambda-powertools-sns-client` should read:
+
+```text
+feat(sns-client): some description.
+
+BREAKING CHANGE: `publish` no longer does x.
+```
+
+* A `README.md` (this file) change should read:
+
+```text
+docs: added Contribution Guide.
+```
+
+* A change to the build pipeline (e.g. `drone.yml`) should read:
+
+```text
+build: some description.
+```
+
+* Other misc chores should read:
+
+```text
+chore: some description.
+```
