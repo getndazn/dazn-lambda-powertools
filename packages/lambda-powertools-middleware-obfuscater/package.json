@@ -1,6 +1,6 @@
 {
   "name": "@perform/lambda-powertools-middleware-obfuscater",
-  "version": "0.10.4",
+  "version": "0.10.5",
   "description": "Middy middleware to obfuscate the event for logging",
   "main": "index.js",
   "scripts": {
@@ -8,8 +8,8 @@
   },
   "author": "Tom Rogers",
   "dependencies": {
-    "@perform/lambda-powertools-correlation-ids": "^0.10.4",
-    "@perform/lambda-powertools-logger": "^0.10.4",
+    "@perform/lambda-powertools-correlation-ids": "^0.10.5",
+    "@perform/lambda-powertools-logger": "^0.10.5",
     "lodash": " ^4.17.11"
   },
   "devDependencies": {

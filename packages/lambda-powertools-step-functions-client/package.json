@@ -1,6 +1,6 @@
 {
   "name": "@perform/lambda-powertools-step-functions-client",
-  "version": "0.10.4",
+  "version": "0.10.5",
   "description": "SFN client wrapper that knows how to forward correlation IDs (captured via @perform/lambda-powertools-correlation-ids)",
   "main": "index.js",
   "scripts": {
@@ -8,8 +8,8 @@
   },
   "author": "Yan Cui",
   "dependencies": {
-    "@perform/lambda-powertools-correlation-ids": "^0.10.4",
-    "@perform/lambda-powertools-logger": "^0.10.4",
+    "@perform/lambda-powertools-correlation-ids": "^0.10.5",
+    "@perform/lambda-powertools-logger": "^0.10.5",
     "aws-sdk": "^2.246.1"
   }
 }
