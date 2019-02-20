@@ -1,28 +1,41 @@
-let clearAll = () => {
-  global.CONTEXT = undefined
-}
+const DEBUG_LOG_ENABLED = 'debug-log-enabled'
 
-let replaceAllWith = ctx => {
-  global.CONTEXT = ctx
-}
-
-let set = (key, value) => {
-  if (!key.startsWith('x-correlation-')) {
-    key = 'x-correlation-' + key
+class CorrelationIds {
+  constructor () {
+    this.context = {}
   }
 
-  if (!global.CONTEXT) {
-    global.CONTEXT = {}
+  clearAll () {
+    this.context = {}
   }
 
-  global.CONTEXT[key] = value
-}
+  replaceAllWith (ctx) {
+    this.context = ctx
+  }
 
-let get = () => global.CONTEXT || {}
+  set (key, value) {
+    if (!key.startsWith('x-correlation-')) {
+      key = 'x-correlation-' + key
+    }
+
+    this.context[key] = value
+  }
+
+  get () {
+    return this.context
+  }
+
+  get debugEnabled () {
+    return this.context[DEBUG_LOG_ENABLED] === 'true'
+  }
+};
+
+const globalCorrelationIds = new CorrelationIds()
 
 module.exports = {
-  clearAll: clearAll,
-  replaceAllWith: replaceAllWith,
-  set: set,
-  get: get
+  CorrelationIds,
+  clearAll: globalCorrelationIds.clearAll.bind(globalCorrelationIds),
+  replaceAllWith: globalCorrelationIds.replaceAllWith.bind(globalCorrelationIds),
+  set: globalCorrelationIds.set.bind(globalCorrelationIds),
+  get: globalCorrelationIds.get.bind(globalCorrelationIds)
 }
