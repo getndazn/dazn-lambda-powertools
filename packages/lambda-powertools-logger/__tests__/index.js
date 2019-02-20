@@ -69,7 +69,7 @@ const enabledAt = (method, enabledLevels) => {
   const allLevels = [ 'DEBUG', 'INFO', 'WARN', 'ERROR' ]
   allLevels.forEach(level => {
     process.env.LOG_LEVEL = level
-    const levelLogger = new Log.Logger()
+    const levelLogger = new Log()
     consoleLog.mockClear()
     levelLogger[method]('test')
     if (expected.has(level)) {
@@ -115,7 +115,7 @@ test('Error logs are enabled at all levels', () => enabledAt('error', [ 'DEBUG',
 
 test('enableDebug() temporarily enables logging at DEBUG level', () => {
   process.env.LOG_LEVEL = 'INFO'
-  const levelLogger = new Log.Logger()
+  const levelLogger = new Log()
 
   const rollback = levelLogger.enableDebug()
 
@@ -164,7 +164,7 @@ test('LOG_LEVEL env var is not case sensitive', () => {
 test('misconfigured LOG_LEVEL env var is ignored and treated at DEBUG', () => {
   const shouldBeLogged = (logLevel, method) => {
     process.env.LOG_LEVEL = logLevel
-    const levelLogger = new Log.Logger()
+    const levelLogger = new Log()
     levelLogger[method]('this should be logged')
     verify(x => expect(x.message).toBe('this should be logged'))
 

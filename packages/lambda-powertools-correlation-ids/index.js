@@ -1,8 +1,8 @@
 const DEBUG_LOG_ENABLED = 'debug-log-enabled'
 
 class CorrelationIds {
-  constructor () {
-    this.context = {}
+  constructor (context = {}) {
+    this.context = context
   }
 
   clearAll () {
@@ -28,14 +28,24 @@ class CorrelationIds {
   get debugEnabled () {
     return this.context[DEBUG_LOG_ENABLED] === 'true'
   }
+
+  static clearAll () {
+    globalCorrelationIds.clearAll()
+  }
+
+  static replaceAllWith (...args) {
+    globalCorrelationIds.replaceAllWith(...args)
+  }
+
+  static set (...args) {
+    globalCorrelationIds.set(...args)
+  }
+
+  static get () {
+    return globalCorrelationIds.get()
+  }
 };
 
 const globalCorrelationIds = new CorrelationIds()
 
-module.exports = {
-  CorrelationIds,
-  clearAll: globalCorrelationIds.clearAll.bind(globalCorrelationIds),
-  replaceAllWith: globalCorrelationIds.replaceAllWith.bind(globalCorrelationIds),
-  set: globalCorrelationIds.set.bind(globalCorrelationIds),
-  get: globalCorrelationIds.get.bind(globalCorrelationIds)
-}
+module.exports = CorrelationIds

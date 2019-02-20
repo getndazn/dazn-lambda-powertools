@@ -27,6 +27,10 @@ class Logger {
     this.correlationIds = correlationIds
     this.level = (level || 'DEBUG').toUpperCase()
     this.originalLevel = this.level
+
+    if (correlationIds.debugEnabled) {
+      this.enableDebug()
+    }
   }
 
   get context () {
@@ -94,16 +98,32 @@ class Logger {
   resetLevel () {
     this.level = this.originalLevel
   }
+
+  static debug (...args) {
+    globalLogger.debug(...args)
+  }
+
+  static info (...args) {
+    globalLogger.info(...args)
+  }
+
+  static warn (...args) {
+    globalLogger.warn(...args)
+  }
+
+  static error (...args) {
+    globalLogger.error(...args)
+  }
+
+  static enableDebug () {
+    return globalLogger.enableDebug()
+  }
+
+  static resetLevel () {
+    globalLogger.resetLevel()
+  }
 }
 
 const globalLogger = new Logger()
 
-module.exports = {
-  Logger,
-  debug: globalLogger.debug.bind(globalLogger),
-  info: globalLogger.info.bind(globalLogger),
-  warn: globalLogger.warn.bind(globalLogger),
-  error: globalLogger.error.bind(globalLogger),
-  enableDebug: globalLogger.enableDebug.bind(globalLogger),
-  resetLevel: globalLogger.resetLevel.bind(globalLogger)
-}
+module.exports = Logger

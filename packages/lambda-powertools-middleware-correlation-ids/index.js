@@ -42,7 +42,7 @@ function captureSns ({ Records }, { awsRequestId }, sampleDebugLogRate) {
   const snsRecord = Records[0].Sns
   const msgAttributes = snsRecord.MessageAttributes
 
-  for (var msgAttribute in msgAttributes) {
+  for (const msgAttribute in msgAttributes) {
     if (msgAttribute.toLowerCase().startsWith('x-correlation-')) {
       correlationIds[msgAttribute] = msgAttributes[msgAttribute].Value
     } else if (msgAttribute === USER_AGENT) {
@@ -70,7 +70,7 @@ function captureSqs (event, context, sampleDebugLogRate) {
     const msgAttributes = record.messageAttributes
     const correlationIds = { awsRequestId }
 
-    for (var msgAttribute in msgAttributes) {
+    for (const msgAttribute in msgAttributes) {
       if (msgAttribute.toLowerCase().startsWith('x-correlation-')) {
         correlationIds[msgAttribute] = msgAttributes[msgAttribute].stringValue
       } else if (msgAttribute === USER_AGENT) {
@@ -88,48 +88,8 @@ function captureSqs (event, context, sampleDebugLogRate) {
       correlationIds[DEBUG_LOG_ENABLED] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
     }
 
-    const debugLogEnabled = correlationIds[DEBUG_LOG_ENABLED] === 'true'
-    let debugLogRollback
-    let oldCorrelationIds
-
-    // add functions to the record object to facilitate swapping in & out the
-    // current set of correlation IDs since we receive and process records in batch
-
-    // this lets you add more correlation IDs for just this record
-    record.addToScope = (key, value) => {
-      if (!key.startsWith('x-correlation-')) {
-        key = 'x-correlation-' + key
-      }
-
-      // make sure it's added to the closure so it's retained when we scope and unscope
-      correlationIds[key] = value
-      CorrelationIds.set(key, value)
-    }
-
-    // switches the current correlation IDs to this record
-    record.scopeToThis = () => {
-      // only do this when the oldCorrelationIds is not assigned, to avoid accidentally overriding
-      // when we scopeToThis() twice
-      if (!oldCorrelationIds) {
-        oldCorrelationIds = CorrelationIds.get()
-        CorrelationIds.replaceAllWith(correlationIds)
-      }
-
-      if (debugLogEnabled) {
-        debugLogRollback = Log.enableDebug()
-      }
-    }
-
-    // switches the current correlation IDs to what were there previously
-    record.unscope = () => {
-      if (oldCorrelationIds) {
-        CorrelationIds.replaceAllWith(oldCorrelationIds)
-      }
-
-      if (debugLogRollback) {
-        debugLogRollback()
-      }
-    }
+    record.correlationIds = new CorrelationIds(correlationIds)
+    record.logger = new Log({ correlationIds })
   })
 
   // although we're going to have per-record correlation IDs, the default one for the function
@@ -163,48 +123,8 @@ function captureKinesis ({ Records }, context, sampleDebugLogRate) {
         correlationIds[DEBUG_LOG_ENABLED] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
       }
 
-      const debugLogEnabled = correlationIds[DEBUG_LOG_ENABLED] === 'true'
-      let debugLogRollback
-      let oldCorrelationIds
-
-      // add functions to the parsed event object to facilitate swapping in & out the current set of
-      // correlation IDs since we receive and process records in batch
-
-      // lets you add more correlation IDs for just this record
-      event.addToScope = (key, value) => {
-        if (!key.startsWith('x-correlation-')) {
-          key = 'x-correlation-' + key
-        }
-
-        // make sure it's added to the closure so it's retained when we scope and unscope
-        correlationIds[key] = value
-        CorrelationIds.set(key, value)
-      }
-
-      // switches the current correlation IDs to this record
-      event.scopeToThis = () => {
-        // only do this when the oldCorrelationIds is not assigned, to avoid accidentally overriding
-        // when we scopeToThis() twice
-        if (!oldCorrelationIds) {
-          oldCorrelationIds = CorrelationIds.get()
-          CorrelationIds.replaceAllWith(correlationIds)
-        }
-
-        if (debugLogEnabled) {
-          debugLogRollback = Log.enableDebug()
-        }
-      }
-
-      // switches the current correlation IDs to what were there previously
-      event.unscope = () => {
-        if (oldCorrelationIds) {
-          CorrelationIds.replaceAllWith(oldCorrelationIds)
-        }
-
-        if (debugLogRollback) {
-          debugLogRollback()
-        }
-      }
+      event.correlationIds = new CorrelationIds(correlationIds)
+      event.logger = new Log({ correlationIds })
 
       return event
     })

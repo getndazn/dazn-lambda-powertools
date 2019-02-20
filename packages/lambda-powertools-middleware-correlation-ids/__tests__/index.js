@@ -26,9 +26,7 @@ const invokeSqsHandler = (event, awsRequestId, sampleDebugLogRate, handlerF, rec
     handlerF(CorrelationIds.get())
 
     event.Records.forEach(record => {
-      record.scopeToThis()
-      recordF(CorrelationIds.get()) // check the correlation IDs inside is correct
-      record.unscope()
+      recordF(record.correlationIds.get()) // check the correlation IDs inside is correct
     })
 
     // check the correlation IDs outside the context of a record are correct
@@ -51,9 +49,7 @@ const invokeKinesisHandler = (event, awsRequestId, sampleDebugLogRate, handlerF,
     handlerF(CorrelationIds.get())
 
     context.parsedKinesisEvents.forEach(evt => {
-      evt.scopeToThis()
-      recordF(CorrelationIds.get()) // check the correlation IDs inside is correct
-      evt.unscope()
+      recordF(evt.correlationIds.get()) // check the correlation IDs inside is correct
     })
 
     // check the correlation IDs outside the context of a record are correct
