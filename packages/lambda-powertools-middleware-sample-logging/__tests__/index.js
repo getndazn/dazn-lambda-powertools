@@ -1,5 +1,5 @@
 const consoleLog = jest.spyOn(global.console, 'log')
-
+process.env.LOG_LEVEL = 'INFO'
 const Log = require('@perform/lambda-powertools-logger')
 const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
 
@@ -7,7 +7,6 @@ const middy = require('middy')
 const sampleLogMiddleware = require('../index')
 
 beforeEach(() => {
-  process.env.LOG_LEVEL = 'INFO'
   CorrelationIds.clearAll()
   consoleLog.mockClear()
 })

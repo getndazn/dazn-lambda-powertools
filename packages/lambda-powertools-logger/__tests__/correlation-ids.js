@@ -2,11 +2,11 @@
 // might affect other tests. Rather than carefully plan around when to clear them, etc.
 // I thought it'd be easier to just isolate them
 
-const CorrleationIds = require('@perform/lambda-powertools-correlation-ids')
+const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
 const Log = require('../index')
 
-CorrleationIds.set('id', '42')
-CorrleationIds.set('name', 'theburningmonk')
+CorrelationIds.set('id', '42')
+CorrelationIds.set('name', 'theburningmonk')
 
 const consoleLog = jest.spyOn(global.console, 'log')
 

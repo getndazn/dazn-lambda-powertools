@@ -64,13 +64,14 @@ const errorsAreIncluded = log => {
   })
 }
 
-const enabledAt = (log, enabledLevels) => {
+const enabledAt = (method, enabledLevels) => {
   const expected = new Set(enabledLevels)
   const allLevels = [ 'DEBUG', 'INFO', 'WARN', 'ERROR' ]
   allLevels.forEach(level => {
     process.env.LOG_LEVEL = level
+    const levelLogger = new Log.Logger()
     consoleLog.mockClear()
-    log('test')
+    levelLogger[method]('test')
     if (expected.has(level)) {
       expect(consoleLog).toBeCalled()
     } else {
@@ -107,17 +108,18 @@ test("Params can't override level and message [error]", () => paramsCannotOverri
 test('Error details are included in warn logs', () => errorsAreIncluded(Log.warn))
 test('Error details are included in error logs', () => errorsAreIncluded(Log.error))
 
-test('Debug logs are enabled at DEBUG level', () => enabledAt(Log.debug, [ 'DEBUG' ]))
-test('Info logs are enabled at DEBUG and INFO levels', () => enabledAt(Log.info, [ 'DEBUG', 'INFO' ]))
-test('Warn logs are enabled at DEBUG, INFO and WARN levels', () => enabledAt(Log.warn, [ 'DEBUG', 'INFO', 'WARN' ]))
-test('Error logs are enabled at all levels', () => enabledAt(Log.error, [ 'DEBUG', 'INFO', 'WARN', 'ERROR' ]))
+test('Debug logs are enabled at DEBUG level', () => enabledAt('debug', [ 'DEBUG' ]))
+test('Info logs are enabled at DEBUG and INFO levels', () => enabledAt('info', [ 'DEBUG', 'INFO' ]))
+test('Warn logs are enabled at DEBUG, INFO and WARN levels', () => enabledAt('warn', [ 'DEBUG', 'INFO', 'WARN' ]))
+test('Error logs are enabled at all levels', () => enabledAt('error', [ 'DEBUG', 'INFO', 'WARN', 'ERROR' ]))
 
 test('enableDebug() temporarily enables logging at DEBUG level', () => {
   process.env.LOG_LEVEL = 'INFO'
+  const levelLogger = new Log.Logger()
 
-  const rollback = Log.enableDebug()
+  const rollback = levelLogger.enableDebug()
 
-  Log.debug('this should be logged')
+  levelLogger.debug('this should be logged')
 
   verify(x => expect(x.message).toBe('this should be logged'))
 
@@ -125,7 +127,7 @@ test('enableDebug() temporarily enables logging at DEBUG level', () => {
 
   rollback() // back to INFO logging
 
-  Log.debug('this should not be logged')
+  levelLogger.debug('this should not be logged')
 
   expect(consoleLog).not.toBeCalled()
 })
@@ -160,21 +162,22 @@ test('LOG_LEVEL env var is not case sensitive', () => {
 })
 
 test('misconfigured LOG_LEVEL env var is ignored and treated at DEBUG', () => {
-  const shouldBeLogged = (logLevel, log) => {
+  const shouldBeLogged = (logLevel, method) => {
     process.env.LOG_LEVEL = logLevel
-    log('this should be logged')
+    const levelLogger = new Log.Logger()
+    levelLogger[method]('this should be logged')
     verify(x => expect(x.message).toBe('this should be logged'))
 
     consoleLog.mockClear()
   }
 
-  shouldBeLogged('bedug', Log.debug)
-  shouldBeLogged('bedug', Log.info)
-  shouldBeLogged('bedug', Log.warn)
-  shouldBeLogged('bedug', Log.error)
+  shouldBeLogged('bedug', 'debug')
+  shouldBeLogged('bedug', 'info')
+  shouldBeLogged('bedug', 'warn')
+  shouldBeLogged('bedug', 'error')
 
-  shouldBeLogged('inf0', Log.debug)
-  shouldBeLogged('inf0', Log.info)
-  shouldBeLogged('inf0', Log.warn)
-  shouldBeLogged('inf0', Log.error)
+  shouldBeLogged('inf0', 'debug')
+  shouldBeLogged('inf0', 'info')
+  shouldBeLogged('inf0', 'warn')
+  shouldBeLogged('inf0', 'error')
 })

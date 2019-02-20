@@ -19,63 +19,91 @@ const DEFAULT_CONTEXT = {
   environment: process.env.ENVIRONMENT || process.env.STAGE // convention in our functions
 }
 
-function getContext () {
-  // if there's a global variable for all the current request context then use it
-  const correlationIds = CorrelationIds.get()
-  if (Object.keys(correlationIds).length > 0) {
-    // note: this is a shallow copy, which is ok as we're not going to mutate anything
-    return Object.assign({}, DEFAULT_CONTEXT, correlationIds)
+class Logger {
+  constructor ({
+    correlationIds = CorrelationIds,
+    level = process.env.LOG_LEVEL
+  } = {}) {
+    this.correlationIds = correlationIds
+    this.level = (level || 'DEBUG').toUpperCase()
+    this.originalLevel = this.level
   }
 
-  return DEFAULT_CONTEXT
-}
-
-// default to debug if not specified
-function logLevelName () {
-  return (process.env.LOG_LEVEL || 'DEBUG').toUpperCase()
-}
-
-function isEnabled (level) {
-  return level >= (LogLevels[logLevelName()] || LogLevels.DEBUG)
-}
-
-function appendError (params, err) {
-  if (!err) {
-    return params
+  get context () {
+    return {
+      ...DEFAULT_CONTEXT,
+      ...this.correlationIds.get()
+    }
   }
 
-  return Object.assign(
-    {},
-    params || {},
-    { errorName: err.name, errorMessage: err.message, stackTrace: err.stack }
-  )
-}
-
-function log (levelName, message, params) {
-  if (!isEnabled(LogLevels[levelName])) {
-    return
+  isEnabled (level) {
+    return level >= (LogLevels[this.level] || LogLevels.DEBUG)
   }
 
-  const context = getContext()
-  let logMsg = Object.assign({}, context, params)
-  logMsg.level = LogLevels[levelName]
-  logMsg.sLevel = levelName
-  logMsg.message = message
+  appendError (params, err) {
+    if (!err) {
+      return params
+    }
 
-  console.log(JSON.stringify(logMsg))
+    return {
+      ...params || {},
+      errorName: err.name,
+      errorMessage: err.message,
+      stackTrace: err.stack
+    }
+  }
+
+  log (levelName, message, params) {
+    const level = LogLevels[levelName]
+    if (!this.isEnabled(level)) {
+      return
+    }
+
+    const logMsg = {
+      ...this.context,
+      ...params,
+      level,
+      sLevel: levelName,
+      message
+    }
+
+    console.log(JSON.stringify(logMsg))
+  }
+
+  debug (msg, params) {
+    this.log('DEBUG', msg, params)
+  }
+
+  info (msg, params) {
+    this.log('INFO', msg, params)
+  }
+
+  warn (msg, params, err) {
+    this.log('WARN', msg, this.appendError(params, err))
+  }
+
+  error (msg, params, err) {
+    this.log('ERROR', msg, this.appendError(params, err))
+  }
+
+  enableDebug () {
+    this.level = 'DEBUG'
+    return () => this.resetLevel()
+  }
+
+  resetLevel () {
+    this.level = this.originalLevel
+  }
 }
 
-module.exports.debug = (msg, params) => log('DEBUG', msg, params)
-module.exports.info = (msg, params) => log('INFO', msg, params)
-module.exports.warn = (msg, params, error) => log('WARN', msg, appendError(params, error))
-module.exports.error = (msg, params, error) => log('ERROR', msg, appendError(params, error))
+const globalLogger = new Logger()
 
-module.exports.enableDebug = () => {
-  const oldLevel = process.env.LOG_LEVEL
-  process.env.LOG_LEVEL = 'DEBUG'
-
-  // return a function to perform the rollback
-  return () => {
-    process.env.LOG_LEVEL = oldLevel
-  }
+module.exports = {
+  Logger,
+  debug: globalLogger.debug.bind(globalLogger),
+  info: globalLogger.info.bind(globalLogger),
+  warn: globalLogger.warn.bind(globalLogger),
+  error: globalLogger.error.bind(globalLogger),
+  enableDebug: globalLogger.enableDebug.bind(globalLogger),
+  resetLevel: globalLogger.resetLevel.bind(globalLogger)
 }
