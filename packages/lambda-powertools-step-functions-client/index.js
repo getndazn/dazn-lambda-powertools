@@ -12,25 +12,35 @@ function tryJsonParse (input) {
   }
 }
 
-function addCorrelationIds (input) {
+function addCorrelationIds (correlationIds, input) {
   // only do this with JSON string data
   const payload = tryJsonParse(input)
   if (!payload) {
     return input
   }
 
-  const correlationIds = CorrelationIds.get()
-  const newPayload = Object.assign({ __context__: correlationIds }, payload)
+  const ids = correlationIds.get()
+  const newPayload = {
+    __context__: ids,
+    ...payload
+  }
   return JSON.stringify(newPayload)
 }
 
-var originalStartExecution = client.startExecution
-client.startExecution = function () {
-  const params = arguments[0]
-  const newInput = addCorrelationIds(params.input)
-  arguments[0] = Object.assign({}, params, { input: newInput })
+client._startExecution = client.startExecution
 
-  return originalStartExecution.apply(this, arguments)
+client.startExecution = (...args) => {
+  return client.startExecutionWithCorrelationIds(CorrelationIds, ...args)
+}
+
+client.startExecutionWithCorrelationIds = (correlationIds, params, ...args) => {
+  const newInput = addCorrelationIds(correlationIds, params.input)
+  const extendedParams = {
+    ...params,
+    input: newInput
+  }
+
+  return client._startExecution(extendedParams, ...args)
 }
 
 module.exports = client

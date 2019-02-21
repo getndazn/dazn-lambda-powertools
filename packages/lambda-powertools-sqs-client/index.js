@@ -2,40 +2,58 @@ const AWS = require('aws-sdk')
 const client = new AWS.SQS()
 const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
 
-function addCorrelationIds (messageAttributes) {
-  let attributes = {}
-  let correlationIds = CorrelationIds.get()
-  for (let key in correlationIds) {
+function addCorrelationIds (correlationIds, messageAttributes) {
+  const attributes = {}
+  const ids = correlationIds.get()
+  for (const key in ids) {
     attributes[key] = {
       DataType: 'String',
-      StringValue: correlationIds[key]
+      StringValue: ids[key]
     }
   }
 
-  // use `attribtues` as base so if the user's message attributes would override
+  // use `attributes` as base so if the user's message attributes would override
   // our correlation IDs
   return Object.assign(attributes, messageAttributes || {})
 }
 
-const originalSendMessage = client.sendMessage
-client.sendMessage = function () {
-  const params = arguments[0]
-  const newMessageAttributes = addCorrelationIds(params.MessageAttributes)
-  arguments[0] = Object.assign({}, params, { MessageAttributes: newMessageAttributes })
+client._sendMessage = client.sendMessage
 
-  return originalSendMessage.apply(this, arguments)
+client.sendMessage = (...args) => {
+  return client.sendMessageWithCorrelationIds(CorrelationIds, ...args)
 }
 
-const originalSendMessageBatch = client.sendMessageBatch
-client.sendMessageBatch = function () {
-  const params = arguments[0]
-  const newEntires = params.Entries.map(entry => {
-    const newMessageAttributes = addCorrelationIds(entry.MessageAttributes)
-    return Object.assign({}, entry, { MessageAttributes: newMessageAttributes })
-  })
-  arguments[0] = Object.assign({}, params, { Entries: newEntires })
+client.sendMessageWithCorrelationIds = (correlationIds, params, ...args) => {
+  const newMessageAttributes = addCorrelationIds(correlationIds, params.MessageAttributes)
+  const extendedParams = {
+    ...params,
+    MessageAttributes: newMessageAttributes
+  }
 
-  return originalSendMessageBatch.apply(this, arguments)
+  return client._sendMessage(extendedParams, ...args)
+}
+
+client._sendMessageBatch = client.sendMessageBatch
+
+client.sendMessageBatch = (...args) => {
+  return client.sendMessageBatchWithCorrelationIds(CorrelationIds, ...args)
+}
+
+client.sendMessageBatchWithCorrelationIds = (correlationIds, params, ...args) => {
+  const newEntries = params.Entries.map(entry => {
+    const newMessageAttributes = addCorrelationIds(correlationIds, entry.MessageAttributes)
+    return {
+      ...entry,
+      MessageAttributes: newMessageAttributes
+    }
+  })
+
+  const extendedParams = {
+    ...params,
+    Entries: newEntries
+  }
+
+  return client._sendMessageBatch(extendedParams, ...args)
 }
 
 module.exports = client

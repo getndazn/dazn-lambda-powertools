@@ -74,7 +74,7 @@ const Req = (options) => {
     throw new Error('no HTTP uri is specified')
   }
 
-  const correlationIds = CorrelationIds.get()
+  const correlationIds = (options.correlationIds || CorrelationIds).get()
 
   // copy the provided headers last so it overrides the values from the context
   let headers = Object.assign({}, correlationIds, options.headers)
@@ -86,7 +86,7 @@ const Req = (options) => {
   request = setQueryStrings(request, options.qs)
   request = setBody(request, options.body)
 
-  const start = new Date().getTime()
+  const start = Date.now()
   const url = new URL.URL(options.uri)
   const metricName = options.methicName || url.hostname + '.response'
   const requestMetricTags = [
@@ -96,7 +96,7 @@ const Req = (options) => {
   let metricTags = [].concat(DEFAULT_TAGS, requestMetricTags, options.metricTags || [])
 
   const recordMetrics = ({ status }) => {
-    const end = new Date().getTime()
+    const end = Date.now()
     const latency = end - start
 
     metricTags.push(`statusCode:${status}`)
