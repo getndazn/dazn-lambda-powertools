@@ -46,6 +46,10 @@ class CorrelationIds {
   }
 };
 
-const globalCorrelationIds = new CorrelationIds()
+if (!global.CORRELATION_IDS) {
+  global.CORRELATION_IDS = new CorrelationIds()
+}
+
+const globalCorrelationIds = global.CORRELATION_IDS
 
 module.exports = CorrelationIds

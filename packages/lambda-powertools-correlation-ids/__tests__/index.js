@@ -52,3 +52,19 @@ test('clear would clear all existing correlation IDs', () => {
   const ids = CorrelationIds.get()
   expect(ids).toEqual({})
 })
+
+test('a reference to the global instance is stored as a global', () => {
+  expect(global.CORRELATION_IDS).toBeInstanceOf(CorrelationIds)
+})
+
+test('re-requiring correlationIds shares the same global instance', () => {
+  CorrelationIds.set('testing', 'true')
+  jest.resetModules()
+  const NewCorrelationIds = require('../index')
+
+  expect(NewCorrelationIds).not.toBe(CorrelationIds)
+
+  expect(NewCorrelationIds.get()).toEqual({
+    'x-correlation-testing': 'true'
+  })
+})
