@@ -42,6 +42,23 @@ const verifyPutRecordContext = async (f) => {
   f(actualData.__context__)
 }
 
+const verifyPutRecordWithCorrelationIdsContext = async (correlationIds, f) => {
+  const data = JSON.stringify({
+    eventType: 'wrote_test',
+    username: 'theburningmonk'
+  })
+  const params = {
+    Data: data,
+    StreamName: 'test'
+  }
+  await Kinesis.putRecordWithCorrelationIds(correlationIds, params).promise()
+
+  expect(mockPutRecord).toBeCalled()
+  const actualParams = mockPutRecord.mock.calls[0][0]
+  const actualData = JSON.parse(actualParams.Data)
+  f(actualData.__context__)
+}
+
 const verifyPutRecordsContext = async (f) => {
   const eventTypes = [
     'wrote_test',
@@ -69,76 +86,168 @@ const verifyPutRecordsContext = async (f) => {
   })
 }
 
-describe('PutRecord', () => {
-  test('When there are no correlation IDs, an empty __context__ is added to JSON payload', async () => {
-    await verifyPutRecordContext(x => expect(x).toEqual({}))
+const verifyPutRecordsWithCorrelationIdsContext = async (correlationIds, f) => {
+  const eventTypes = [
+    'wrote_test',
+    'ran_test',
+    'pass_test'
+  ]
+  const records = eventTypes
+    .map(eventType => {
+      const data = { eventType, username: 'theburningmonk' }
+      return {
+        Data: JSON.stringify(data)
+      }
+    })
+  const params = {
+    Records: records,
+    StreamName: 'test'
+  }
+  await Kinesis.putRecordsWithCorrelationIds(correlationIds, params).promise()
+
+  expect(mockPutRecords).toBeCalled()
+  const actualParams = mockPutRecords.mock.calls[0][0]
+  actualParams.Records.forEach(record => {
+    const actualData = JSON.parse(record.Data)
+    f(actualData.__context__)
+  })
+}
+
+describe('.putRecord', () => {
+  describe('when there are no correlation IDs', () => {
+    it('sends empty __context__ ', async () => {
+      await verifyPutRecordContext(x => expect(x).toEqual({}))
+    })
   })
 
-  test("When there are correlation IDs, they're forwarded in a __context__ property added to JSON payload", async () => {
-    CorrelationIds.replaceAllWith({
-      'x-correlation-id': 'id',
-      'debug-log-enabled': 'true'
-    })
+  describe('when there are global correlationIds', () => {
+    it('forwards them in __context__', async () => {
+      const correlationIds = {
+        'x-correlation-id': 'id',
+        'debug-log-enabled': 'true'
+      }
+      CorrelationIds.replaceAllWith(correlationIds)
 
-    await verifyPutRecordContext(x => {
-      expect(x['x-correlation-id']).toBe('id')
-      expect(x['debug-log-enabled']).toBe('true')
+      await verifyPutRecordContext(x => {
+        expect(x).toEqual({
+          'x-correlation-id': 'id',
+          'debug-log-enabled': 'true'
+        })
+      })
     })
   })
 
-  test('When payload is not JSON, request is not modified', async () => {
-    const params = {
-      Data: 'dGhpcyBpcyBub3QgSlNPTg==',
-      StreamName: 'test'
-    }
-    await Kinesis.putRecord(params).promise()
+  describe('when payload is not JSON', () => {
+    it('does not modify the request', async () => {
+      const params = {
+        Data: 'dGhpcyBpcyBub3QgSlNPTg==',
+        StreamName: 'test'
+      }
+      await Kinesis.putRecord(params).promise()
 
-    expect(mockPutRecord).toBeCalledWith(params)
+      expect(mockPutRecord).toBeCalledWith(params)
+    })
+  })
+
+  describe('when payload is binary', () => {
+    it('does not modify the request', async () => {
+      const params = {
+        StreamName: 'test',
+        Data: Buffer.from('dGhpcyBpcyBub3QgSlNPTg==', 'base64')
+      }
+
+      await Kinesis.putRecord(params).promise()
+
+      expect(mockPutRecord).toBeCalledWith(params)
+    })
   })
 })
 
-describe('PutRecords', () => {
-  test('When there are no correlation IDs, an empty __context__ is added to JSON payload', async () => {
-    await verifyPutRecordsContext(x => expect(x).toEqual({}))
-  })
-
-  test("When there are correlation IDs, they're forwarded in a __context__ property added to JSON payload", async () => {
-    CorrelationIds.replaceAllWith({
-      'x-correlation-id': 'id',
+describe('.putRecordWithCorrelationIds', () => {
+  it('forwards given correlationIds in __context__ field', async () => {
+    const correlationIds = new CorrelationIds({
+      'x-correlation-id': 'child-id',
       'debug-log-enabled': 'true'
     })
 
-    await verifyPutRecordsContext(x => {
-      expect(x['x-correlation-id']).toBe('id')
-      expect(x['debug-log-enabled']).toBe('true')
+    await verifyPutRecordWithCorrelationIdsContext(correlationIds, x => {
+      expect(x).toEqual({
+        'x-correlation-id': 'child-id',
+        'debug-log-enabled': 'true'
+      })
+    })
+  })
+})
+
+describe('.putRecords', () => {
+  describe('when there are no correlation IDs', () => {
+    it('sends empty __context__ ', async () => {
+      await verifyPutRecordsContext(x => expect(x).toEqual({}))
     })
   })
 
-  test('When payloads are not JSON, request is not modified', async () => {
-    const params = {
-      Records: [
-        { Data: 'dGhpcyBpcyBub3QgSlNPTg==' },
-        { Data: 'dGhpcyBpcyBhbHNvIG5vdCBKU09O' },
-        { Data: 'c29ycnksIHN0aWxsIG5vdCBKU09O' }
-      ],
-      StreamName: 'test'
-    }
-    await Kinesis.putRecords(params).promise()
+  describe('when there are global correlationIds', () => {
+    it('forwards them in __context__', async () => {
+      const correlationIds = {
+        'x-correlation-id': 'id',
+        'debug-log-enabled': 'true'
+      }
+      CorrelationIds.replaceAllWith(correlationIds)
 
-    expect(mockPutRecords).toBeCalledWith(params)
+      await verifyPutRecordsContext(x => {
+        expect(x).toEqual({
+          'x-correlation-id': 'id',
+          'debug-log-enabled': 'true'
+        })
+      })
+    })
   })
 
-  test('When payloads are binary, request is not modified', async () => {
-    const params = {
-      Records: [
-        { Data: Buffer.from('dGhpcyBpcyBub3QgSlNPTg==', 'base64') },
-        { Data: Buffer.from('dGhpcyBpcyBhbHNvIG5vdCBKU09O', 'base64') },
-        { Data: Buffer.from('c29ycnksIHN0aWxsIG5vdCBKU09O', 'base64') }
-      ],
-      StreamName: 'test'
-    }
-    await Kinesis.putRecords(params).promise()
+  describe('when payload is not JSON', () => {
+    it('does not modify the request', async () => {
+      const params = {
+        Records: [
+          { Data: 'dGhpcyBpcyBub3QgSlNPTg==' },
+          { Data: 'dGhpcyBpcyBhbHNvIG5vdCBKU09O' },
+          { Data: 'c29ycnksIHN0aWxsIG5vdCBKU09O' }
+        ],
+        StreamName: 'test'
+      }
+      await Kinesis.putRecords(params).promise()
 
-    expect(mockPutRecords).toBeCalledWith(params)
+      expect(mockPutRecords).toBeCalledWith(params)
+    })
+  })
+
+  describe('when payload is binary', () => {
+    it('does not modify the request', async () => {
+      const params = {
+        Records: [
+          { Data: Buffer.from('dGhpcyBpcyBub3QgSlNPTg==', 'base64') },
+          { Data: Buffer.from('dGhpcyBpcyBhbHNvIG5vdCBKU09O', 'base64') },
+          { Data: Buffer.from('c29ycnksIHN0aWxsIG5vdCBKU09O', 'base64') }
+        ],
+        StreamName: 'test'
+      }
+      await Kinesis.putRecords(params).promise()
+
+      expect(mockPutRecords).toBeCalledWith(params)
+    })
+  })
+})
+
+describe('.putRecordsWithCorrelationIds', () => {
+  it('forwards given correlationIds in __context__ field', async () => {
+    const correlationIds = new CorrelationIds({
+      'x-correlation-id': 'child-id',
+      'debug-log-enabled': 'true'
+    })
+
+    await verifyPutRecordsWithCorrelationIdsContext(correlationIds, x => {
+      expect(x).toEqual({
+        'x-correlation-id': 'child-id',
+        'debug-log-enabled': 'true'
+      })
+    })
   })
 })
