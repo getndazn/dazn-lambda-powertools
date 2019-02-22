@@ -20,13 +20,13 @@ const invokeHandler = (event, awsRequestId, sampleDebugLogRate, f) => {
   })
 }
 
-const invokeSqsHandler = (event, awsRequestId, sampleDebugLogRate, handlerF, recordF) => {
+const invokeSqsHandler = (event, awsRequestId, sampleDebugLogRate, handlerF, recordF, done) => {
   const handler = middy((event, context, cb) => {
     // check the correlation IDs outside the context of a record are correct
     handlerF(CorrelationIds.get())
 
     event.Records.forEach(record => {
-      recordF(record.correlationIds.get()) // check the correlation IDs inside is correct
+      recordF(record)
     })
 
     // check the correlation IDs outside the context of a record are correct
@@ -40,16 +40,18 @@ const invokeSqsHandler = (event, awsRequestId, sampleDebugLogRate, handlerF, rec
     if (err) {
       throw err
     }
+
+    if (done) done()
   })
 }
 
-const invokeKinesisHandler = (event, awsRequestId, sampleDebugLogRate, handlerF, recordF) => {
+const invokeKinesisHandler = (event, awsRequestId, sampleDebugLogRate, handlerF, recordF, done) => {
   const handler = middy((event, context, cb) => {
     // check the correlation IDs outside the context of a record are correct
     handlerF(CorrelationIds.get())
 
     context.parsedKinesisEvents.forEach(evt => {
-      recordF(evt.correlationIds.get()) // check the correlation IDs inside is correct
+      recordF(evt)
     })
 
     // check the correlation IDs outside the context of a record are correct
@@ -63,19 +65,22 @@ const invokeKinesisHandler = (event, awsRequestId, sampleDebugLogRate, handlerF,
     if (err) {
       throw err
     }
+
+    if (done) done()
   })
 }
 
+const apig = require('./apig.json')
 const genApiGatewayEvent = (correlationIds = {}) => {
-  let event = require('./apig.json')
-  Object.assign(event.headers, correlationIds)
-
+  const event = _.cloneDeep(apig)
+  event.headers = correlationIds
   return event
 }
 
+const sns = require('./sns.json')
 const genSnsEvent = (correlationIDs = {}) => {
-  let event = require('./sns.json')
-  let messageAttributes = _.mapValues(correlationIDs, value => ({
+  const event = _.cloneDeep(sns)
+  const messageAttributes = _.mapValues(correlationIDs, value => ({
     Type: 'String',
     Value: value
   }))
@@ -85,9 +90,9 @@ const genSnsEvent = (correlationIDs = {}) => {
   return event
 }
 
+const sqs = require('./sqs.json')
 const genSqsEvent = (correlationIDs = {}) => {
-  const event = require('./sqs.json')
-
+  const event = _.cloneDeep(sqs)
   const messageAttributes = _.mapValues(correlationIDs, value => ({
     stringValue: value,
     stringListValues: [],
@@ -101,8 +106,10 @@ const genSqsEvent = (correlationIDs = {}) => {
   return event
 }
 
+const kinesis = require('./kinesis')
 const genKinesisEvent = (correlationIDs = {}) => {
-  const event = require('./kinesis.json')
+  const event = _.cloneDeep(kinesis)
+
   const data = {
     type: 'test',
     '__context__': correlationIDs
@@ -114,10 +121,10 @@ const genKinesisEvent = (correlationIDs = {}) => {
   return event
 }
 
+const sfn = require('./sfn.json')
 const genSfnEvent = (correlationIDs = {}) => {
-  let event = require('./sfn.json')
-  Object.assign(event, { __context__: correlationIDs })
-
+  const event = _.cloneDeep(sfn)
+  event.__context__ = correlationIDs
   return event
 }
 
@@ -180,7 +187,8 @@ const sqsTests = () => {
         expect(x['awsRequestId']).toBe(requestId)
         expect(x['debug-log-enabled']).toBe('false')
       },
-      x => {
+      record => {
+        const x = record.correlationIds.get()
         expect(x['awsRequestId']).toBe(requestId)
         expect(x['debug-log-enabled']).toBe('false')
       })
@@ -193,7 +201,8 @@ const sqsTests = () => {
         expect(x['awsRequestId']).toBe(requestId)
         expect(x['debug-log-enabled']).toBe('true')
       },
-      x => {
+      record => {
+        const x = record.correlationIds.get()
         expect(x['awsRequestId']).toBe(requestId)
         expect(x['debug-log-enabled']).toBe('true')
       })
@@ -207,40 +216,66 @@ const sqsTests = () => {
         expect(x['x-correlation-id']).toBe(requestId)
         expect(x['awsRequestId']).toBe(requestId)
       },
-      x => {
+      record => {
+        const x = record.correlationIds.get()
         // correlation IDs at the record level should just take from the handler
         expect(x['x-correlation-id']).toBe(requestId)
         expect(x['awsRequestId']).toBe(requestId)
       })
   })
 
-  test('when correlation IDs are provided in the event, they are captured', () => {
-    const id = uuid()
-    const userId = uuid()
+  describe('when correlation IDs are provided in the event', () => {
+    let handlerCorrelationIds
+    let record
+    let id
+    let userId
+    let requestId
 
-    const correlationIds = {
-      'x-correlation-id': id,
-      'x-correlation-user-id': userId,
-      'User-Agent': 'jest test',
-      'debug-log-enabled': 'true'
-    }
+    beforeEach((done) => {
+      id = uuid()
+      userId = uuid()
 
-    const event = genSqsEvent(correlationIds)
-    const requestId = uuid()
-    invokeSqsHandler(event, requestId, 0,
-      x => {
-        // correlation IDs at the handler level
-        expect(x['x-correlation-id']).toBe(requestId)
-        expect(x['awsRequestId']).toBe(requestId)
-      },
-      x => {
-        // correlation IDs at the record level should match what was passed in
-        expect(x['x-correlation-id']).toBe(id)
-        expect(x['x-correlation-user-id']).toBe(userId)
-        expect(x['User-Agent']).toBe('jest test')
-        expect(x['debug-log-enabled']).toBe('true')
-        expect(x['awsRequestId']).toBe(requestId)
-      })
+      const correlationIds = {
+        'x-correlation-id': id,
+        'x-correlation-user-id': userId,
+        'User-Agent': 'jest test',
+        'debug-log-enabled': 'true'
+      }
+
+      const event = genSqsEvent(correlationIds)
+      requestId = uuid()
+      invokeSqsHandler(event, requestId, 0, x => {
+        handlerCorrelationIds = x
+      }, aRecord => {
+        record = aRecord
+      }, done)
+    })
+
+    it('still has the correct handler correlation IDs', () => {
+      expect(handlerCorrelationIds['x-correlation-id']).toBe(requestId)
+      expect(handlerCorrelationIds['awsRequestId']).toBe(requestId)
+    })
+
+    it('captures them on the record', () => {
+      const x = record.correlationIds.get()
+      // correlation IDs at the record level should match what was passed in
+      expect(x['x-correlation-id']).toBe(id)
+      expect(x['x-correlation-user-id']).toBe(userId)
+      expect(x['User-Agent']).toBe('jest test')
+      expect(x['debug-log-enabled']).toBe('true')
+      expect(x['awsRequestId']).toBe(requestId)
+    })
+
+    it('sets correlationIds as a non-enumerable property', () => {
+      expect(record).toHaveProperty('correlationIds')
+      expect(record.propertyIsEnumerable('correlationIds')).toBe(false)
+    })
+
+    it('sets logger as a non-enumerable property', () => {
+      expect(record).toHaveProperty('logger')
+      expect(record.propertyIsEnumerable('logger')).toBe(false)
+      expect(record.logger.correlationIds).toBe(record.correlationIds)
+    })
   })
 }
 
@@ -252,7 +287,8 @@ const kinesisTests = () => {
         expect(x['awsRequestId']).toBe(requestId)
         expect(x['debug-log-enabled']).toBe('false')
       },
-      x => {
+      record => {
+        const x = record.correlationIds.get()
         expect(x['awsRequestId']).toBe(requestId)
         expect(x['debug-log-enabled']).toBe('false')
       })
@@ -265,7 +301,8 @@ const kinesisTests = () => {
         expect(x['awsRequestId']).toBe(requestId)
         expect(x['debug-log-enabled']).toBe('true')
       },
-      x => {
+      record => {
+        const x = record.correlationIds.get()
         expect(x['awsRequestId']).toBe(requestId)
         expect(x['debug-log-enabled']).toBe('true')
       })
@@ -279,40 +316,66 @@ const kinesisTests = () => {
         expect(x['x-correlation-id']).toBe(requestId)
         expect(x['awsRequestId']).toBe(requestId)
       },
-      x => {
+      record => {
+        const x = record.correlationIds.get()
         // correlation IDs at the record level should just take from the handler
         expect(x['x-correlation-id']).toBe(requestId)
         expect(x['awsRequestId']).toBe(requestId)
       })
   })
 
-  test('when correlation IDs are provided in the event, they are captured', () => {
-    const id = uuid()
-    const userId = uuid()
+  describe('when correlation IDs are provided in the event', () => {
+    let handlerCorrelationIds
+    let record
+    let id
+    let userId
+    let requestId
 
-    const correlationIds = {
-      'x-correlation-id': id,
-      'x-correlation-user-id': userId,
-      'User-Agent': 'jest test',
-      'debug-log-enabled': 'true'
-    }
+    beforeEach((done) => {
+      id = uuid()
+      userId = uuid()
 
-    const event = genKinesisEvent(correlationIds)
-    const requestId = uuid()
-    invokeKinesisHandler(event, requestId, 0,
-      x => {
-        // correlation IDs at the handler level
-        expect(x['x-correlation-id']).toBe(requestId)
-        expect(x['awsRequestId']).toBe(requestId)
-      },
-      x => {
-        // correlation IDs at the record level should match what was passed in
-        expect(x['x-correlation-id']).toBe(id)
-        expect(x['x-correlation-user-id']).toBe(userId)
-        expect(x['User-Agent']).toBe('jest test')
-        expect(x['debug-log-enabled']).toBe('true')
-        expect(x['awsRequestId']).toBe(requestId)
-      })
+      const correlationIds = {
+        'x-correlation-id': id,
+        'x-correlation-user-id': userId,
+        'User-Agent': 'jest test',
+        'debug-log-enabled': 'true'
+      }
+
+      const event = genKinesisEvent(correlationIds)
+      requestId = uuid()
+      invokeKinesisHandler(event, requestId, 0, x => {
+        handlerCorrelationIds = x
+      }, aRecord => {
+        record = aRecord
+      }, done)
+    })
+
+    it('still has the correct handler correlation IDs', () => {
+      expect(handlerCorrelationIds['x-correlation-id']).toBe(requestId)
+      expect(handlerCorrelationIds['awsRequestId']).toBe(requestId)
+    })
+
+    it('captures them on the record', () => {
+      const x = record.correlationIds.get()
+      // correlation IDs at the record level should match what was passed in
+      expect(x['x-correlation-id']).toBe(id)
+      expect(x['x-correlation-user-id']).toBe(userId)
+      expect(x['User-Agent']).toBe('jest test')
+      expect(x['debug-log-enabled']).toBe('true')
+      expect(x['awsRequestId']).toBe(requestId)
+    })
+
+    it('sets correlationIds as a non-enumerable property', () => {
+      expect(record).toHaveProperty('correlationIds')
+      expect(record.propertyIsEnumerable('correlationIds')).toBe(false)
+    })
+
+    it('sets logger as a non-enumerable property', () => {
+      expect(record).toHaveProperty('logger')
+      expect(record.propertyIsEnumerable('logger')).toBe(false)
+      expect(record.logger.correlationIds).toBe(record.correlationIds)
+    })
   })
 }
 

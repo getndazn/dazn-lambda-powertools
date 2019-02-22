@@ -88,8 +88,18 @@ function captureSqs (event, context, sampleDebugLogRate) {
       correlationIds[DEBUG_LOG_ENABLED] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
     }
 
-    record.correlationIds = new CorrelationIds(correlationIds)
-    record.logger = new Log({ correlationIds })
+    const correlationIdsInstance = new CorrelationIds(correlationIds)
+
+    Object.defineProperties(record, {
+      correlationIds: {
+        value: correlationIdsInstance,
+        enumerable: false
+      },
+      logger: {
+        value: new Log({ correlationIds: correlationIdsInstance }),
+        enumerable: false
+      }
+    })
   })
 
   // although we're going to have per-record correlation IDs, the default one for the function
@@ -123,8 +133,18 @@ function captureKinesis ({ Records }, context, sampleDebugLogRate) {
         correlationIds[DEBUG_LOG_ENABLED] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
       }
 
-      event.correlationIds = new CorrelationIds(correlationIds)
-      event.logger = new Log({ correlationIds })
+      const correlationIdsInstance = new CorrelationIds(correlationIds)
+
+      Object.defineProperties(event, {
+        correlationIds: {
+          value: correlationIdsInstance,
+          enumerable: false
+        },
+        logger: {
+          value: new Log({ correlationIds: correlationIdsInstance }),
+          enumerable: false
+        }
+      })
 
       return event
     })
