@@ -1,15 +1,13 @@
 const _ = require('lodash/fp')
 
 function convertToObfuscatedEvent (event, fieldsToObfuscate) {
-  const obfuscatedObject = _.flow(
+  return _.flow(
     _.map(getUnobfuscatedObject(event)), // Retrieve the path to the object to obfuscate { a.b.c.**** }
     _.map(obfuscate), // Iterate through everything
     _.mergeAll, // Merge them all together creating one unified element
-    removeEmptyObjects // If any have returned an empty object, remove them as they are to be ignored
+    removeEmptyObjects, // If any have returned an empty object, remove them as they are to be ignored
+    _.merge(event) // Deep merge the event and obfuscated event together
   )(fieldsToObfuscate)
-
-  // Deep merge the event and obfuscation together - returning an obfuscated event
-  return _.merge(event, obfuscatedObject)
 }
 
 // returns the object from the fieldName
