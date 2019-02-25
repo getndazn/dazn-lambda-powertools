@@ -1,116 +1,78 @@
-const {
-  flow,
-  map,
-  filter,
-  isUndefined,
-  reduce,
-  forEach,
-  get,
-  merge
-} = require('lodash/fp')
+const _ = require('lodash/fp')
 
 function convertToObfuscatedEvent (event, fieldsToObfuscate) {
-  const obfuscatedObject = flow(
-    map(getTupleFromFilterToEventField(event)), // Retrieve an object {[Filter]: [Field]}
-    map(obfuscate), // Iterate recursively through the event obfuscating fields based on the filter
-    reduce(reduceToObfuscatedEvent(event), {}) // Reduce back to one object so that we can merge
+  return _.flow(
+    _.map(getUnobfuscatedObject(event)), // Retrieve the path to the object to obfuscate { a.b.c.**** }
+    _.map(obfuscate), // Iterate through everything
+    _.mergeAll, // Merge them all together creating one unified element
+    removeEmptyObjects, // If any have returned an empty object, remove them as they are to be ignored
+    _.merge(event) // Deep merge the event and obfuscated event together
   )(fieldsToObfuscate)
-
-  // Deep merge the event and obfuscation together - returning an obfuscated event
-  return merge(event, obfuscatedObject)
 }
 
-// Returns an object in the form { [filter] : field}
-const getTupleFromFilterToEventField = event => fieldName => {
-  const indexOfArray = fieldName.indexOf('.*.')
-  const earliestField =
-    indexOfArray > -1 ? fieldName.substr(0, indexOfArray) : fieldName
-  const field = get(earliestField)(event)
-  return { [fieldName]: field }
-}
+// returns the object from the fieldName
+const getUnobfuscatedObject = event => fieldName => {
+  const split = fieldName.split('.') || [fieldName]
 
-// Converts filters like "a.b.c" to { a: { b: "c" } }
-const convertStringReferenceToObject = (fieldName, field) => {
-  const split = fieldName.split('.')
-  const object = {}
+  let object = {}
+  let eventPointer = event
   let pointer = object
   for (let index = 0; index < split.length; index++) {
-    const key = split[index]
-    pointer[key] = (index !== split.length - 1 && {}) || field
-    pointer = pointer[key]
+    const element = split[index]
+
+    if (element === '*') {
+      const newFieldName = split.slice(index + 1).join('.')
+      const oldFieldName = split.slice(0, index).join('.')
+      // we've hit an array, so recurse into this and return { a: { b: [{c: "****"}]}}
+      return _.set(oldFieldName, _.map(arrayVal => getUnobfuscatedObject(arrayVal)(newFieldName))(eventPointer), object)
+    }
+
+    eventPointer = _.get(element)(eventPointer)
+    // If it's not an array we just build up the object more until the last one where we replace it with the object in the event
+    pointer[element] = (index !== split.length - 1 && {}) || eventPointer
+    pointer = pointer[element]
   }
 
+  // Return the minimal path to the object { a.b.c.d.obfuscation }
   return object
 }
 
-const obfuscate = tuple => {
-  const objectKey = Object.keys(tuple)[0]
-  const field = get(objectKey)(tuple)
-
-  if (field === undefined) {
-    return { [objectKey]: undefined }
-  }
-
-  if (field instanceof Array) {
-    const startPoint = objectKey.indexOf('.*.')
-    const newKey = objectKey.substr(startPoint + 3, objectKey.length)
-    const oldKey = objectKey.substr(0, startPoint)
-    return convertStringReferenceToObject(
-      oldKey,
-      obfuscateArray(newKey, field)
-    )
-  }
-
-  if (field instanceof Object) {
-    return convertStringReferenceToObject(objectKey, obfuscateObject(field))
-  }
-
-  return obfuscateStringField(objectKey)
-}
-
-// Iterate through each object in the array and obfuscate.
-const obfuscateArray = (key, arr) => {
-  return flow(
-    map(field => getTupleFromFilterToEventField(field)(key)),
-    filter(isDefined),
-    map(obfuscate)
-  )(arr)
-}
-
-const obfuscateObject = field => {
-  return flow(
-    map(obfuscateChildren(field)),
-    reduce((prev, curr) => (merge(prev, curr)), {})
+const obfuscate = field => {
+  return _.flow(
+    _.map(obfuscateChildren(field)),
+    _.mergeAll
   )(Object.keys(field))
 }
 
 const obfuscateChildren = field => key => {
-  const newField = get(key)(field)
+  const newField = _.get(key)(field)
 
-  if (newField instanceof Array) {
-    return { [key]: map(obfuscateObject)(newField) }
-  }
-
-  if (newField instanceof Object) {
-    return convertStringReferenceToObject(key, obfuscateObject(newField))
-  }
-
-  return obfuscateStringField(key)
-}
-
-const obfuscateStringField = key => ({ [key]: '******' })
-
-const reduceToObfuscatedEvent = event => (prev, curr) => {
-  forEach(fieldName => {
-    const field = get(fieldName)(curr) || get(fieldName)(event)
-    if (field) {
-      prev = merge(prev, { [fieldName]: field })
+  if (!_.isUndefined(newField)) {
+    if (newField instanceof Array) {
+      return { [key]: _.map(obfuscate)(newField) }
     }
-  })(Object.keys(curr))
 
-  return prev
+    if (newField instanceof Object) {
+      return { [key]: obfuscate(newField) }
+    }
+
+    return ({ [key]: '******' })
+  }
 }
 
-const isDefined = field => !isUndefined(field)
+const removeEmptyObjects = (object) => {
+  return (function remove (obj) {
+    for (var key in obj) {
+      if (obj[key] && typeof obj[key] === 'object') {
+        remove(obj[key]) // Recurse down finding the children nodes and removing them if needed
+        if (_.size(obj[key]) === 0) {
+          delete obj[key] // Remove the cloned elements empty child
+        }
+      }
+    }
+
+    return obj // Return the cloned modified object.
+  })(_.cloneDeep(object)) // Clone so as to not modify the original item
+}
 
 module.exports = convertToObfuscatedEvent
