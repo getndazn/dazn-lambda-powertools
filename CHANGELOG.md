@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.7](https://github.com/getndazn/dazn-lambda-powertools/compare/v0.10.6...v0.10.7) (2019-02-25)
+
+**Note:** Version bump only for package dazn-lambda-powertools
+
+
+
+
+
 ## [0.10.6](https://github.com/getndazn/dazn-lambda-powertools/compare/v0.10.5...v0.10.6) (2019-02-19)
 
 

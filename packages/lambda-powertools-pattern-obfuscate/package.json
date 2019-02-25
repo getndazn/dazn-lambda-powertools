@@ -1,13 +1,13 @@
 {
   "name": "@perform/lambda-powertools-pattern-obfuscate",
-  "version": "0.10.6",
+  "version": "0.10.7",
   "description": "Basic template that configures a 1% smaple rate for debug logs and obfuscation",
   "main": "index.js",
   "scripts": {},
   "author": "Yan Cui",
   "dependencies": {
     "@perform/lambda-powertools-middleware-correlation-ids": "^0.10.5",
-    "@perform/lambda-powertools-middleware-obfuscater": "^0.10.6",
+    "@perform/lambda-powertools-middleware-obfuscater": "^0.10.7",
     "@perform/lambda-powertools-middleware-sample-logging": "^0.10.5",
     "middy": "^0.15.0"
   },
