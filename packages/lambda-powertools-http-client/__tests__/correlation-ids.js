@@ -13,14 +13,15 @@ afterEach(CorrelationIds.clearAll)
 
 afterAll(mockRequest.mockRestore)
 
-const verifyHeaders = async (userHeaders, f) => {
+const verifyHeaders = async (userHeaders, f, correlationIds) => {
   const url = 'https://theburningmonk.com'
   nock(url).get('/').reply(200)
 
   await Req({
     uri: url,
     method: 'GET',
-    headers: userHeaders
+    headers: userHeaders,
+    correlationIds
   })
 
   expect(mockRequest).toBeCalled()
@@ -37,46 +38,72 @@ const verifyHeaders = async (userHeaders, f) => {
   f(headers)
 }
 
-test('When there are no correlation IDs, nothing is added to HTTP headers', async () => {
-  await verifyHeaders({}, headers => {
-    expect(headers['x-correlation-id']).toBeUndefined()
-    expect(headers['x-correlation-user-id']).toBeUndefined()
+describe('HTTP client (correlationIds)', () => {
+  describe('when there are no correlationIds', () => {
+    it('does not add anything to HTTP headers', async () => {
+      await verifyHeaders({}, headers => {
+        expect(headers['x-correlation-id']).toBeUndefined()
+        expect(headers['x-correlation-user-id']).toBeUndefined()
+      })
+    })
   })
-})
 
-test('Correlation IDs are included as HTTP headers', async () => {
-  CorrelationIds.set('id', 'id')
-  CorrelationIds.set('user-id', 'theburningmonk')
+  describe('when there are global correlationIds', () => {
+    it('forwards them as HTTP headers', async () => {
+      CorrelationIds.set('id', 'id')
+      CorrelationIds.set('user-id', 'theburningmonk')
 
-  await verifyHeaders({}, headers => {
-    expect(headers['x-correlation-id']).toBe('id')
-    expect(headers['x-correlation-user-id']).toBe('theburningmonk')
+      await verifyHeaders({}, headers => {
+        expect(headers['x-correlation-id']).toBe('id')
+        expect(headers['x-correlation-user-id']).toBe('theburningmonk')
+      })
+    })
+
+    describe('when there are also user-specified headers', () => {
+      it('does not affect them', async () => {
+        CorrelationIds.set('id', 'id')
+        CorrelationIds.set('user-id', 'theburningmonk')
+
+        const userHeaders = {
+          'order-id': 'order-id'
+        }
+
+        await verifyHeaders(userHeaders, headers => {
+          expect(headers['order-id']).toBe('order-id')
+        })
+      })
+    })
+
+    describe('when there are user-specified correlation ID headers', () => {
+      it('does not override them', async () => {
+        CorrelationIds.set('id', 'id')
+        CorrelationIds.set('user-id', 'theburningmonk')
+
+        const userHeaders = {
+          'x-correlation-id': 'user-id' // this should override what we set with the CorrelationIds module
+        }
+
+        await verifyHeaders(userHeaders, headers => {
+          expect(headers['x-correlation-id']).toBe('user-id')
+          expect(headers['x-correlation-user-id']).toBe('theburningmonk')
+        })
+      })
+    })
   })
-})
 
-test('User-specified headers are not affect by our correlation IDs', async () => {
-  CorrelationIds.set('id', 'id')
-  CorrelationIds.set('user-id', 'theburningmonk')
+  describe('when the correlationIds option is provided', () => {
+    it('forwards them as HTTP headers instead of the global ones', async () => {
+      CorrelationIds.set('id', 'id')
 
-  const userHeaders = {
-    'order-id': 'order-id'
-  }
+      const correlationIds = new CorrelationIds({
+        'x-correlation-id': 'child-id',
+        'debug-log-enabled': 'true'
+      })
 
-  await verifyHeaders(userHeaders, headers => {
-    expect(headers['order-id']).toBe('order-id')
-  })
-})
-
-test('Correlation IDs should not override user-specified headers', async () => {
-  CorrelationIds.set('id', 'id')
-  CorrelationIds.set('user-id', 'theburningmonk')
-
-  const userHeaders = {
-    'x-correlation-id': 'user-id' // this should override what we set with the CorrelationIds module
-  }
-
-  await verifyHeaders(userHeaders, headers => {
-    expect(headers['x-correlation-id']).toBe('user-id')
-    expect(headers['x-correlation-user-id']).toBe('theburningmonk')
+      await verifyHeaders({}, headers => {
+        expect(headers['x-correlation-id']).toBe('child-id')
+        expect(headers['debug-log-enabled']).toBe('true')
+      }, correlationIds)
+    })
   })
 })

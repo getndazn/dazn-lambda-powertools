@@ -16,34 +16,51 @@ function tryJsonParse (input) {
   }
 }
 
-function addCorrelationIds (input) {
+function addCorrelationIds (correlationIds, input) {
   // only do this with JSON string data
   const payload = tryJsonParse(input)
   if (!payload) {
     return input
   }
 
-  const correlationIds = CorrelationIds.get()
-  const newPayload = Object.assign({ __context__: correlationIds }, payload)
+  const ids = correlationIds.get()
+  const newPayload = {
+    __context__: ids,
+    ...payload
+  }
   return JSON.stringify(newPayload)
 }
 
-const originalInvoke = client.invoke
-client.invoke = function () {
-  const params = arguments[0]
-  const newPayload = addCorrelationIds(params.Payload)
-  arguments[0] = Object.assign({}, params, { Payload: newPayload })
+client._invoke = client.invoke
 
-  return originalInvoke.apply(this, arguments)
+client.invoke = (...args) => {
+  return client.invokeWithCorrelationIds(CorrelationIds, ...args)
 }
 
-const originalInvokeAsync = client.invokeAsync
-client.invokeAsync = function () {
-  const params = arguments[0]
-  const newPayload = addCorrelationIds(params.InvokeArgs)
-  arguments[0] = Object.assign({}, params, { InvokeArgs: newPayload })
+client.invokeWithCorrelationIds = (correlationIds, params, ...args) => {
+  const newPayload = addCorrelationIds(correlationIds, params.Payload)
+  const extendedParams = {
+    ...params,
+    Payload: newPayload
+  }
 
-  return originalInvokeAsync.apply(this, arguments)
+  return client._invoke(extendedParams, ...args)
+}
+
+client._invokeAsync = client.invokeAsync
+
+client.invokeAsync = (...args) => {
+  return client.invokeAsyncWithCorrelationIds(CorrelationIds, ...args)
+}
+
+client.invokeAsyncWithCorrelationIds = (correlationIds, params, ...args) => {
+  const newPayload = addCorrelationIds(correlationIds, params.InvokeArgs)
+  const extendedParams = {
+    ...params,
+    InvokeArgs: newPayload
+  }
+
+  return client._invokeAsync(extendedParams, ...args)
 }
 
 module.exports = client

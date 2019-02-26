@@ -16,37 +16,58 @@ function tryJsonParse (data) {
   }
 }
 
-function addCorrelationIds (data) {
+function addCorrelationIds (correlationIds, data) {
   // only do this with JSON string data
   const payload = tryJsonParse(data)
   if (!payload) {
     return data
   }
 
-  const correlationIds = CorrelationIds.get()
-  const newData = Object.assign({ __context__: correlationIds }, payload)
+  const ids = correlationIds.get()
+  const newData = {
+    __context__: ids,
+    ...payload
+  }
   return JSON.stringify(newData)
 }
 
-const originalPutRecord = client.putRecord
-client.putRecord = function () {
-  const params = arguments[0]
-  const newData = addCorrelationIds(params.Data)
-  arguments[0] = Object.assign({}, params, { Data: newData })
+client._putRecord = client.putRecord
 
-  return originalPutRecord.apply(this, arguments)
+client.putRecord = (...args) => {
+  return client.putRecordWithCorrelationIds(CorrelationIds, ...args)
 }
 
-const originalPutRecords = client.putRecords
-client.putRecords = function () {
-  const params = arguments[0]
-  const newRecords = params.Records.map(record => {
-    const newData = addCorrelationIds(record.Data)
-    return Object.assign({}, record, { Data: newData })
-  })
-  arguments[0] = Object.assign({}, params, { Records: newRecords })
+client.putRecordWithCorrelationIds = (correlationIds, params, ...args) => {
+  const newData = addCorrelationIds(correlationIds, params.Data)
+  const extendedParams = {
+    ...params,
+    Data: newData
+  }
 
-  return originalPutRecords.apply(this, arguments)
+  return client._putRecord(extendedParams, ...args)
+}
+
+client._putRecords = client.putRecords
+
+client.putRecords = (...args) => {
+  return client.putRecordsWithCorrelationIds(CorrelationIds, ...args)
+}
+
+client.putRecordsWithCorrelationIds = (correlationIds, params, ...args) => {
+  const newRecords = params.Records.map(record => {
+    const newData = addCorrelationIds(correlationIds, record.Data)
+    return {
+      ...record,
+      Data: newData
+    }
+  })
+
+  const extendedParams = {
+    ...params,
+    Records: newRecords
+  }
+
+  return client._putRecords(extendedParams, ...args)
 }
 
 module.exports = client

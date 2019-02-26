@@ -2,28 +2,35 @@ const AWS = require('aws-sdk')
 const client = new AWS.SNS()
 const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
 
-function addCorrelationIds (messageAttributes) {
-  let attributes = {}
-  let correlationIds = CorrelationIds.get()
-  for (let key in correlationIds) {
+function addCorrelationIds (correlationIds, messageAttributes) {
+  const attributes = {}
+  const ids = correlationIds.get()
+  for (const key in ids) {
     attributes[key] = {
       DataType: 'String',
-      StringValue: correlationIds[key]
+      StringValue: ids[key]
     }
   }
 
-  // use `attribtues` as base so if the user's message attributes would override
+  // use `attributes` as base so if the user's message attributes would override
   // our correlation IDs
   return Object.assign(attributes, messageAttributes || {})
 }
 
-const originalPublish = client.publish
-client.publish = function () {
-  const params = arguments[0]
-  const newMessageAttributes = addCorrelationIds(params.MessageAttributes)
-  arguments[0] = Object.assign({}, params, { MessageAttributes: newMessageAttributes })
+client._publish = client.publish
 
-  return originalPublish.apply(this, arguments)
+client.publish = (...args) => {
+  return client.publishWithCorrelationIds(CorrelationIds, ...args)
+}
+
+client.publishWithCorrelationIds = (correlationIds, params, ...args) => {
+  const newMessageAttributes = addCorrelationIds(correlationIds, params.MessageAttributes)
+  const extendedParams = {
+    ...params,
+    MessageAttributes: newMessageAttributes
+  }
+
+  return client._publish(extendedParams, ...args)
 }
 
 module.exports = client
