@@ -48,34 +48,44 @@ const errorLogWasWritten = (f) => {
   f(log)
 }
 
-test("when 'debug-log-enabled' is 'true', debug log should be enabled", () => {
-  CorrelationIds.replaceAllWith({ 'debug-log-enabled': 'true' })
+describe('Sample logging middleware', () => {
+  describe("when 'debug-log-enabled' is 'true'", () => {
+    it('enables debug logging', () => {
+      CorrelationIds.replaceAllWith({ 'debug-log-enabled': 'true' })
 
-  invokeSuccessHandler(0)
-  debugLogWasEnabled()
-})
+      invokeSuccessHandler(0)
+      debugLogWasEnabled()
+    })
+  })
 
-test('when sample rate is 0%, debug log is not enabled', () => {
-  invokeSuccessHandler(0)
-  expect(consoleLog).not.toBeCalled()
-})
+  describe('when sample rate is 0%', () => {
+    it('does not enable debug logging', () => {
+      invokeSuccessHandler(0)
+      expect(consoleLog).not.toBeCalled()
+    })
+  })
 
-test('when sample rate is 100%, debug log is definitely enabled', () => {
-  invokeSuccessHandler(1)
-  debugLogWasEnabled()
-})
+  describe('when sample rate is 100%', () => {
+    it('enables debug logging', () => {
+      invokeSuccessHandler(1)
+      debugLogWasEnabled()
+    })
+  })
 
-test('when an invocation errors, an error log is always written', () => {
-  const event = { test: 'wat' }
-  const awsRequestId = 'test-id'
+  describe('when an invocation fails', () => {
+    it('writes an error log', () => {
+      const event = { test: 'wat' }
+      const awsRequestId = 'test-id'
 
-  invokeFailureHandler(event, awsRequestId)
-  errorLogWasWritten(x => {
-    expect(x.errorName).toBe('Error')
-    expect(x.errorMessage).toBe('boom')
-    expect(x.stackTrace).not.toBeFalsy()
-    expect(x.awsRequestId).toBe(awsRequestId)
-    expect(x.invocationEvent).toBeDefined()
-    expect(JSON.parse(x.invocationEvent)).toEqual(event)
+      invokeFailureHandler(event, awsRequestId)
+      errorLogWasWritten(x => {
+        expect(x.errorName).toBe('Error')
+        expect(x.errorMessage).toBe('boom')
+        expect(x.stackTrace).not.toBeFalsy()
+        expect(x.awsRequestId).toBe(awsRequestId)
+        expect(x.invocationEvent).toBeDefined()
+        expect(JSON.parse(x.invocationEvent)).toEqual(event)
+      })
+    })
   })
 })

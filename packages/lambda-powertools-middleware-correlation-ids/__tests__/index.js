@@ -129,99 +129,113 @@ const genSfnEvent = (correlationIDs = {}) => {
 }
 
 const standardTests = (genEvent) => {
-  test('when sampleDebugLogRate is 0, debug-log-enabled is always set to false', () => {
-    const requestId = uuid()
-    invokeHandler(genEvent(), requestId, 0, x => {
-      expect(x['awsRequestId']).toBe(requestId)
-      expect(x['x-correlation-id']).toBe(requestId)
-      expect(x['debug-log-enabled']).toBe('false')
+  describe('when sampleDebugLogRate = 0', () => {
+    it('always sets debug-log-enabled to false', () => {
+      const requestId = uuid()
+      invokeHandler(genEvent(), requestId, 0, x => {
+        expect(x['awsRequestId']).toBe(requestId)
+        expect(x['x-correlation-id']).toBe(requestId)
+        expect(x['debug-log-enabled']).toBe('false')
+      })
     })
   })
 
-  test('when sampleDebugLogRate is 1, debug-log-enabled is always set to true', () => {
-    const requestId = uuid()
-    invokeHandler(genEvent(), requestId, 1, x => {
-      expect(x['awsRequestId']).toBe(requestId)
-      expect(x['x-correlation-id']).toBe(requestId)
-      expect(x['debug-log-enabled']).toBe('true')
+  describe('when sampleDebugLogRate = 1', () => {
+    it('always sets debug-log-enabled to true', () => {
+      const requestId = uuid()
+      invokeHandler(genEvent(), requestId, 1, x => {
+        expect(x['awsRequestId']).toBe(requestId)
+        expect(x['x-correlation-id']).toBe(requestId)
+        expect(x['debug-log-enabled']).toBe('true')
+      })
     })
   })
 
-  test('when correlation ID are not provided in the event, one is initialized from the awsRequestId', () => {
-    const requestId = uuid()
-    invokeHandler(genEvent(), requestId, 0, x => {
-      expect(x['x-correlation-id']).toBe(requestId)
-      expect(x['awsRequestId']).toBe(requestId)
+  describe('when correlation ID is not provided in the event', () => {
+    it('sets it to the AWS Request ID', () => {
+      const requestId = uuid()
+      invokeHandler(genEvent(), requestId, 0, x => {
+        expect(x['x-correlation-id']).toBe(requestId)
+        expect(x['awsRequestId']).toBe(requestId)
+      })
     })
   })
 
-  test('when correlation IDs are provided in the event, they are captured', () => {
-    const id = uuid()
-    const userId = uuid()
+  describe('when correlation IDs are provided in the event', () => {
+    it('captures them', () => {
+      const id = uuid()
+      const userId = uuid()
 
-    const correlationIds = {
-      'x-correlation-id': id,
-      'x-correlation-user-id': userId,
-      'User-Agent': 'jest test',
-      'debug-log-enabled': 'true'
-    }
+      const correlationIds = {
+        'x-correlation-id': id,
+        'x-correlation-user-id': userId,
+        'User-Agent': 'jest test',
+        'debug-log-enabled': 'true'
+      }
 
-    const event = genEvent(correlationIds)
+      const event = genEvent(correlationIds)
 
-    const requestId = uuid()
-    invokeHandler(event, requestId, 0, x => {
-      expect(x['x-correlation-id']).toBe(id)
-      expect(x['x-correlation-user-id']).toBe(userId)
-      expect(x['User-Agent']).toBe('jest test')
-      expect(x['debug-log-enabled']).toBe('true')
-      expect(x['awsRequestId']).toBe(requestId)
+      const requestId = uuid()
+      invokeHandler(event, requestId, 0, x => {
+        expect(x['x-correlation-id']).toBe(id)
+        expect(x['x-correlation-user-id']).toBe(userId)
+        expect(x['User-Agent']).toBe('jest test')
+        expect(x['debug-log-enabled']).toBe('true')
+        expect(x['awsRequestId']).toBe(requestId)
+      })
     })
   })
 }
 
 const sqsTests = () => {
-  test('when sampleDebugLogRate is 0, debug-log-enabled is always set to false', () => {
-    const requestId = uuid()
-    invokeSqsHandler(genSqsEvent(), requestId, 0,
-      x => {
-        expect(x['awsRequestId']).toBe(requestId)
-        expect(x['debug-log-enabled']).toBe('false')
-      },
-      record => {
-        const x = record.correlationIds.get()
-        expect(x['awsRequestId']).toBe(requestId)
-        expect(x['debug-log-enabled']).toBe('false')
-      })
+  describe('when sampleDebugLogRate = 0', () => {
+    it('always sets debug-log-enabled to false', () => {
+      const requestId = uuid()
+      invokeSqsHandler(genSqsEvent(), requestId, 0,
+        x => {
+          expect(x['awsRequestId']).toBe(requestId)
+          expect(x['debug-log-enabled']).toBe('false')
+        },
+        record => {
+          const x = record.correlationIds.get()
+          expect(x['awsRequestId']).toBe(requestId)
+          expect(x['debug-log-enabled']).toBe('false')
+        })
+    })
   })
 
-  test('when sampleDebugLogRate is 1, debug-log-enabled is always set to true', () => {
-    const requestId = uuid()
-    invokeSqsHandler(genSqsEvent(), requestId, 1,
-      x => {
-        expect(x['awsRequestId']).toBe(requestId)
-        expect(x['debug-log-enabled']).toBe('true')
-      },
-      record => {
-        const x = record.correlationIds.get()
-        expect(x['awsRequestId']).toBe(requestId)
-        expect(x['debug-log-enabled']).toBe('true')
-      })
+  describe('when sampleDebugLogRate = 1', () => {
+    it('always sets debug-log-enabled to true', () => {
+      const requestId = uuid()
+      invokeSqsHandler(genSqsEvent(), requestId, 1,
+        x => {
+          expect(x['awsRequestId']).toBe(requestId)
+          expect(x['debug-log-enabled']).toBe('true')
+        },
+        record => {
+          const x = record.correlationIds.get()
+          expect(x['awsRequestId']).toBe(requestId)
+          expect(x['debug-log-enabled']).toBe('true')
+        })
+    })
   })
 
-  test('when correlation ID are not provided in the event, one is initialized from the awsRequestId', () => {
-    const requestId = uuid()
-    invokeSqsHandler(genSqsEvent(), requestId, 0,
-      x => {
-        // correlation IDs at the handler level
-        expect(x['x-correlation-id']).toBe(requestId)
-        expect(x['awsRequestId']).toBe(requestId)
-      },
-      record => {
-        const x = record.correlationIds.get()
-        // correlation IDs at the record level should just take from the handler
-        expect(x['x-correlation-id']).toBe(requestId)
-        expect(x['awsRequestId']).toBe(requestId)
-      })
+  describe('when correlation ID is not provided in the event', () => {
+    it('sets it to the AWS Request ID', () => {
+      const requestId = uuid()
+      invokeSqsHandler(genSqsEvent(), requestId, 0,
+        x => {
+          // correlation IDs at the handler level
+          expect(x['x-correlation-id']).toBe(requestId)
+          expect(x['awsRequestId']).toBe(requestId)
+        },
+        record => {
+          const x = record.correlationIds.get()
+          // correlation IDs at the record level should just take from the handler
+          expect(x['x-correlation-id']).toBe(requestId)
+          expect(x['awsRequestId']).toBe(requestId)
+        })
+    })
   })
 
   describe('when correlation IDs are provided in the event', () => {
@@ -280,48 +294,54 @@ const sqsTests = () => {
 }
 
 const kinesisTests = () => {
-  test('when sampleDebugLogRate is 0, debug-log-enabled is always set to false', () => {
-    const requestId = uuid()
-    invokeKinesisHandler(genKinesisEvent(), requestId, 0,
-      x => {
-        expect(x['awsRequestId']).toBe(requestId)
-        expect(x['debug-log-enabled']).toBe('false')
-      },
-      record => {
-        const x = record.correlationIds.get()
-        expect(x['awsRequestId']).toBe(requestId)
-        expect(x['debug-log-enabled']).toBe('false')
-      })
+  describe('when sampleDebugLogRate = 0', () => {
+    it('always sets debug-log-enabled to false', () => {
+      const requestId = uuid()
+      invokeKinesisHandler(genKinesisEvent(), requestId, 0,
+        x => {
+          expect(x['awsRequestId']).toBe(requestId)
+          expect(x['debug-log-enabled']).toBe('false')
+        },
+        record => {
+          const x = record.correlationIds.get()
+          expect(x['awsRequestId']).toBe(requestId)
+          expect(x['debug-log-enabled']).toBe('false')
+        })
+    })
   })
 
-  test('when sampleDebugLogRate is 1, debug-log-enabled is always set to true', () => {
-    const requestId = uuid()
-    invokeKinesisHandler(genKinesisEvent(), requestId, 1,
-      x => {
-        expect(x['awsRequestId']).toBe(requestId)
-        expect(x['debug-log-enabled']).toBe('true')
-      },
-      record => {
-        const x = record.correlationIds.get()
-        expect(x['awsRequestId']).toBe(requestId)
-        expect(x['debug-log-enabled']).toBe('true')
-      })
+  describe('when sampleDebugLogRate = 1', () => {
+    it('always sets debug-log-enabled to true', () => {
+      const requestId = uuid()
+      invokeKinesisHandler(genKinesisEvent(), requestId, 1,
+        x => {
+          expect(x['awsRequestId']).toBe(requestId)
+          expect(x['debug-log-enabled']).toBe('true')
+        },
+        record => {
+          const x = record.correlationIds.get()
+          expect(x['awsRequestId']).toBe(requestId)
+          expect(x['debug-log-enabled']).toBe('true')
+        })
+    })
   })
 
-  test('when correlation ID are not provided in the event, one is initialized from the awsRequestId', () => {
-    const requestId = uuid()
-    invokeKinesisHandler(genKinesisEvent(), requestId, 0,
-      x => {
+  describe('when correlation ID is not provided in the event', () => {
+    it('sets it to the AWS Request ID', () => {
+      const requestId = uuid()
+      invokeKinesisHandler(genKinesisEvent(), requestId, 0,
+        x => {
         // correlation IDs at the handler level
-        expect(x['x-correlation-id']).toBe(requestId)
-        expect(x['awsRequestId']).toBe(requestId)
-      },
-      record => {
-        const x = record.correlationIds.get()
-        // correlation IDs at the record level should just take from the handler
-        expect(x['x-correlation-id']).toBe(requestId)
-        expect(x['awsRequestId']).toBe(requestId)
-      })
+          expect(x['x-correlation-id']).toBe(requestId)
+          expect(x['awsRequestId']).toBe(requestId)
+        },
+        record => {
+          const x = record.correlationIds.get()
+          // correlation IDs at the record level should just take from the handler
+          expect(x['x-correlation-id']).toBe(requestId)
+          expect(x['awsRequestId']).toBe(requestId)
+        })
+    })
   })
 
   describe('when correlation IDs are provided in the event', () => {
@@ -380,23 +400,27 @@ const kinesisTests = () => {
 }
 
 describe('correlation IDs are always initialized', () => {
-  test('when sampleDebugLogRate is 0, debug-log-enabled is always set to false', () => {
-    const requestId = uuid()
-    invokeHandler({}, requestId, 0, x => {
-      expect(x['awsRequestId']).toBe(requestId)
-      expect(x['debug-log-enabled']).toBe('false')
+  describe('when sampleDebugLogRate = 0', () => {
+    it('always sets debug-log-enabled to false', () => {
+      const requestId = uuid()
+      invokeHandler({}, requestId, 0, x => {
+        expect(x['awsRequestId']).toBe(requestId)
+        expect(x['debug-log-enabled']).toBe('false')
+      })
     })
   })
 
-  test('when sampleDebugLogRate is 1, debug-log-enabled is always set to true', () => {
-    const requestId = uuid()
-    invokeHandler({}, requestId, 1, x => {
-      expect(x['awsRequestId']).toBe(requestId)
-      expect(x['debug-log-enabled']).toBe('true')
+  describe('when sampleDebugLogRate = 1', () => {
+    it('always sets debug-log-enabled to true', () => {
+      const requestId = uuid()
+      invokeHandler({}, requestId, 1, x => {
+        expect(x['awsRequestId']).toBe(requestId)
+        expect(x['debug-log-enabled']).toBe('true')
+      })
     })
   })
 
-  test('correlation ID is always initialized from the awsRequestId', () => {
+  it('always initialises it from the awsRequestId', () => {
     const requestId = uuid()
     invokeHandler({}, requestId, 0, x => {
       expect(x['x-correlation-id']).toBe(requestId)
@@ -405,12 +429,14 @@ describe('correlation IDs are always initialized', () => {
   })
 })
 
-describe('API Gateway', () => standardTests(genApiGatewayEvent))
+describe('Correlation IDs middleware', () => {
+  describe('API Gateway', () => standardTests(genApiGatewayEvent))
 
-describe('SNS', () => standardTests(genSnsEvent))
+  describe('SNS', () => standardTests(genSnsEvent))
 
-describe('SFN', () => standardTests(genSfnEvent))
+  describe('SFN', () => standardTests(genSfnEvent))
 
-describe('SQS', () => sqsTests())
+  describe('SQS', () => sqsTests())
 
-describe('Kinesis', () => kinesisTests())
+  describe('Kinesis', () => kinesisTests())
+})

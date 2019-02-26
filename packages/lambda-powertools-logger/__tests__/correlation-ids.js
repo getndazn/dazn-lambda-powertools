@@ -35,12 +35,16 @@ const paramsOverrideCorrelationIds = log => {
   })
 }
 
-test('Correlation IDs are included in debug logs', () => correlationIdsAreIncluded(Log.debug))
-test('Correlation IDs are included in info logs', () => correlationIdsAreIncluded(Log.info))
-test('Correlation IDs are included in warn logs', () => correlationIdsAreIncluded(Log.warn))
-test('Correlation IDs are included in error logs', () => correlationIdsAreIncluded(Log.error))
+describe('Logger (correlationIds)', () => {
+  it('includes Correlation IDs in debug logs', () => correlationIdsAreIncluded(Log.debug))
+  it('includes Correlation IDs in info logs', () => correlationIdsAreIncluded(Log.info))
+  it('includes Correlation IDs in warn logs', () => correlationIdsAreIncluded(Log.warn))
+  it('includes Correlation IDs in error logs', () => correlationIdsAreIncluded(Log.error))
 
-test('Params override correlation IDs in debug logs', () => paramsOverrideCorrelationIds(Log.debug))
-test('Params override correlation IDs in info logs', () => paramsOverrideCorrelationIds(Log.info))
-test('Params override correlation IDs in warn logs', () => paramsOverrideCorrelationIds(Log.warn))
-test('Params override correlation IDs in error logs', () => paramsOverrideCorrelationIds(Log.error))
+  describe('when params set correlation IDs', () => {
+    it('overrides correlation IDs with params in debug logs', () => paramsOverrideCorrelationIds(Log.debug))
+    it('overrides correlation IDs with params in info logs', () => paramsOverrideCorrelationIds(Log.info))
+    it('overrides correlation IDs with params in warn logs', () => paramsOverrideCorrelationIds(Log.warn))
+    it('overrides correlation IDs with params in error logs', () => paramsOverrideCorrelationIds(Log.error))
+  })
+})

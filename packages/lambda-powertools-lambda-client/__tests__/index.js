@@ -112,118 +112,120 @@ const verifyInvokeAsyncWithCorrelationIds = async (funcName, correlationIds) => 
   expect(JSON.parse(actualParams.InvokeArgs)).toEqual(expectedPayload)
 }
 
-describe('.invoke', () => {
-  describe('when there are no correlation IDs', () => {
-    it('sends empty __context__ ', async () => {
-      await verifyInvoke('no-context', {})
+describe('Lambda client', () => {
+  describe('.invoke', () => {
+    describe('when there are no correlation IDs', () => {
+      it('sends empty __context__ ', async () => {
+        await verifyInvoke('no-context', {})
+      })
+    })
+
+    describe('when there are global correlationIds', () => {
+      it('forwards them in __context__', async () => {
+        const correlationIds = {
+          'x-correlation-id': 'id',
+          'debug-log-enabled': 'true'
+        }
+        CorrelationIds.replaceAllWith(correlationIds)
+
+        await verifyInvoke('with-context', correlationIds)
+      })
+    })
+
+    describe('when payload is not JSON', () => {
+      it('does not modify the request', async () => {
+        const params = {
+          FunctionName: 'not-json',
+          InvocationType: 'Event',
+          Payload: 'dGhpcyBpcyBub3QgSlNPTg=='
+        }
+
+        await Lambda.invoke(params).promise()
+
+        expect(mockInvoke).toBeCalledWith(params)
+      })
+    })
+
+    describe('when payload is binary', () => {
+      it('does not modify the request', async () => {
+        const params = {
+          FunctionName: 'binary',
+          InvocationType: 'Event',
+          Payload: Buffer.from('dGhpcyBpcyBub3QgSlNPTg==', 'base64')
+        }
+
+        await Lambda.invoke(params).promise()
+
+        expect(mockInvoke).toBeCalledWith(params)
+      })
     })
   })
 
-  describe('when there are global correlationIds', () => {
-    it('forwards them in __context__', async () => {
-      const correlationIds = {
-        'x-correlation-id': 'id',
+  describe('.invokeWithCorrelationIds', () => {
+    it('forwards given correlationIds in __context__ field', async () => {
+      const correlationIds = new CorrelationIds({
+        'x-correlation-id': 'child-id',
         'debug-log-enabled': 'true'
-      }
-      CorrelationIds.replaceAllWith(correlationIds)
+      })
 
-      await verifyInvoke('with-context', correlationIds)
+      await verifyInvokeWithCorrelationIds('with-context-correlation', correlationIds)
     })
   })
 
-  describe('when payload is not JSON', () => {
-    it('does not modify the request', async () => {
-      const params = {
-        FunctionName: 'not-json',
-        InvocationType: 'Event',
-        Payload: 'dGhpcyBpcyBub3QgSlNPTg=='
-      }
+  describe('.invokeAsync', () => {
+    describe('when there are no correlation IDs', () => {
+      it('sends empty __context__ ', async () => {
+        await verifyInvokeAsync('no-context', {})
+      })
+    })
 
-      await Lambda.invoke(params).promise()
+    describe('when there are global correlationIds', () => {
+      it('forwards them in __context__', async () => {
+        const correlationIds = {
+          'x-correlation-id': 'id',
+          'debug-log-enabled': 'true'
+        }
+        CorrelationIds.replaceAllWith(correlationIds)
 
-      expect(mockInvoke).toBeCalledWith(params)
+        await verifyInvokeAsync('with-context', correlationIds)
+      })
+    })
+
+    describe('when payload is not JSON', () => {
+      it('does not modify the request', async () => {
+        const params = {
+          FunctionName: 'not-json',
+          InvokeArgs: 'dGhpcyBpcyBub3QgSlNPTg=='
+        }
+
+        await Lambda.invokeAsync(params).promise()
+
+        expect(mockInvokeAsync).toBeCalledWith(params)
+      })
+    })
+
+    describe('when payload is binary', () => {
+      it('does not modify the request', async () => {
+        const params = {
+          FunctionName: 'binary',
+          InvokeArgs: Buffer.from('dGhpcyBpcyBub3QgSlNPTg==', 'base64')
+        }
+
+        await Lambda.invokeAsync(params).promise()
+
+        expect(mockInvokeAsync).toBeCalledWith(params)
+      })
     })
   })
 
-  describe('when payload is binary', () => {
-    it('does not modify the request', async () => {
-      const params = {
-        FunctionName: 'binary',
-        InvocationType: 'Event',
-        Payload: Buffer.from('dGhpcyBpcyBub3QgSlNPTg==', 'base64')
-      }
-
-      await Lambda.invoke(params).promise()
-
-      expect(mockInvoke).toBeCalledWith(params)
-    })
-  })
-})
-
-describe('.invokeWithCorrelationIds', () => {
-  it('forwards given correlationIds in __context__ field', async () => {
-    const correlationIds = new CorrelationIds({
-      'x-correlation-id': 'child-id',
-      'debug-log-enabled': 'true'
-    })
-
-    await verifyInvokeWithCorrelationIds('with-context-correlation', correlationIds)
-  })
-})
-
-describe('.invokeAsync', () => {
-  describe('when there are no correlation IDs', () => {
-    it('sends empty __context__ ', async () => {
-      await verifyInvokeAsync('no-context', {})
-    })
-  })
-
-  describe('when there are global correlationIds', () => {
-    it('forwards them in __context__', async () => {
-      const correlationIds = {
-        'x-correlation-id': 'id',
+  describe('.invokeAsyncWithCorrelationIds', () => {
+    it('forwards given correlationIds in __context__ field', async () => {
+      const correlationIds = new CorrelationIds({
+        'x-correlation-id': 'child-id',
         'debug-log-enabled': 'true'
-      }
-      CorrelationIds.replaceAllWith(correlationIds)
+      })
 
-      await verifyInvokeAsync('with-context', correlationIds)
+      await verifyInvokeAsyncWithCorrelationIds('with-context-correlation', correlationIds)
     })
-  })
-
-  describe('when payload is not JSON', () => {
-    it('does not modify the request', async () => {
-      const params = {
-        FunctionName: 'not-json',
-        InvokeArgs: 'dGhpcyBpcyBub3QgSlNPTg=='
-      }
-
-      await Lambda.invokeAsync(params).promise()
-
-      expect(mockInvokeAsync).toBeCalledWith(params)
-    })
-  })
-
-  describe('when payload is binary', () => {
-    it('does not modify the request', async () => {
-      const params = {
-        FunctionName: 'binary',
-        InvokeArgs: Buffer.from('dGhpcyBpcyBub3QgSlNPTg==', 'base64')
-      }
-
-      await Lambda.invokeAsync(params).promise()
-
-      expect(mockInvokeAsync).toBeCalledWith(params)
-    })
-  })
-})
-
-describe('.invokeAsyncWithCorrelationIds', () => {
-  it('forwards given correlationIds in __context__ field', async () => {
-    const correlationIds = new CorrelationIds({
-      'x-correlation-id': 'child-id',
-      'debug-log-enabled': 'true'
-    })
-
-    await verifyInvokeAsyncWithCorrelationIds('with-context-correlation', correlationIds)
   })
 })

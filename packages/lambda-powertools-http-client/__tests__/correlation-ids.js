@@ -38,7 +38,7 @@ const verifyHeaders = async (userHeaders, f, correlationIds) => {
   f(headers)
 }
 
-describe('correlationIds', () => {
+describe('HTTP client (correlationIds)', () => {
   describe('when there are no correlationIds', () => {
     it('does not add anything to HTTP headers', async () => {
       await verifyHeaders({}, headers => {
