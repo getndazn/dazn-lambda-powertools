@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v0.10.7...v1.0.0) (2019-02-26)
+
+
+### Features
+
+* add withCorrelationIds methods to clients ([4e28832](https://github.com/getndazn/dazn-lambda-powertools/commit/4e28832))
+
+
+
+
+
 ## [0.10.5](https://github.com/getndazn/dazn-lambda-powertools/compare/v0.10.4...v0.10.5) (2019-02-19)
 
 **Note:** Version bump only for package @perform/lambda-powertools-kinesis-client

@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v0.10.7...v1.0.0) (2019-02-26)
+
+
+### Features
+
+* add withCorrelationIds methods to clients ([4e28832](https://github.com/getndazn/dazn-lambda-powertools/commit/4e28832))
+* **correlation-ids:** store global in case of version mismatch ([bab7c72](https://github.com/getndazn/dazn-lambda-powertools/commit/bab7c72))
+* **correlation-ids:** use a class to allow children ([df8d4a6](https://github.com/getndazn/dazn-lambda-powertools/commit/df8d4a6))
+* **correlation-ids:** use child instances for SQS + Kinesis ([dd6fd77](https://github.com/getndazn/dazn-lambda-powertools/commit/dd6fd77))
+* **logger:** use a class to allow children ([f15d432](https://github.com/getndazn/dazn-lambda-powertools/commit/f15d432))
+* **middleware-correlation-ids:** correlationIds + logger non-enumerable ([2432885](https://github.com/getndazn/dazn-lambda-powertools/commit/2432885))
+
+
+### BREAKING CHANGES
+
+* **correlation-ids:** Kinesis + SQS clients no longer have scope related methods.
+
+
+
+
+
 ## [0.10.7](https://github.com/getndazn/dazn-lambda-powertools/compare/v0.10.6...v0.10.7) (2019-02-25)
 
 **Note:** Version bump only for package dazn-lambda-powertools
