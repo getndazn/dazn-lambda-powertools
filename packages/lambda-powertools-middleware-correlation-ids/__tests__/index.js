@@ -400,23 +400,27 @@ const kinesisTests = () => {
 }
 
 describe('correlation IDs are always initialized', () => {
-  test('when sampleDebugLogRate is 0, debug-log-enabled is always set to false', () => {
-    const requestId = uuid()
-    invokeHandler({}, requestId, 0, x => {
-      expect(x['awsRequestId']).toBe(requestId)
-      expect(x['debug-log-enabled']).toBe('false')
+  describe('when sampleDebugLogRate = 0', () => {
+    it('always sets debug-log-enabled to false', () => {
+      const requestId = uuid()
+      invokeHandler({}, requestId, 0, x => {
+        expect(x['awsRequestId']).toBe(requestId)
+        expect(x['debug-log-enabled']).toBe('false')
+      })
     })
   })
 
-  test('when sampleDebugLogRate is 1, debug-log-enabled is always set to true', () => {
-    const requestId = uuid()
-    invokeHandler({}, requestId, 1, x => {
-      expect(x['awsRequestId']).toBe(requestId)
-      expect(x['debug-log-enabled']).toBe('true')
+  describe('when sampleDebugLogRate = 1', () => {
+    it('always sets debug-log-enabled to true', () => {
+      const requestId = uuid()
+      invokeHandler({}, requestId, 1, x => {
+        expect(x['awsRequestId']).toBe(requestId)
+        expect(x['debug-log-enabled']).toBe('true')
+      })
     })
   })
 
-  test('correlation ID is always initialized from the awsRequestId', () => {
+  it('always initialises it from the awsRequestId', () => {
     const requestId = uuid()
     invokeHandler({}, requestId, 0, x => {
       expect(x['x-correlation-id']).toBe(requestId)

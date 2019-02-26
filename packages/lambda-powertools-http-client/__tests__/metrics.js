@@ -80,7 +80,7 @@ describe('HTTP client (metrics)', () => {
       verifyTags(tags)
     })
 
-    test('records custom count metric', () => {
+    it('records custom count metric', () => {
       expect(mockIncrement).toBeCalled()
       const [key, value, tags] = mockIncrement.mock.calls[0]
       expect(key).toBe('theburningmonk.com.response.200')

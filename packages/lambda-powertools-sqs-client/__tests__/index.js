@@ -23,35 +23,156 @@ afterEach(() => {
   CorrelationIds.clearAll()
 })
 
-describe('.sendMessage', () => {
-  const verifySendMessage = async (attributes) => {
-    const params = {
-      MessageBody: 'test',
-      QueueUrl: 'queue-url'
+describe('SQS client', () => {
+  describe('.sendMessage', () => {
+    const verifySendMessage = async (attributes) => {
+      const params = {
+        MessageBody: 'test',
+        QueueUrl: 'queue-url'
+      }
+      await SQS.sendMessage(params).promise()
+
+      expect(mockSendMessage).toBeCalledWith({
+        MessageBody: 'test',
+        QueueUrl: 'queue-url',
+        MessageAttributes: attributes
+      })
     }
-    await SQS.sendMessage(params).promise()
 
-    expect(mockSendMessage).toBeCalledWith({
-      MessageBody: 'test',
-      QueueUrl: 'queue-url',
-      MessageAttributes: attributes
+    describe('when there are no correlationIds', () => {
+      it('sends empty MessageAttributes', async () => {
+        await verifySendMessage({})
+      })
     })
-  }
 
-  describe('when there are no correlationIds', () => {
-    it('sends empty MessageAttributes', async () => {
-      await verifySendMessage({})
+    describe('when there are global correlationIds', () => {
+      it('forwards them in MessageAttributes', async () => {
+        CorrelationIds.replaceAllWith({
+          'x-correlation-id': 'id',
+          'debug-log-enabled': 'true'
+        })
+
+        await verifySendMessage({
+          'x-correlation-id': {
+            DataType: 'String',
+            StringValue: 'id'
+          },
+          'debug-log-enabled': {
+            DataType: 'String',
+            StringValue: 'true'
+          }
+        })
+      })
     })
   })
 
-  describe('when there are global correlationIds', () => {
-    it('forwards them in MessageAttributes', async () => {
-      CorrelationIds.replaceAllWith({
+  describe('.sendMessageWithCorrelationIds', () => {
+    const verifySendMessageWithCorrelationIds = async (correlationIds, attributes) => {
+      const params = {
+        MessageBody: 'test',
+        QueueUrl: 'queue-url'
+      }
+      await SQS.sendMessageWithCorrelationIds(correlationIds, params).promise()
+
+      expect(mockSendMessage).toBeCalledWith({
+        MessageBody: 'test',
+        QueueUrl: 'queue-url',
+        MessageAttributes: attributes
+      })
+    }
+    it('forwards given correlationIds in MessageAttributes field', async () => {
+      const correlationIds = new CorrelationIds({
+        'x-correlation-id': 'child-id',
+        'debug-log-enabled': 'true'
+      })
+
+      await verifySendMessageWithCorrelationIds(correlationIds, {
+        'x-correlation-id': {
+          DataType: 'String',
+          StringValue: 'child-id'
+        },
+        'debug-log-enabled': {
+          DataType: 'String',
+          StringValue: 'true'
+        }
+      })
+    })
+  })
+
+  describe('.sendMessageBatch', () => {
+    const verifySendMessageBatch = async (attributes) => {
+      const params = {
+        Entries: [
+          { Id: '1', MessageBody: 'test-1' },
+          { Id: '2', MessageBody: 'test-2' }
+        ],
+        QueueUrl: 'queue-url'
+      }
+      await SQS.sendMessageBatch(params).promise()
+
+      expect(mockSendMessageBatch).toBeCalledWith({
+        Entries: [
+          { Id: '1', MessageBody: 'test-1', MessageAttributes: attributes },
+          { Id: '2', MessageBody: 'test-2', MessageAttributes: attributes }
+        ],
+        QueueUrl: 'queue-url'
+      })
+    }
+
+    describe('when there are no correlationIds', () => {
+      it('sends empty MessageAttributes', async () => {
+        await verifySendMessageBatch({})
+      })
+    })
+
+    describe('when there are global correlationIds', () => {
+      it('forwards them in MessageAttributes', async () => {
+        CorrelationIds.replaceAllWith({
+          'x-correlation-id': 'id',
+          'debug-log-enabled': 'true'
+        })
+
+        await verifySendMessageBatch({
+          'x-correlation-id': {
+            DataType: 'String',
+            StringValue: 'id'
+          },
+          'debug-log-enabled': {
+            DataType: 'String',
+            StringValue: 'true'
+          }
+        })
+      })
+    })
+  })
+
+  describe('.sendMessageBatchWithCorrelationIds', () => {
+    const verifySendMessageBatchWithCorrelationIds = async (correlationIds, attributes) => {
+      const params = {
+        Entries: [
+          { Id: '1', MessageBody: 'test-1' },
+          { Id: '2', MessageBody: 'test-2' }
+        ],
+        QueueUrl: 'queue-url'
+      }
+      await SQS.sendMessageBatchWithCorrelationIds(correlationIds, params).promise()
+
+      expect(mockSendMessageBatch).toBeCalledWith({
+        Entries: [
+          { Id: '1', MessageBody: 'test-1', MessageAttributes: attributes },
+          { Id: '2', MessageBody: 'test-2', MessageAttributes: attributes }
+        ],
+        QueueUrl: 'queue-url'
+      })
+    }
+
+    it('forwards given correlationIds in MessageAttributes field', async () => {
+      const correlationIds = new CorrelationIds({
         'x-correlation-id': 'id',
         'debug-log-enabled': 'true'
       })
 
-      await verifySendMessage({
+      await verifySendMessageBatchWithCorrelationIds(correlationIds, {
         'x-correlation-id': {
           DataType: 'String',
           StringValue: 'id'
@@ -61,125 +182,6 @@ describe('.sendMessage', () => {
           StringValue: 'true'
         }
       })
-    })
-  })
-})
-
-describe('.sendMessageWithCorrelationIds', () => {
-  const verifySendMessageWithCorrelationIds = async (correlationIds, attributes) => {
-    const params = {
-      MessageBody: 'test',
-      QueueUrl: 'queue-url'
-    }
-    await SQS.sendMessageWithCorrelationIds(correlationIds, params).promise()
-
-    expect(mockSendMessage).toBeCalledWith({
-      MessageBody: 'test',
-      QueueUrl: 'queue-url',
-      MessageAttributes: attributes
-    })
-  }
-  it('forwards given correlationIds in MessageAttributes field', async () => {
-    const correlationIds = new CorrelationIds({
-      'x-correlation-id': 'child-id',
-      'debug-log-enabled': 'true'
-    })
-
-    await verifySendMessageWithCorrelationIds(correlationIds, {
-      'x-correlation-id': {
-        DataType: 'String',
-        StringValue: 'child-id'
-      },
-      'debug-log-enabled': {
-        DataType: 'String',
-        StringValue: 'true'
-      }
-    })
-  })
-})
-
-describe('.sendMessageBatch', () => {
-  const verifySendMessageBatch = async (attributes) => {
-    const params = {
-      Entries: [
-        { Id: '1', MessageBody: 'test-1' },
-        { Id: '2', MessageBody: 'test-2' }
-      ],
-      QueueUrl: 'queue-url'
-    }
-    await SQS.sendMessageBatch(params).promise()
-
-    expect(mockSendMessageBatch).toBeCalledWith({
-      Entries: [
-        { Id: '1', MessageBody: 'test-1', MessageAttributes: attributes },
-        { Id: '2', MessageBody: 'test-2', MessageAttributes: attributes }
-      ],
-      QueueUrl: 'queue-url'
-    })
-  }
-
-  describe('when there are no correlationIds', () => {
-    it('sends empty MessageAttributes', async () => {
-      await verifySendMessageBatch({})
-    })
-  })
-
-  describe('when there are global correlationIds', () => {
-    it('forwards them in MessageAttributes', async () => {
-      CorrelationIds.replaceAllWith({
-        'x-correlation-id': 'id',
-        'debug-log-enabled': 'true'
-      })
-
-      await verifySendMessageBatch({
-        'x-correlation-id': {
-          DataType: 'String',
-          StringValue: 'id'
-        },
-        'debug-log-enabled': {
-          DataType: 'String',
-          StringValue: 'true'
-        }
-      })
-    })
-  })
-})
-
-describe('.sendMessageBatchWithCorrelationIds', () => {
-  const verifySendMessageBatchWithCorrelationIds = async (correlationIds, attributes) => {
-    const params = {
-      Entries: [
-        { Id: '1', MessageBody: 'test-1' },
-        { Id: '2', MessageBody: 'test-2' }
-      ],
-      QueueUrl: 'queue-url'
-    }
-    await SQS.sendMessageBatchWithCorrelationIds(correlationIds, params).promise()
-
-    expect(mockSendMessageBatch).toBeCalledWith({
-      Entries: [
-        { Id: '1', MessageBody: 'test-1', MessageAttributes: attributes },
-        { Id: '2', MessageBody: 'test-2', MessageAttributes: attributes }
-      ],
-      QueueUrl: 'queue-url'
-    })
-  }
-
-  it('forwards given correlationIds in MessageAttributes field', async () => {
-    const correlationIds = new CorrelationIds({
-      'x-correlation-id': 'id',
-      'debug-log-enabled': 'true'
-    })
-
-    await verifySendMessageBatchWithCorrelationIds(correlationIds, {
-      'x-correlation-id': {
-        DataType: 'String',
-        StringValue: 'id'
-      },
-      'debug-log-enabled': {
-        DataType: 'String',
-        StringValue: 'true'
-      }
     })
   })
 })

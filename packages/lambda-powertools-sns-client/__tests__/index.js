@@ -17,27 +17,59 @@ afterEach(() => {
   CorrelationIds.clearAll()
 })
 
-describe('.publish', () => {
-  describe('when there are no correlationIds', () => {
-    it('sends empty MessageAttributes', async () => {
-      const params = {
-        Message: 'test',
-        TopicArn: 'topic-arn'
-      }
-      await SNS.publish(params).promise()
+describe('SNS client', () => {
+  describe('.publish', () => {
+    describe('when there are no correlationIds', () => {
+      it('sends empty MessageAttributes', async () => {
+        const params = {
+          Message: 'test',
+          TopicArn: 'topic-arn'
+        }
+        await SNS.publish(params).promise()
 
-      expect(mockPublish).toBeCalledWith({
-        Message: 'test',
-        TopicArn: 'topic-arn',
-        MessageAttributes: {}
+        expect(mockPublish).toBeCalledWith({
+          Message: 'test',
+          TopicArn: 'topic-arn',
+          MessageAttributes: {}
+        })
+      })
+    })
+
+    describe('when there are global correlationIds', () => {
+      it('forwards them in MessageAttributes', async () => {
+        CorrelationIds.replaceAllWith({
+          'x-correlation-id': 'id',
+          'debug-log-enabled': 'true'
+        })
+
+        const params = {
+          Message: 'test',
+          TopicArn: 'topic-arn'
+        }
+        await SNS.publish(params).promise()
+
+        expect(mockPublish).toBeCalledWith({
+          Message: 'test',
+          TopicArn: 'topic-arn',
+          MessageAttributes: {
+            'x-correlation-id': {
+              DataType: 'String',
+              StringValue: 'id'
+            },
+            'debug-log-enabled': {
+              DataType: 'String',
+              StringValue: 'true'
+            }
+          }
+        })
       })
     })
   })
 
-  describe('when there are global correlationIds', () => {
-    it('forwards them in MessageAttributes', async () => {
-      CorrelationIds.replaceAllWith({
-        'x-correlation-id': 'id',
+  describe('.publishWithCorrelationIds', () => {
+    it('forwards given correlationIds in MessageAttributes field', async () => {
+      const correlationIds = new CorrelationIds({
+        'x-correlation-id': 'child-id',
         'debug-log-enabled': 'true'
       })
 
@@ -45,7 +77,7 @@ describe('.publish', () => {
         Message: 'test',
         TopicArn: 'topic-arn'
       }
-      await SNS.publish(params).promise()
+      await SNS.publishWithCorrelationIds(correlationIds, params).promise()
 
       expect(mockPublish).toBeCalledWith({
         Message: 'test',
@@ -53,7 +85,7 @@ describe('.publish', () => {
         MessageAttributes: {
           'x-correlation-id': {
             DataType: 'String',
-            StringValue: 'id'
+            StringValue: 'child-id'
           },
           'debug-log-enabled': {
             DataType: 'String',
@@ -61,36 +93,6 @@ describe('.publish', () => {
           }
         }
       })
-    })
-  })
-})
-
-describe('.publishWithCorrelationIds', () => {
-  it('forwards given correlationIds in MessageAttributes field', async () => {
-    const correlationIds = new CorrelationIds({
-      'x-correlation-id': 'child-id',
-      'debug-log-enabled': 'true'
-    })
-
-    const params = {
-      Message: 'test',
-      TopicArn: 'topic-arn'
-    }
-    await SNS.publishWithCorrelationIds(correlationIds, params).promise()
-
-    expect(mockPublish).toBeCalledWith({
-      Message: 'test',
-      TopicArn: 'topic-arn',
-      MessageAttributes: {
-        'x-correlation-id': {
-          DataType: 'String',
-          StringValue: 'child-id'
-        },
-        'debug-log-enabled': {
-          DataType: 'String',
-          StringValue: 'true'
-        }
-      }
     })
   })
 })
