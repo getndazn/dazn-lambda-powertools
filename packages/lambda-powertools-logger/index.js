@@ -31,6 +31,7 @@ class Logger {
     if (correlationIds.debugEnabled) {
       this.enableDebug()
     }
+    this.setLogFunctions()
   }
 
   get context () {
@@ -44,61 +45,59 @@ class Logger {
     return level >= (LogLevels[this.level] || LogLevels.DEBUG)
   }
 
-  appendError (params, err) {
+  static parseError (err) {
     if (!err) {
-      return params
+      return {}
     }
 
     return {
-      ...params || {},
       errorName: err.name,
       errorMessage: err.message,
       stackTrace: err.stack
     }
   }
 
-  log (levelName, message, { message: _m, level: _l, ...params } = {}) {
-    const level = LogLevels[levelName]
-    if (!this.isEnabled(level)) {
-      return
-    }
-
-    const orderedParamsWithContext = { ...params, ...this.context, ...params }
-
+  log (level, sLevel, includeError, message, params, err) {
     const logMsg = {
-      message,
-      ...orderedParamsWithContext,
+      ...this.context,
+      ...params,
+      ...includeError(err),
       level,
-      sLevel: levelName
+      sLevel,
+      message
     }
 
     // re-order message and params to be appear earlier in the logs
     console.log(JSON.stringify({ message, ...params, ...logMsg }))
   }
 
-  debug (msg, params) {
-    this.log('DEBUG', msg, params)
-  }
+  makeLogFunction (levelName) {
+    const level = LogLevels[levelName]
+    if (!this.isEnabled(level)) {
+      return () => { }
+    }
 
-  info (msg, params) {
-    this.log('INFO', msg, params)
-  }
+    const parseError = level >= LogLevels.WARN ? Logger.parseError : () => { }
 
-  warn (msg, params, err) {
-    this.log('WARN', msg, this.appendError(params, err))
-  }
-
-  error (msg, params, err) {
-    this.log('ERROR', msg, this.appendError(params, err))
+    return this.log.bind(this, level, levelName, parseError)
   }
 
   enableDebug () {
     this.level = 'DEBUG'
+    this.setLogFunctions()
     return () => this.resetLevel()
   }
 
   resetLevel () {
     this.level = this.originalLevel
+    this.setLogFunctions()
+  }
+
+  setLogFunctions () {
+    this.debug = this.makeLogFunction('DEBUG')
+    this.info = this.makeLogFunction('INFO')
+    this.warn = this.makeLogFunction('WARN')
+    this.error = this.makeLogFunction('ERROR')
   }
 
   static debug (...args) {
