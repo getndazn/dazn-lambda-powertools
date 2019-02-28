@@ -57,18 +57,19 @@ class Logger {
     }
   }
 
-  log (levelName, message, params) {
+  log (levelName, message, { message: _m, level: _l, ...params } = {}) {
     const level = LogLevels[levelName]
     if (!this.isEnabled(level)) {
       return
     }
 
+    const orderedParamsWithContext = { ...params, ...this.context, ...params }
+
     const logMsg = {
-      ...this.context,
-      ...params,
+      message,
+      ...orderedParamsWithContext,
       level,
-      sLevel: levelName,
-      message
+      sLevel: levelName
     }
 
     // re-order message and params to be appear earlier in the logs
