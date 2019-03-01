@@ -71,7 +71,8 @@ class Logger {
       message
     }
 
-    console.log(JSON.stringify(logMsg))
+    // re-order message and params to appear earlier in the log row
+    console.log(JSON.stringify({ message, ...params, ...logMsg }))
   }
 
   debug (msg, params) {
