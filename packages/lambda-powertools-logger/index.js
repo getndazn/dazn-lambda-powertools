@@ -76,7 +76,12 @@ class Logger {
   }
 
   debug (msg, params) {
-    this.log('DEBUG', msg, params)
+    const src = new Error().stack
+      .toString()
+      .split('\n')[3] // pick the level in the stack, just outside logger
+      .match(/\((.+)\)/)[1];
+    
+    this.log('DEBUG', msg, { ...params, src })
   }
 
   info (msg, params) {
