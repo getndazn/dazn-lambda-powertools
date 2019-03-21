@@ -1,0 +1,125 @@
+{
+    "Records": [
+      {
+        "eventID": "FakeEventID",
+        "eventName": "INSERT",
+        "eventVersion": "1.1",
+        "eventSource": "aws:dynamodb",
+        "awsRegion": "eu-central-1",
+        "dynamodb": {
+          "ApproximateCreationDateTime": 1550484579,
+          "Keys": { "id": { "S": "77cabef8-72d5-4d0a-aa5e-686306a3dbac" } },
+          "NewImage": {
+            "country": { "S": "DE" },
+            "lastName": { "S": "ObfuscatedProperty" },
+            "hashedEmail": {
+              "S": "f325bcaa888b7364d5b27b0ec9386162ad5a22a1de8a8feee64ee9c32daf388e"
+            },
+            "viewerId": { "S": "686306a3dbac" },
+            "emailEncodingKey": { "S": "UTF-8" },
+            "needsZuoraSalesforceId": { "BOOL": false },
+            "createdAt": { "N": "1550484578134" },
+            "ingestedAt": { "NULL": true },
+            "password": {
+              "S": "$2a$07$OChTo5BbBlz5aXS1Nm.OyO2pLRegvF.dHWZkxpoeksZN4sZACQrLC"
+            },
+           
+            "alias": { "S": "testuser" },
+            "id": { "S": "77cabef8-72d5-4d0a-aa5e-686306a3dbac" },
+            "pauseIsScheduled": { "BOOL": false },
+            "email": { "S": "ObfuscatedProperty" },
+            "updatedAt": { "N": "1550484578134" },
+            "timeZoneSidKey": { "S": "Europe/Berlin" },
+            "communityNickName": { "S": "ba2c6b47de7e4f39bd5beea272c9c2df" },
+            "cancelledAt": { "NULL": true },
+            "subscribedAt": { "NULL": true },
+            "ipAddress": { "S": "ObfuscatedProperty" },
+            "languageLocaleKey": { "S": "de" },
+            "allowMarketingEmails": { "BOOL": false },
+            "firstName": { "S": "ObfuscatedProperty" },
+            "localeSidKey": { "S": "de_DE" },
+            "cancelled": { "BOOL": false },
+            "myAccountStatus": { "N": "1" },
+            "status": { "S": "Partial" }
+          },
+          "SequenceNumber": "63727200000000005079250112",
+          "SizeBytes": 735,
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        },
+        "eventSourceARN": "FAKEARN"
+      },
+      {
+        "eventID": "FakeEventID",
+        "eventName": "MODIFY",
+        "eventVersion": "1.1",
+        "eventSource": "aws:dynamodb",
+        "awsRegion": "eu-central-1",
+        "dynamodb": {
+          "ApproximateCreationDateTime": 1550484579,
+          "Keys": { "id": { "S": "77cabef8-72d5-4d0a-aa5e-686306a3dbac" } },
+          "NewImage": {
+            "country": { "S": "DE" },
+            "lastName": { "S": "ObfuscatedProperty" },
+            "hashedEmail": {
+              "S": "f325bcaa888b7364d5b27b0ec9386162ad5a22a1de8a8feee64ee9c32daf388e"
+            },
+            "viewerId": { "S": "686306a3dbac" },
+            "emailEncodingKey": { "S": "UTF-8" },
+            "createdAt": { "N": "1550484578134" },
+            "aws:rep:updatetime": { "N": "1550484579.249001" },
+            "ingestedAt": { "NULL": true },
+            "password": {
+              "S": "$2a$07$OChTo5BbBlz5aXS1Nm.OyO2pLRegvF.dHWZkxpoeksZN4sZACQrLC"
+            },
+            "alias": { "S": "testuser" },
+            "id": { "S": "77cabef8-72d5-4d0a-aa5e-686306a3dbac" },
+            "pauseIsScheduled": { "BOOL": false },
+            "aws:rep:updateregion": { "S": "eu-central-1" },
+            "email": { "S": "ObfuscatedProperty" },
+            "updatedAt": { "N": "1550484578134" },
+            "timeZoneSidKey": { "S": "Europe/Berlin" },
+            "communityNickName": { "S": "ba2c6b47de7e4f39bd5beea272c9c2df" },
+            "ipAddress": { "S": "ObfuscatedProperty" },
+            "languageLocaleKey": { "S": "de" },
+            "firstName": { "S": "ObfuscatedProperty" },
+            "localeSidKey": { "S": "de_DE" },
+            "cancelled": { "BOOL": false },
+            "myAccountStatus": { "N": "1" },
+            "status": { "S": "Partial" }
+          },
+          "OldImage": {
+            "country": { "S": "DE" },
+            "lastName": { "S": "Queen" },
+            "hashedEmail": {
+              "S": "f325bcaa888b7364d5b27b0ec9386162ad5a22a1de8a8feee64ee9c32daf388e"
+            },
+            "viewerId": { "S": "686306a3dbac" },
+            "emailEncodingKey": { "S": "UTF-8" },
+            "createdAt": { "N": "1550484578134" },
+            "ingestedAt": { "NULL": true },
+            "password": {
+              "S": "$2a$07$OChTo5BbBlz5aXS1Nm.OyO2pLRegvF.dHWZkxpoeksZN4sZACQrLC"
+            },
+            "alias": { "S": "testuser" },
+            "id": { "S": "77cabef8-72d5-4d0a-aa5e-686306a3dbac" },
+            "email": { "S": "ObfuscatedProperty" },
+            "updatedAt": { "N": "1550484578134" },
+            "timeZoneSidKey": { "S": "Europe/Berlin" },
+            "communityNickName": { "S": "ba2c6b47de7e4f39bd5beea272c9c2df" },
+            "ipAddress": { "S": "52.29.181.166" },
+            "languageLocaleKey": { "S": "de" },
+            "firstName": { "S": "ObfuscatedProperty" },
+            "localeSidKey": { "S": "de_DE" },
+            "cancelled": { "BOOL": false },
+            "myAccountStatus": { "N": "1" },
+            "status": { "S": "Partial" }
+          },
+          "SequenceNumber": "63727300000000005079250180",
+          "SizeBytes": 1508,
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        },
+        "eventSourceARN": "FAKEARN"
+      }
+    ]
+  }
+  
