@@ -1,17 +1,29 @@
-const obfuscateFields = require('./obfuscate')
+const { obfuscate, FILTERING_MODE } = require('./obfuscater')
 
-// config should be { obfuscationfilters } where obfuscation filters is an array of references
-// To the object to filter.
-module.exports = ({ obfuscationFilters, filterOnAfter = false }) => ({
-  after: (handler, next) => {
-    if (filterOnAfter) {
-      handler.event = obfuscateFields(handler.event)
+const obfuscaterMiddleware = ({ obfuscationFilters, filterOnAfter = false, filterOnBefore = false, filterOnError = true, filteringMode = FILTERING_MODE.BLACKLIST }) => {
+  return ({
+    before: (handler, next) => {
+      if (filterOnBefore) {
+        handler.event = obfuscate(handler.event, obfuscationFilters, filteringMode)
+      }
+      next()
+    },
+    after: (handler, next) => {
+      if (filterOnAfter) {
+        handler.event = obfuscate(handler.event, obfuscationFilters, filteringMode)
+      }
+      next()
+    },
+    onError: (handler, next) => {
+      if (filterOnError) {
+        handler.event = obfuscate(handler.event, obfuscationFilters, filteringMode)
+      }
+      next(handler.error)
     }
+  })
+}
 
-    next()
-  },
-  onError: (handler, next) => {
-    handler.event = obfuscateFields(handler.event, obfuscationFilters)
-    next(handler.error)
-  }
-})
+module.exports = {
+  obfuscaterMiddleware,
+  FILTERING_MODE
+} 
