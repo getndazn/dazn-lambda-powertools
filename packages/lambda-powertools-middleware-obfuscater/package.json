@@ -1,6 +1,6 @@
 {
   "name": "@perform/lambda-powertools-middleware-obfuscater",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Middy middleware to obfuscate the event for logging",
   "main": "index.js",
   "scripts": {

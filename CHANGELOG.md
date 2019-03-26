@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.0.1...v1.1.0) (2019-03-26)
+
+
+### Features
+
+* **middleware-obfuscater:** add obfuscation by whitelisting capability. ([a90ed7f](https://github.com/getndazn/dazn-lambda-powertools/commit/a90ed7f))
+* **pattern-obfuscate:** add support for obfuscation by whitelisting. ([f0036c2](https://github.com/getndazn/dazn-lambda-powertools/commit/f0036c2))
+
+
+
+
+
 ## [1.0.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.0.0...v1.0.1) (2019-03-04)
 
 **Note:** Version bump only for package dazn-lambda-powertools
