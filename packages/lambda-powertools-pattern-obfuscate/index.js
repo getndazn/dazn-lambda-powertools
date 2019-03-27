@@ -30,7 +30,7 @@ const toObfuscaterFilteringMode = (mode) => {
 }
 
 const errorObfuscater = (obfuscationFilters, filteringMode) => obfuscaterMiddleware({
-  filters: obfuscationFilters,
+  obfuscationFilters,
   filteringMode: toObfuscaterFilteringMode(filteringMode),
   filterOnBefore: false,
   filterOnAfter: false,
@@ -38,7 +38,7 @@ const errorObfuscater = (obfuscationFilters, filteringMode) => obfuscaterMiddlew
 })
 
 const genericObfuscater = (obfuscationFilters, filteringMode, filterOnAfter) => obfuscaterMiddleware({
-  filters: obfuscationFilters,
+  obfuscationFilters,
   filteringMode: toObfuscaterFilteringMode(filteringMode),
   filterOnBefore: false,
   filterOnAfter: filterOnAfter,
@@ -55,7 +55,7 @@ const obfuscaterPattern = (obfuscationFilters, f, filterOnAfter = false, filteri
     .use(genericObfuscater(obfuscationFilters, filteringMode, filterOnAfter))
 }
 
-module.export = {
+module.exports = {
   FILTERING_MODE,
   obfuscaterPattern
 }
