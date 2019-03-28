@@ -1,6 +1,6 @@
 {
   "name": "@perform/lambda-powertools-pattern-obfuscate",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Basic template that configures a 1% smaple rate for debug logs and obfuscation",
   "main": "index.js",
   "scripts": {},

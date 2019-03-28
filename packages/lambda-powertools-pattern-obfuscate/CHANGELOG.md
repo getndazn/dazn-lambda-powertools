@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.2](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.1.1...v1.1.2) (2019-03-28)
+
+
+### Bug Fixes
+
+* **pattern-obfuscate:** Fix typo in module exports&named parameters. ([eb08a43](https://github.com/getndazn/dazn-lambda-powertools/commit/eb08a43))
+
+
+
+
+
 ## [1.1.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.1.0...v1.1.1) (2019-03-26)
 
 **Note:** Version bump only for package @perform/lambda-powertools-pattern-obfuscate
