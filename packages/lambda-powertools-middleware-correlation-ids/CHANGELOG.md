@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.3](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.1.2...v1.1.3) (2019-04-23)
+
+
+### Bug Fixes
+
+* **middleware-correlation-ids:** ignore kinesis payload if not json ([8347774](https://github.com/getndazn/dazn-lambda-powertools/commit/8347774))
+
+
+
+
+
 ## [1.0.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.0.0...v1.0.1) (2019-03-04)
 
 **Note:** Version bump only for package @perform/lambda-powertools-middleware-correlation-ids
