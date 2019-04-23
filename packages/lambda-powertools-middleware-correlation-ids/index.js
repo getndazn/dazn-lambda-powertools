@@ -116,37 +116,41 @@ function captureKinesis ({ Records }, context, sampleDebugLogRate) {
   const events = Records
     .map(record => {
       const json = Buffer.from(record.kinesis.data, 'base64').toString('utf8')
-      const event = JSON.parse(json)
+      try {
+        const event = JSON.parse(json)
 
-      // the wrapped kinesis client would put the correlation IDs as part of
-      // the payload as a special __context__ property
-      const correlationIds = event.__context__ || {}
-      correlationIds.awsRequestId = awsRequestId
+        // the wrapped kinesis client would put the correlation IDs as part of
+        // the payload as a special __context__ property
+        const correlationIds = event.__context__ || {}
+        correlationIds.awsRequestId = awsRequestId
 
-      delete event.__context__
+        delete event.__context__
 
-      if (!correlationIds[X_CORRELATION_ID]) {
-        correlationIds[X_CORRELATION_ID] = awsRequestId
-      }
-
-      if (!correlationIds[DEBUG_LOG_ENABLED]) {
-        correlationIds[DEBUG_LOG_ENABLED] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
-      }
-
-      const correlationIdsInstance = new CorrelationIds(correlationIds)
-
-      Object.defineProperties(event, {
-        correlationIds: {
-          value: correlationIdsInstance,
-          enumerable: false
-        },
-        logger: {
-          value: new Log({ correlationIds: correlationIdsInstance }),
-          enumerable: false
+        if (!correlationIds[X_CORRELATION_ID]) {
+          correlationIds[X_CORRELATION_ID] = awsRequestId
         }
-      })
 
-      return event
+        if (!correlationIds[DEBUG_LOG_ENABLED]) {
+          correlationIds[DEBUG_LOG_ENABLED] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
+        }
+
+        const correlationIdsInstance = new CorrelationIds(correlationIds)
+
+        Object.defineProperties(event, {
+          correlationIds: {
+            value: correlationIdsInstance,
+            enumerable: false
+          },
+          logger: {
+            value: new Log({ correlationIds: correlationIdsInstance }),
+            enumerable: false
+          }
+        })
+
+        return event
+      } catch (e) {
+        return initCorrelationIds(context, sampleDebugLogRate)
+      }
     })
 
   context.parsedKinesisEvents = events
