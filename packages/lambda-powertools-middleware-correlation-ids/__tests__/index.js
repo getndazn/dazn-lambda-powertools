@@ -121,6 +121,10 @@ const genKinesisEvent = (correlationIDs = {}) => {
   return event
 }
 
+const genKinesisEventWithoutJSON = (correlationIDs = {}) => {
+  return _.cloneDeep(kinesis)
+}
+
 const sfn = require('./sfn.json')
 const genSfnEvent = (correlationIDs = {}) => {
   const event = _.cloneDeep(sfn)
@@ -306,6 +310,21 @@ const kinesisTests = () => {
           const x = record.correlationIds.get()
           expect(x['awsRequestId']).toBe(requestId)
           expect(x['debug-log-enabled']).toBe('false')
+        })
+    })
+  })
+
+  describe('when event lacks JSON payload', () => {
+    it('should ignore the event', () => {
+      const requestId = uuid()
+      invokeKinesisHandler(genKinesisEventWithoutJSON(), requestId, 0,
+        x => {
+          expect(x['awsRequestId']).toBe(requestId)
+          expect(x['debug-log-enabled']).toBe('false')
+        },
+        parsedRecord => {
+          // We didn't parse any records as they were json.
+          expect(parsedRecord).toBeUndefined()
         })
     })
   })
