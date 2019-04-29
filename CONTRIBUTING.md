@@ -58,6 +58,62 @@ Please follow these Testing guidelines when writing your unit tests:
 - As you write tests, check the code coverage and make sure all lines of code are covered.  If not, just add more test cases until everything is covered
 - For reference and inspiration, please check the `__tests__` directory in each of the packages
 
+# Commit messages
+
+This project uses `Lerna version` and `Lerna publish` to publish NPM updates and generate [CHANGELOG](CHANGELOG.md). For these to work, it depends on [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0-beta.3).
+
+As such, when you create a PR, you should make sure your commits follow the convention of: `<type>[package name]: <description>`.
+
+For example:
+
+* A bug fix to `lambda-powertools-logger` should read:
+
+```text
+fix(logger): some description.
+```
+
+* A new feature to `lambda-powertools-middleware-correlation-ids` should read:
+
+```text
+feat(middleware-correlation-ids): some description.
+```
+
+* A new breaking change to `lambda-powertools-sns-client` should read:
+
+```text
+feat(sns-client): some description.
+
+BREAKING CHANGE: `publish` no longer does x.
+```
+
+* A `README.md` (this file) change should read:
+
+```text
+docs: added Contribution Guide.
+```
+
+* A change to the build pipeline (e.g. `drone.yml`) should read:
+
+```text
+build: some description.
+```
+
+* Other misc chores should read:
+
+```text
+chore: some description.
+```
+
+`Commitizen` makes it easy for you to follow this convention, here's how you can install and use it from VSCode:
+
+Step 1. Install [commitizen](https://github.com/commitizen/cz-cli).
+
+```
+npm install -g commitizen
+```
+
+Step 2. Install [Visual Studio Code Commitizen Support](https://marketplace.visualstudio.com/items?itemName=KnisterPeter.vscode-commitizen) plugin for VS Code.
+
 # Our Code of Conduct
 
 Finally, to make sure you have a pleasant experience while being in our welcoming community, please read our [code of conduct](CODE_OF_CONDUCT.md). It outlines our core values and believes and will make working together a happier experience.
