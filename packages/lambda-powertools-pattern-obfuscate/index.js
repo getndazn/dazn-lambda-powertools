@@ -9,9 +9,9 @@ const FUNCTION_VERSION = process.env.AWS_LAMBDA_FUNCTION_VERSION
 const ENV = process.env.ENVIRONMENT || process.env.STAGE
 
 /**
- * Filtering modes this library supports. 
+ * Filtering modes this library supports.
  */
-const FILTERING_MODE = Object.freeze({ "BLACKLIST": "BLACKLIST", "WHITELIST": "WHITELIST" })
+const FILTERING_MODE = Object.freeze({ 'BLACKLIST': 'BLACKLIST', 'WHITELIST': 'WHITELIST' })
 
 if (!process.env.DATADOG_PREFIX) {
   process.env.DATADOG_PREFIX = FUNCTION_NAME + '.'
@@ -34,7 +34,7 @@ const errorObfuscater = (obfuscationFilters, filteringMode) => obfuscaterMiddlew
   filteringMode: toObfuscaterFilteringMode(filteringMode),
   filterOnBefore: false,
   filterOnAfter: false,
-  filterOnError: true,
+  filterOnError: true
 })
 
 const genericObfuscater = (obfuscationFilters, filteringMode, filterOnAfter) => obfuscaterMiddleware({
@@ -42,7 +42,7 @@ const genericObfuscater = (obfuscationFilters, filteringMode, filterOnAfter) => 
   filteringMode: toObfuscaterFilteringMode(filteringMode),
   filterOnBefore: false,
   filterOnAfter: filterOnAfter,
-  filterOnError: false,
+  filterOnError: false
 })
 
 const obfuscaterPattern = (obfuscationFilters, f, filterOnAfter = false, filteringMode = FILTERING_MODE.BLACKLIST) => {
@@ -59,5 +59,3 @@ module.exports = {
   FILTERING_MODE,
   obfuscaterPattern
 }
-
-

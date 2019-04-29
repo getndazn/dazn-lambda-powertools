@@ -26,4 +26,4 @@ const obfuscaterMiddleware = ({ obfuscationFilters, filterOnAfter = false, filte
 module.exports = {
   obfuscaterMiddleware,
   FILTERING_MODE
-} 
+}
