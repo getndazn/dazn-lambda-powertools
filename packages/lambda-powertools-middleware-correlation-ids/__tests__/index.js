@@ -91,19 +91,32 @@ const genSnsEvent = (correlationIDs = {}) => {
 }
 
 const sqs = require('./sqs.json')
-const genSqsEvent = (correlationIDs = {}) => {
-  const event = _.cloneDeep(sqs)
-  const messageAttributes = _.mapValues(correlationIDs, value => ({
-    stringValue: value,
-    stringListValues: [],
-    binaryListValues: [],
-    dataType: 'String'
-  }))
+const sqsWithoutRawDelivery = require('./sqs-without-raw-message.json')
+const genSqsEvent = (withoutRawMessageDelivery, correlationIDs = {}) => {
+  if (withoutRawMessageDelivery) {
+    const event = _.cloneDeep(sqsWithoutRawDelivery)
+    const body = JSON.parse(event.Records[0].body)
 
-  const record = event.Records[0]
-  record.messageAttributes = messageAttributes
+    body.MessageAttributes = _.mapValues(correlationIDs, value => ({
+      Type: 'String',
+      Value: value
+    }))
 
-  return event
+    event.Records[0].body = JSON.stringify(body)
+
+    return event
+  } else {
+    const event = _.cloneDeep(sqs)
+
+    event.Records[0].messageAttributes = _.mapValues(correlationIDs, value => ({
+      stringValue: value,
+      stringListValues: [],
+      binaryListValues: [],
+      dataType: 'String'
+    }))
+
+    return event
+  }
 }
 
 const kinesis = require('./kinesis')
@@ -191,11 +204,11 @@ const standardTests = (genEvent) => {
   })
 }
 
-const sqsTests = () => {
+const sqsTests = withoutRawMessageDelivery => {
   describe('when sampleDebugLogRate = 0', () => {
     it('always sets debug-log-enabled to false', () => {
       const requestId = uuid()
-      invokeSqsHandler(genSqsEvent(), requestId, 0,
+      invokeSqsHandler(genSqsEvent(withoutRawMessageDelivery), requestId, 0,
         x => {
           expect(x['awsRequestId']).toBe(requestId)
           expect(x['debug-log-enabled']).toBe('false')
@@ -211,7 +224,7 @@ const sqsTests = () => {
   describe('when sampleDebugLogRate = 1', () => {
     it('always sets debug-log-enabled to true', () => {
       const requestId = uuid()
-      invokeSqsHandler(genSqsEvent(), requestId, 1,
+      invokeSqsHandler(genSqsEvent(withoutRawMessageDelivery), requestId, 1,
         x => {
           expect(x['awsRequestId']).toBe(requestId)
           expect(x['debug-log-enabled']).toBe('true')
@@ -227,7 +240,7 @@ const sqsTests = () => {
   describe('when correlation ID is not provided in the event', () => {
     it('sets it to the AWS Request ID', () => {
       const requestId = uuid()
-      invokeSqsHandler(genSqsEvent(), requestId, 0,
+      invokeSqsHandler(genSqsEvent(withoutRawMessageDelivery), requestId, 0,
         x => {
           // correlation IDs at the handler level
           expect(x['x-correlation-id']).toBe(requestId)
@@ -260,7 +273,7 @@ const sqsTests = () => {
         'debug-log-enabled': 'true'
       }
 
-      const event = genSqsEvent(correlationIds)
+      const event = genSqsEvent(withoutRawMessageDelivery, correlationIds)
       requestId = uuid()
       invokeSqsHandler(event, requestId, 0, x => {
         handlerCorrelationIds = x
@@ -350,7 +363,7 @@ const kinesisTests = () => {
       const requestId = uuid()
       invokeKinesisHandler(genKinesisEvent(), requestId, 0,
         x => {
-        // correlation IDs at the handler level
+          // correlation IDs at the handler level
           expect(x['x-correlation-id']).toBe(requestId)
           expect(x['awsRequestId']).toBe(requestId)
         },
@@ -455,7 +468,9 @@ describe('Correlation IDs middleware', () => {
 
   describe('SFN', () => standardTests(genSfnEvent))
 
-  describe('SQS', () => sqsTests())
+  describe('SQS', () => sqsTests(false))
+
+  describe('SQS Without Raw Message', () => sqsTests(true))
 
   describe('Kinesis', () => kinesisTests())
 })

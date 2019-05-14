@@ -70,6 +70,26 @@ function captureSqs (event, context, sampleDebugLogRate) {
     const msgAttributes = record.messageAttributes
     const correlationIds = { awsRequestId }
 
+    // try retrieve message attributes from sns->sqs subscriptions
+    // where raw message delivery is disabled
+    if (Object.entries(msgAttributes).length === 0) {
+      let body = {}
+      try {
+        body = JSON.parse(record.body)
+      } catch (e) {
+      }
+
+      if (body.hasOwnProperty('MessageAttributes') &&
+        body.hasOwnProperty('TopicArn') &&
+        body.TopicArn.startsWith('arn:aws:sns')
+      ) {
+        for (const bodyMsgAttribute in body.MessageAttributes) {
+          const stringValue = body.MessageAttributes[bodyMsgAttribute].Value
+          msgAttributes[bodyMsgAttribute] = { stringValue }
+        }
+      }
+    }
+
     for (const msgAttribute in msgAttributes) {
       if (msgAttribute.toLowerCase().startsWith('x-correlation-')) {
         correlationIds[msgAttribute] = msgAttributes[msgAttribute].stringValue
