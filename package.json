@@ -33,5 +33,6 @@
     "*.js": [
       "eslint"
     ]
-  }
+  },
+  "dependencies": {}
 }
