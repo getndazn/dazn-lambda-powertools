@@ -9,8 +9,7 @@
   "author": "Tom Rogers",
   "dependencies": {
     "@perform/lambda-powertools-correlation-ids": "^1.0.0",
-    "@perform/lambda-powertools-logger": "^1.0.1",
-    "lodash": " ^4.17.11"
+    "@perform/lambda-powertools-logger": "^1.0.1"
   },
   "devDependencies": {
     "jest": "^23.1.0",
