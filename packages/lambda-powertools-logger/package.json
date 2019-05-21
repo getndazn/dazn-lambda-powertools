@@ -10,5 +10,8 @@
   "author": "Yan Cui",
   "dependencies": {
     "@perform/lambda-powertools-correlation-ids": "^1.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

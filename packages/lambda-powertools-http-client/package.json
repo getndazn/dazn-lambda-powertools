@@ -15,5 +15,8 @@
   },
   "devDependencies": {
     "nock": "^9.3.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

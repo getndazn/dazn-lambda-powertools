@@ -15,5 +15,8 @@
     "lodash": "^4.17.11",
     "middy": "^0.15.6",
     "uuid": "^3.2.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
