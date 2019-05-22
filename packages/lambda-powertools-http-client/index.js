@@ -64,6 +64,7 @@ function setBody (request, body) {
 //    body    : object
 //    metricName [optional] : string  (e.g. adyenApi)
 //    metricTags [optional] : string []  (e.g. ['request_type:submit', 'load_test'], by default we add function name, version, HTTP method, path, and response statusCode for you as tags)
+//    correlationIds : CorrelationIds (an instance of @perform/lambda-powertools-correlation-ids class)
 //  }
 const Req = (options) => {
   if (!options) {

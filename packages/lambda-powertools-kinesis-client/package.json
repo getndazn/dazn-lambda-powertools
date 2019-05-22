@@ -11,5 +11,8 @@
     "@perform/lambda-powertools-correlation-ids": "^1.0.0",
     "@perform/lambda-powertools-logger": "^1.0.1",
     "aws-sdk": "^2.246.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -10,5 +10,8 @@
   "dependencies": {
     "@perform/lambda-powertools-correlation-ids": "^1.0.0",
     "aws-sdk": "^2.246.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
