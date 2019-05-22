@@ -1,6 +1,6 @@
 {
   "name": "@perform/lambda-powertools-sns-client",
-  "version": "1.0.0",
+  "version": "1.1.7",
   "description": "SNS client wrapper that knows how to forward correlation IDs (captured via @perform/lambda-powertools-correlation-ids)",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "author": "Yan Cui",
   "dependencies": {
-    "@perform/lambda-powertools-correlation-ids": "^1.0.0",
+    "@perform/lambda-powertools-correlation-ids": "^1.1.7",
     "aws-sdk": "^2.246.1"
   },
   "publishConfig": {
