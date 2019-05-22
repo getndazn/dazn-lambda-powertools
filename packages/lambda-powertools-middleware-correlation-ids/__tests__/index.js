@@ -204,7 +204,7 @@ const standardTests = (genEvent) => {
   })
 }
 
-const sqsTests = withoutRawMessageDelivery => {
+const sqsTests = (withoutRawMessageDelivery = false) => {
   describe('when sampleDebugLogRate = 0', () => {
     it('always sets debug-log-enabled to false', () => {
       const requestId = uuid()
@@ -306,6 +306,34 @@ const sqsTests = withoutRawMessageDelivery => {
       expect(record).toHaveProperty('logger')
       expect(record.propertyIsEnumerable('logger')).toBe(false)
       expect(record.logger.correlationIds).toBe(record.correlationIds)
+    })
+  })
+}
+
+const sqsWithoutRawDeliveryTests = () => {
+  sqsTests(true)
+
+  describe('when correlation ID is not provided in the event and message attributes are set in the event body', () => {
+    it('does not modify sqs record message attributes', () => {
+      const messageAttributes = {
+        'att1': 'value1',
+        'att2': 'value2',
+        'att3': 'value3'
+      }
+
+      const event = genSqsEvent(true)
+      const body = JSON.parse(event.Records[0].body)
+      body.MessageAttributes = _.mapValues(messageAttributes, value => ({
+        Type: 'String',
+        Value: value
+      }))
+      event.Records[0].body = JSON.stringify(body)
+
+      invokeSqsHandler(event, uuid(), 0,
+        () => ({}),
+        record => {
+          expect(record.messageAttributes).toEqual({})
+        })
     })
   })
 }
@@ -468,9 +496,9 @@ describe('Correlation IDs middleware', () => {
 
   describe('SFN', () => standardTests(genSfnEvent))
 
-  describe('SQS', () => sqsTests(false))
+  describe('SQS', () => sqsTests())
 
-  describe('SQS Without Raw Message', () => sqsTests(true))
+  describe('SQS Without Raw Message', () => sqsWithoutRawDeliveryTests())
 
   describe('Kinesis', () => kinesisTests())
 })
