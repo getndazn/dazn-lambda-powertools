@@ -67,7 +67,7 @@ function captureSqs (event, context, sampleDebugLogRate) {
   const awsRequestId = context.awsRequestId
   event.Records.forEach(record => {
     // the wrapped sqs client would put the correlation IDs in the MessageAttributes
-    const msgAttributes = record.messageAttributes
+    const msgAttributes = { ...record.messageAttributes }
     const correlationIds = { awsRequestId }
 
     // try retrieve message attributes from sns->sqs subscriptions
