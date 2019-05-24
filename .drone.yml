@@ -4,7 +4,7 @@ pipeline:
     secrets: [ npm_token ]
     when:
       event: [ push, deployment ]
-  test:
+  setup:
     image: node:10-alpine
     when:
       event: push
@@ -12,6 +12,19 @@ pipeline:
       - cp ${DRONE_WORKSPACE:-.}/.npmrc ~/
       - npm ci
       - npm run install
+  test-10:
+    image: node:10-alpine
+    group: test
+    when:
+      event: push
+    commands:
+      - npm test
+  test-8:
+    image: node:8-alpine
+    group: test
+    when:
+      event: push
+    commands:
       - npm test
   new-version:
     image: node:10-alpine
