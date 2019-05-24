@@ -5,16 +5,15 @@ pipeline:
     when:
       event: [ push, deployment ]
   test:
-    image: node:carbon-jessie
+    image: node:10-alpine
     when:
       event: push
     commands:
       - cp ${DRONE_WORKSPACE:-.}/.npmrc ~/
-      - npm i
-      - npm run install
+      - npm ci
       - npm test
   new-version:
-    image: node:carbon-jessie
+    image: node:10-alpine
     secrets: [ github_token ]
     when:
       event: push
@@ -27,7 +26,7 @@ pipeline:
       - export GH_TOKEN=$GITHUB_TOKEN
       - npm run new-version
   publish:
-    image: node:carbon-jessie
+    image: node:10-alpine
     secrets: [ npm_token ]
     when:
       event: push
