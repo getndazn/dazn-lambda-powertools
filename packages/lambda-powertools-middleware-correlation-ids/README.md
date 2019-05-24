@@ -10,7 +10,7 @@ Main features:
 
 * supports SNS events (message attributes)
 
-* supports SQS events (see below for more details)
+* supports SQS events (message attributes with and without raw message delivery when published from SNS)
 
 * supports Kinesis events (see below for more details)
 
