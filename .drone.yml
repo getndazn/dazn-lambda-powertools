@@ -11,6 +11,7 @@ pipeline:
     commands:
       - cp ${DRONE_WORKSPACE:-.}/.npmrc ~/
       - npm ci
+      - npm run install
       - npm test
   new-version:
     image: node:10-alpine
