@@ -34,7 +34,7 @@ pipeline:
     commands:
       - npm test
   new-version:
-    image: node:10-alpine
+    image: node:10
     secrets: [ github_token ]
     when:
       event: push
@@ -47,7 +47,7 @@ pipeline:
       - export GH_TOKEN=$GITHUB_TOKEN
       - npm run new-version
   publish:
-    image: node:10-alpine
+    image: node:10
     secrets: [ npm_token ]
     when:
       event: push
