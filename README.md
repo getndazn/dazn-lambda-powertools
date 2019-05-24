@@ -68,7 +68,7 @@ We did entertain this idea, but I wanted to leave at least one decision for you 
 
 Because of the inter-dependencies between packages, it can be tricky to test your changes haven't broken another package.
 
-You can use [Lerna](https://lernajs.io/) CLI to bootstrap all the dependencies with the current local version:
+You can use [Lerna](https://lerna.js.org/) CLI to bootstrap all the dependencies with the current local version:
 
 ```
 lerna bootstrap
