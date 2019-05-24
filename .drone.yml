@@ -12,6 +12,13 @@ pipeline:
       - cp ${DRONE_WORKSPACE:-.}/.npmrc ~/
       - npm ci
       - npm run install
+  test-12:
+    image: node:12-alpine
+    group: test
+    when:
+      event: push
+    commands:
+      - npm test
   test-10:
     image: node:10-alpine
     group: test
