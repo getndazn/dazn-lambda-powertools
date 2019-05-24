@@ -1,6 +1,6 @@
 {
   "name": "@perform/lambda-powertools-middleware-correlation-ids",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "Middy middleware for capturing correlation IDs from inbound event",
   "main": "index.js",
   "scripts": {
@@ -8,8 +8,8 @@
   },
   "author": "Yan Cui",
   "dependencies": {
-    "@perform/lambda-powertools-correlation-ids": "^1.0.0",
-    "@perform/lambda-powertools-logger": "^1.0.1"
+    "@perform/lambda-powertools-correlation-ids": "^1.1.7",
+    "@perform/lambda-powertools-logger": "^1.1.7"
   },
   "devDependencies": {
     "lodash": "^4.17.11",
