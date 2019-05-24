@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.1.7...v1.2.0) (2019-05-24)
+
+
+### Bug Fixes
+
+* **middleware-correlation-ids:** removed modification of message atts ([c09641c](https://github.com/getndazn/dazn-lambda-powertools/commit/c09641c))
+
+
+### Features
+
+* **middleware-correlation-ids:** support sns sqs without raw deliveries ([53bb70a](https://github.com/getndazn/dazn-lambda-powertools/commit/53bb70a))
+
+
+
+
+
 ## [1.1.7](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.1.6...v1.1.7) (2019-05-22)
 
 **Note:** Version bump only for package @perform/lambda-powertools-middleware-correlation-ids
