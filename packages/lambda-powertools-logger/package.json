@@ -9,7 +9,8 @@
   },
   "author": "Yan Cui",
   "dependencies": {
-    "@perform/lambda-powertools-correlation-ids": "^1.1.7"
+    "@perform/lambda-powertools-correlation-ids": "^1.1.7",
+    "circular-json": "^0.5.9"
   },
   "publishConfig": {
     "access": "public"

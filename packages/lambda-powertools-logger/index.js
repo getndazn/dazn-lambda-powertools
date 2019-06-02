@@ -1,3 +1,4 @@
+const CircularJSON = require('circular-json')
 const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
 
 // Levels here are identical to bunyan practices
@@ -50,7 +51,7 @@ class Logger {
     }
 
     return {
-      ...params || {},
+      ...(params || {}),
       errorName: err.name,
       errorMessage: err.message,
       stackTrace: err.stack
@@ -72,7 +73,7 @@ class Logger {
     }
 
     // re-order message and params to appear earlier in the log row
-    console.log(JSON.stringify({ message, ...params, ...logMsg }))
+    console.log(CircularJSON.stringify({ message, ...params, ...logMsg }))
   }
 
   debug (msg, params) {

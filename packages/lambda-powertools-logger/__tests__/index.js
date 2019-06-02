@@ -198,4 +198,26 @@ describe('Logger', () => {
       shouldBeLogged('inf0', 'error')
     })
   })
+  describe('circular objects', () => {
+    const circular = { a: 1, b: [1, 2] }
+    circular.b[3] = circular
+    const logger = new Log()
+
+    it('logs circular obj without throwing', () => {
+      expect(() => logger.debug('circular object', circular)).not.toThrow()
+    })
+    it('logs circular obj in error without throwing', () => {
+      const err = new Error('circular dependency in errors')
+      err.extra = circular
+      expect(() =>
+        logger.error('circular object in error', {}, err)
+      ).not.toThrow()
+    })
+    it('stringifies correctly', () => {
+      logger.info(circular)
+      verify(x =>
+        expect(x.message).toEqual({ a: 1, b: [1, 2, null, '~message'] })
+      )
+    })
+  })
 })
