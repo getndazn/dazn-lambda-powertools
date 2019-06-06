@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest"
   },
+  "license": "MIT",
   "author": "Yan Cui",
   "dependencies": {
     "@perform/dazn-datadog-metrics": "^1.0.0",
