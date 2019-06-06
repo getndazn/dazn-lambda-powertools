@@ -1,8 +1,9 @@
 const consoleLog = jest.spyOn(global.console, 'log')
 
-const Promise = require('bluebird')
 const middy = require('middy')
 const logTimeoutMiddleware = require('../index')
+
+const delay = (millis) => new Promise((resolve) => setTimeout(resolve, millis))
 
 beforeEach(() => {
   consoleLog.mockClear()
@@ -23,7 +24,7 @@ const invokeTimedOutHandler = async (event, awsRequestId) => {
   }
 
   const handler = middy(async () => {
-    await Promise.delay(20)
+    await delay(20)
   })
   handler.use(logTimeoutMiddleware())
 
