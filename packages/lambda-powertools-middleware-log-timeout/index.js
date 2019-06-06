@@ -5,20 +5,24 @@ module.exports = (thresholdMillis = 10) => {
     before: (handler, next) => {
       const timeLeft = handler.context.getRemainingTimeInMillis()
       const timeoutMs = timeLeft - thresholdMillis
-      handler.context.logTimeoutTimer = setTimeout(() => {
+      const timer = setTimeout(() => {
         const awsRequestId = handler.context.awsRequestId
         const invocationEvent = JSON.stringify(handler.event)
         Log.error('invocation timed out', { awsRequestId, invocationEvent })
       }, timeoutMs)
 
+      handler.context.lambdaPowertoolsLogTimeoutMiddleware = {
+        timer
+      }
+
       next()
     },
     after: (handler, next) => {
-      clearTimeout(handler.context.logTimeoutTimer)
+      clearTimeout(handler.context.lambdaPowertoolsLogTimeoutMiddleware.timer)
       next()
     },
     onError: (handler, next) => {
-      clearTimeout(handler.context.logTimeoutTimer)
+      clearTimeout(handler.context.lambdaPowertoolsLogTimeoutMiddleware.timer)
       next(handler.error)
     }
   }
