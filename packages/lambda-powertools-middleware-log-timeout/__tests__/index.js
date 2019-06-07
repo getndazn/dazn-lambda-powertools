@@ -9,24 +9,36 @@ beforeEach(() => {
   consoleLog.mockClear()
 })
 
-const invokeSuccessHandler = async () => {
+const invokeSuccessHandler = async (threshold) => {
+  const middleware = threshold
+    ? logTimeoutMiddleware(threshold)
+    : logTimeoutMiddleware()
+
   const handler = middy(async () => {
   })
-  handler.use(logTimeoutMiddleware())
+  handler.use(middleware)
 
   await handler({}, { awsRequestId: 'test-id' }, () => {})
 }
 
-const invokeTimedOutHandler = async (event, awsRequestId) => {
+const invokeTimedOutHandler = async (event, awsRequestId, threshold) => {
   const context = {
     awsRequestId,
     getRemainingTimeInMillis: () => 1000
   }
 
+  const middleware = threshold
+    ? logTimeoutMiddleware(threshold)
+    : logTimeoutMiddleware()
+
+  const elapsedTime = threshold
+    ? 1000 - threshold
+    : 990 // default threshold is 10ms
+
   const handler = middy(async () => {
-    jest.advanceTimersByTime(1000)
+    jest.advanceTimersByTime(elapsedTime)
   })
-  handler.use(logTimeoutMiddleware())
+  handler.use(middleware)
 
   await handler(event, context, () => {})
 }
@@ -42,24 +54,50 @@ const errorLogWasWritten = (f) => {
 }
 
 describe('Log timeout middleware', () => {
-  describe('when function finishes successfully', () => {
-    it('does not log anything', async () => {
-      await invokeSuccessHandler()
-      expect(consoleLog).not.toBeCalled()
+  describe('default threshold', () => {
+    describe('when function finishes successfully', () => {
+      it('does not log anything', async () => {
+        await invokeSuccessHandler()
+        expect(consoleLog).not.toBeCalled()
+      })
+    })
+
+    describe('when function times out', () => {
+      it('logs an error message', async () => {
+        const event = { test: 'wat' }
+        const awsRequestId = 'test-id'
+
+        await invokeTimedOutHandler(event, awsRequestId)
+
+        errorLogWasWritten(x => {
+          expect(x.awsRequestId).toBe(awsRequestId)
+          expect(x.invocationEvent).toBeDefined()
+          expect(JSON.parse(x.invocationEvent)).toEqual(event)
+        })
+      })
     })
   })
 
-  describe('when function times out', () => {
-    it('logs an error message', async () => {
-      const event = { test: 'wat' }
-      const awsRequestId = 'test-id'
+  describe('custom threshold', () => {
+    describe('when function finishes successfully', () => {
+      it('does not log anything', async () => {
+        await invokeSuccessHandler(150)
+        expect(consoleLog).not.toBeCalled()
+      })
+    })
 
-      await invokeTimedOutHandler(event, awsRequestId)
+    describe('when function times out', () => {
+      it('logs an error message', async () => {
+        const event = { test: 'wat' }
+        const awsRequestId = 'test-id'
 
-      errorLogWasWritten(x => {
-        expect(x.awsRequestId).toBe(awsRequestId)
-        expect(x.invocationEvent).toBeDefined()
-        expect(JSON.parse(x.invocationEvent)).toEqual(event)
+        await invokeTimedOutHandler(event, awsRequestId, 150)
+
+        errorLogWasWritten(x => {
+          expect(x.awsRequestId).toBe(awsRequestId)
+          expect(x.invocationEvent).toBeDefined()
+          expect(JSON.parse(x.invocationEvent)).toEqual(event)
+        })
       })
     })
   })
