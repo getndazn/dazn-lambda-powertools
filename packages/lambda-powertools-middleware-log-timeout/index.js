@@ -11,7 +11,10 @@ module.exports = (thresholdMillis = 10) => {
         Log.error('invocation timed out', { awsRequestId, invocationEvent })
       }, timeoutMs)
 
-      handler.context.lambdaPowertoolsLogTimeoutMiddleware = {
+      Object.defineProperty(handler.context, 'lambdaPowertoolsLogTimeoutMiddleware', {
+        enumerable: false,
+        value: { timer }
+      });
         timer
       }
 
