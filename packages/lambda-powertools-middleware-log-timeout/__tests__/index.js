@@ -3,7 +3,7 @@ const consoleLog = jest.spyOn(global.console, 'log')
 const middy = require('middy')
 const logTimeoutMiddleware = require('../index')
 
-const delay = (millis) => new Promise((resolve) => setTimeout(resolve, millis))
+jest.useFakeTimers()
 
 beforeEach(() => {
   consoleLog.mockClear()
@@ -20,17 +20,15 @@ const invokeSuccessHandler = async () => {
 const invokeTimedOutHandler = async (event, awsRequestId) => {
   const context = {
     awsRequestId,
-    getRemainingTimeInMillis: () => 20
+    getRemainingTimeInMillis: () => 1000
   }
 
   const handler = middy(async () => {
-    await delay(20)
+    jest.advanceTimersByTime(1000)
   })
   handler.use(logTimeoutMiddleware())
 
-  await new Promise((resolve) => {
-    handler(event, context, resolve)
-  })
+  await handler(event, context, () => {})
 }
 
 const errorLogWasWritten = (f) => {
