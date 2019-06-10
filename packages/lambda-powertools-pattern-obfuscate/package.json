@@ -4,6 +4,7 @@
   "description": "Basic template that configures a 1% smaple rate for debug logs and obfuscation",
   "main": "index.js",
   "scripts": {},
+  "license": "MIT",
   "author": "Yan Cui",
   "dependencies": {
     "@perform/lambda-powertools-middleware-correlation-ids": "^1.2.0",

@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest"
   },
+  "license": "MIT",
   "author": "Yan Cui",
   "dependencies": {
     "@perform/lambda-powertools-correlation-ids": "^1.1.7",

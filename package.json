@@ -1,5 +1,6 @@
 {
   "private": true,
+  "license": "MIT",
   "scripts": {
     "install": "lerna bootstrap",
     "test:lint": "eslint .",
