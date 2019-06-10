@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.2.0...v1.3.0) (2019-06-10)
+
+
+### Features
+
+* added log-timeout to basic and obfuscate patterns ([dd47b86](https://github.com/getndazn/dazn-lambda-powertools/commit/dd47b86))
+
+
+
+
+
 # [1.2.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.1.7...v1.2.0) (2019-05-24)
 
 **Note:** Version bump only for package @perform/lambda-powertools-pattern-basic
