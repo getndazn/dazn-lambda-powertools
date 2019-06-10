@@ -1,6 +1,6 @@
 # lambda-powertools-pattern-obfuscate
 
-A pattern that helps you follow our guidelines around logging and monitoring and be a good citizen in DAZN 2.0 :-) With added ability to obfuscate personal fields. 
+A pattern that helps you follow our guidelines around logging and monitoring. With added ability to obfuscate personal fields.
 
 Main features:
 
@@ -12,8 +12,10 @@ Main features:
 
 * applies the `@perform/lambda-powertools-middleware-sample-logging` middleware at 1% sample rate
 
-* applies the `@perform/lambda-powertools-middleware-obfuscated-logging` middleware with passed obfuscation filters 
- 
+* applies the `@perform/lambda-powertools-middleware-obfuscated-logging` middleware with passed obfuscation filters
+
+* applies the `@perform/lambda-powertools-middleware-log-timeout` middleware at default 10ms threshold (i.e. log an error message 10ms before an invocation actually times out)
+
 ## Getting Started
 
 Install from NPM: `npm install @perform/lambda-powertools-pattern-obfuscate`

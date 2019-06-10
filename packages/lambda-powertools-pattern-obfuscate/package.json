@@ -9,6 +9,7 @@
     "@perform/lambda-powertools-middleware-correlation-ids": "^1.2.0",
     "@perform/lambda-powertools-middleware-obfuscater": "^1.1.7",
     "@perform/lambda-powertools-middleware-sample-logging": "^1.1.7",
+    "@perform/lambda-powertools-middleware-log-timeout": "^1.0.0",
     "middy": "^0.15.0"
   },
   "devDependencies": {
