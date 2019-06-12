@@ -22,6 +22,8 @@ An integrated suite of powertools for Lambda functions to make it effortless for
 
 * [obfuscater middleware](/packages/lambda-powertools-middleware-obfuscater): allows you to obfuscate the invocation event so that sensitive data (e.g. PII) is not logged accidentally.
 
+* [log timeout middleware](/packages/lambda-powertools-middleware-log-timeout): logs an error message when a function invocation times out.
+
 ### Client libraries
 
 * [http client](/packages/lambda-powertools-http-client): HTTP client that automatically forwards any correlation IDs you have captured or created, and records both latency as well as response count metrics
