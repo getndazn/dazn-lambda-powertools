@@ -225,6 +225,7 @@ function initCorrelationIds ({ awsRequestId }, sampleDebugLogRate) {
   const correlationIds = { awsRequestId }
   correlationIds[X_CORRELATION_ID] = awsRequestId
   correlationIds[DEBUG_LOG_ENABLED] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
+  correlationIds[CALL_CHAIN_LENGTH] = 1
 
   CorrelationIds.replaceAllWith(correlationIds)
 }
