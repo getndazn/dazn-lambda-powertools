@@ -4,6 +4,7 @@ const Log = require('@perform/lambda-powertools-logger')
 const X_CORRELATION_ID = 'x-correlation-id'
 const DEBUG_LOG_ENABLED = 'debug-log-enabled'
 const USER_AGENT = 'User-Agent'
+const CALL_CHAIN_LENGTH = 'call-chain-length'
 
 function captureHttp ({ headers }, { awsRequestId }, sampleDebugLogRate) {
   if (!headers) {
@@ -33,6 +34,12 @@ function captureHttp ({ headers }, { awsRequestId }, sampleDebugLogRate) {
     correlationIds[DEBUG_LOG_ENABLED] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
   }
 
+  if (headers[CALL_CHAIN_LENGTH]) {
+    correlationIds[CALL_CHAIN_LENGTH] = parseInt(headers[CALL_CHAIN_LENGTH]) + 1
+  } else {
+    correlationIds[CALL_CHAIN_LENGTH] = 1 // start with 1, i.e. first call in the chain
+  }
+
   CorrelationIds.replaceAllWith(correlationIds)
 }
 
@@ -49,6 +56,8 @@ function captureSns ({ Records }, { awsRequestId }, sampleDebugLogRate) {
       correlationIds[USER_AGENT] = msgAttributes[USER_AGENT].Value
     } else if (msgAttribute === DEBUG_LOG_ENABLED) {
       correlationIds[DEBUG_LOG_ENABLED] = msgAttributes[DEBUG_LOG_ENABLED].Value
+    } else if (msgAttribute === CALL_CHAIN_LENGTH) {
+      correlationIds[CALL_CHAIN_LENGTH] = parseInt(msgAttributes[CALL_CHAIN_LENGTH].Value) + 1
     }
   }
 
@@ -58,6 +67,10 @@ function captureSns ({ Records }, { awsRequestId }, sampleDebugLogRate) {
 
   if (!correlationIds[DEBUG_LOG_ENABLED]) {
     correlationIds[DEBUG_LOG_ENABLED] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
+  }
+
+  if (!correlationIds[CALL_CHAIN_LENGTH]) {
+    correlationIds[CALL_CHAIN_LENGTH] = 1
   }
 
   CorrelationIds.replaceAllWith(correlationIds)
@@ -97,6 +110,8 @@ function captureSqs (event, context, sampleDebugLogRate) {
         correlationIds[USER_AGENT] = msgAttributes[USER_AGENT].stringValue
       } else if (msgAttribute === DEBUG_LOG_ENABLED) {
         correlationIds[DEBUG_LOG_ENABLED] = msgAttributes[DEBUG_LOG_ENABLED].stringValue
+      } else if (msgAttribute === CALL_CHAIN_LENGTH) {
+        correlationIds[CALL_CHAIN_LENGTH] = parseInt(msgAttributes[CALL_CHAIN_LENGTH].stringValue) + 1
       }
     }
 
@@ -106,6 +121,10 @@ function captureSqs (event, context, sampleDebugLogRate) {
 
     if (!correlationIds[DEBUG_LOG_ENABLED]) {
       correlationIds[DEBUG_LOG_ENABLED] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
+    }
+
+    if (!correlationIds[CALL_CHAIN_LENGTH]) {
+      correlationIds[CALL_CHAIN_LENGTH] = 1
     }
 
     const correlationIdsInstance = new CorrelationIds(correlationIds)
@@ -154,6 +173,8 @@ function captureKinesis ({ Records }, context, sampleDebugLogRate) {
           correlationIds[DEBUG_LOG_ENABLED] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
         }
 
+        correlationIds[CALL_CHAIN_LENGTH] = (correlationIds[CALL_CHAIN_LENGTH] || 0) + 1
+
         const correlationIdsInstance = new CorrelationIds(correlationIds)
 
         Object.defineProperties(event, {
@@ -195,6 +216,8 @@ function captureContextField ({ __context__ }, { awsRequestId }, sampleDebugLogR
     correlationIds[DEBUG_LOG_ENABLED] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
   }
 
+  correlationIds[CALL_CHAIN_LENGTH] = (correlationIds[CALL_CHAIN_LENGTH] || 0) + 1
+
   CorrelationIds.replaceAllWith(correlationIds)
 }
 
@@ -202,6 +225,7 @@ function initCorrelationIds ({ awsRequestId }, sampleDebugLogRate) {
   const correlationIds = { awsRequestId }
   correlationIds[X_CORRELATION_ID] = awsRequestId
   correlationIds[DEBUG_LOG_ENABLED] = Math.random() < sampleDebugLogRate ? 'true' : 'false'
+  correlationIds[CALL_CHAIN_LENGTH] = 1
 
   CorrelationIds.replaceAllWith(correlationIds)
 }

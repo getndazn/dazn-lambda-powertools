@@ -20,9 +20,11 @@ An integrated suite of powertools for Lambda functions to make it effortless for
 
 * [sample logging middleware](/packages/lambda-powertools-middleware-sample-logging): enable debug logging for 1% of invocations, or when upstream caller has made the decision to enable debug logging
 
-* [obfuscater middleware](/packages/lambda-powertools-middleware-obfuscater): allows you to obfuscate the invocation event so that sensitive data (e.g. PII) is not logged accidentally.
+* [obfuscater middleware](/packages/lambda-powertools-middleware-obfuscater): allows you to obfuscate the invocation event so that sensitive data (e.g. PII) is not logged accidentally
 
-* [log timeout middleware](/packages/lambda-powertools-middleware-log-timeout): logs an error message when a function invocation times out.
+* [log timeout middleware](/packages/lambda-powertools-middleware-log-timeout): logs an error message when a function invocation times out
+
+* [stop infinite loop middleware](/packages/lambda-powertools-middleware-stop-infinite-loop): stops infinite loops
 
 ### Client libraries
 
