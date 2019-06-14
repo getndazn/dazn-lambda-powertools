@@ -178,6 +178,15 @@ const standardTests = (genEvent) => {
     })
   })
 
+  describe('when call-chain-length is not provided in the event', () => {
+    it('sets it to 1', () => {
+      const requestId = uuid()
+      invokeHandler(genEvent(), requestId, 0, x => {
+        expect(x['call-chain-length']).toBe(1)
+      })
+    })
+  })
+
   describe('when correlation IDs are provided in the event', () => {
     it('captures them', () => {
       const id = uuid()
@@ -199,6 +208,25 @@ const standardTests = (genEvent) => {
         expect(x['User-Agent']).toBe('jest test')
         expect(x['debug-log-enabled']).toBe('true')
         expect(x['awsRequestId']).toBe(requestId)
+      })
+    })
+  })
+
+  describe('when call-chain-length is provided in the event', () => {
+    it('increments it by 1', () => {
+      const id = uuid()
+
+      const correlationIds = {
+        'x-correlation-id': id,
+        'call-chain-length': 1
+      }
+
+      const event = genEvent(correlationIds)
+
+      const requestId = uuid()
+      invokeHandler(event, requestId, 0, x => {
+        expect(x['x-correlation-id']).toBe(id)
+        expect(x['call-chain-length']).toBe(2)
       })
     })
   })
@@ -255,6 +283,19 @@ const sqsTests = (wrappedSns = false) => {
     })
   })
 
+  describe('when call-chain-length is not provided in the event', () => {
+    it('sets it to 1', () => {
+      const requestId = uuid()
+      invokeSqsHandler(genSqsEvent(wrappedSns), requestId, 0,
+        x => { // n/a
+        },
+        record => {
+          const x = record.correlationIds.get()
+          expect(x['call-chain-length']).toBe(1)
+        })
+    })
+  })
+
   describe('when correlation IDs are provided in the event', () => {
     let handlerCorrelationIds
     let record
@@ -306,6 +347,33 @@ const sqsTests = (wrappedSns = false) => {
       expect(record).toHaveProperty('logger')
       expect(record.propertyIsEnumerable('logger')).toBe(false)
       expect(record.logger.correlationIds).toBe(record.correlationIds)
+    })
+  })
+
+  describe('when call-chain-length is provided in the event', () => {
+    let record
+    let id
+
+    beforeEach((done) => {
+      id = uuid()
+
+      const correlationIds = {
+        'x-correlation-id': id,
+        'call-chain-length': 1
+      }
+
+      const event = genSqsEvent(wrappedSns, correlationIds)
+      invokeSqsHandler(event, uuid(), 0,
+        () => {},
+        aRecord => { record = aRecord },
+        done)
+    })
+
+    it('increments it by 1', () => {
+      const x = record.correlationIds.get()
+      // correlation IDs at the record level should match what was passed in
+      expect(x['x-correlation-id']).toBe(id)
+      expect(x['call-chain-length']).toBe(2)
     })
   })
 }
@@ -404,6 +472,18 @@ const kinesisTests = () => {
     })
   })
 
+  describe('when call-chain-length is not provided in the event', () => {
+    it('sets it to 1', () => {
+      const requestId = uuid()
+      invokeKinesisHandler(genKinesisEvent(), requestId, 0,
+        x => {}, // n/a
+        record => {
+          const x = record.correlationIds.get()
+          expect(x['call-chain-length']).toBe(1)
+        })
+    })
+  })
+
   describe('when correlation IDs are provided in the event', () => {
     let handlerCorrelationIds
     let record
@@ -455,6 +535,31 @@ const kinesisTests = () => {
       expect(record).toHaveProperty('logger')
       expect(record.propertyIsEnumerable('logger')).toBe(false)
       expect(record.logger.correlationIds).toBe(record.correlationIds)
+    })
+  })
+
+  describe('when correlation IDs are provided in the event', () => {
+    let record
+    let id
+
+    beforeEach((done) => {
+      id = uuid()
+
+      const correlationIds = {
+        'x-correlation-id': id,
+        'call-chain-length': 1
+      }
+
+      const event = genKinesisEvent(correlationIds)
+      invokeKinesisHandler(event, uuid(), 0,
+        () => {},
+        aRecord => { record = aRecord },
+        done)
+    })
+
+    it('increments it by 1', () => {
+      const x = record.correlationIds.get()
+      expect(x['call-chain-length']).toBe(2)
     })
   })
 }
