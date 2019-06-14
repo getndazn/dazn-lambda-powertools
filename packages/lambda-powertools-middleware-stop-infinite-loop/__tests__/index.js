@@ -4,9 +4,20 @@ const middy = require('middy')
 const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
 const stopInfiniteLoop = require('../index')
 
-const getHandler = () => middy(async () => {}).use(stopInfiniteLoop(3))
+const invokeHandler = async (event, awsRequestId) => {
+  const handler = middy(async () => {}).use(stopInfiniteLoop(3))
+  await new Promise((resolve, reject) => {
+    handler(event, { awsRequestId }, (err, resp) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(resp)
+      }
+    })
+  })
+}
 
-const warnLogWasWritten = (f) => {
+const errorLogWasWritten = (f) => {
   expect(consoleLog).toBeCalled()
   const log = JSON.parse(consoleLog.mock.calls[0])
   expect(log.sLevel).toBe('ERROR')
@@ -19,8 +30,7 @@ const warnLogWasWritten = (f) => {
 describe('Stop infinite loop middleware', () => {
   describe('when call-chain-length is not set', () => {
     it('does nothing', async () => {
-      const handler = getHandler()
-      await handler({}, {}, () => {})
+      await invokeHandler({}, {})
 
       expect(consoleLog).not.toBeCalled()
     })
@@ -28,12 +38,10 @@ describe('Stop infinite loop middleware', () => {
 
   describe('when call-chain-length is below threshold', () => {
     it('does nothing', async () => {
-      const handler = getHandler()
-
       CorrelationIds.replaceAllWith({
         'call-chain-length': 2
       })
-      await handler({}, {}, () => {})
+      await invokeHandler({}, {})
 
       expect(consoleLog).not.toBeCalled()
     })
@@ -41,15 +49,16 @@ describe('Stop infinite loop middleware', () => {
 
   describe('when call-chain-length reaches threshold', () => {
     it('should throw', async () => {
-      const handler = getHandler()
       const event = { foo: 'bar' }
+      const awsRequestId = 'test'
 
       CorrelationIds.replaceAllWith({
         'call-chain-length': 3
       })
-      await handler(event, { awsRequestId: 'test' }, () => {})
+      await expect(invokeHandler(event, awsRequestId)).rejects.toEqual(
+        new Error("'call-chain-length' reached threshold of 3, possible infinite recursion"))
 
-      warnLogWasWritten(x => {
+      errorLogWasWritten(x => {
         expect(x.awsRequestId).toBe('test')
         expect(x.invocationEvent).toBeDefined()
         expect(JSON.parse(x.invocationEvent)).toEqual(event)
