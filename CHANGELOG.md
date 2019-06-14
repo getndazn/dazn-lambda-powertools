@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.3.0...v1.4.0) (2019-06-14)
+
+
+### Bug Fixes
+
+* direct invokes also init call-chain-length ([fd77446](https://github.com/getndazn/dazn-lambda-powertools/commit/fd77446))
+
+
+### Features
+
+* track call-chain length and stop infinite loops ([1658212](https://github.com/getndazn/dazn-lambda-powertools/commit/1658212))
+
+
+
+
+
 # [1.3.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.2.0...v1.3.0) (2019-06-10)
 
 
