@@ -1,4 +1,4 @@
-# `lambda-powertools-middleware-stop-infinite-loop`
+# lambda-powertools-middleware-stop-infinite-loop
 
 A [Middy](https://github.com/middyjs/middy) middleware that will stop an invocation if it's deemed to be part of an infinite loop.
 
