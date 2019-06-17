@@ -12,7 +12,9 @@ if (!process.env.DATADOG_PREFIX) {
   process.env.DATADOG_PREFIX = FUNCTION_NAME + '.'
 }
 
-process.env.DATADOG_TAGS = `awsRegion:${AWS_REGION},functionName:${FUNCTION_NAME},functionVersion:${FUNCTION_VERSION},environment:${ENV}`
+if (!process.env.DATADOG_TAGS) {
+  process.env.DATADOG_TAGS = `awsRegion:${AWS_REGION},functionName:${FUNCTION_NAME},functionVersion:${FUNCTION_VERSION},environment:${ENV}`
+}
 
 module.exports = f => {
   return middy(f)
