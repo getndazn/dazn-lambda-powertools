@@ -1,5 +1,7 @@
 const AWS = require('aws-sdk')
 
+global.console.log = jest.fn()
+
 const mockSendMessage = jest.fn()
 const mockSendMessageBatch = jest.fn()
 AWS.SQS.prototype.sendMessage = mockSendMessage

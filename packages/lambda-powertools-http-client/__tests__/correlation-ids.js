@@ -5,6 +5,8 @@ const nock = require('nock')
 const http = require('https')
 const mockRequest = jest.spyOn(http, 'request')
 
+global.console.log = jest.fn()
+
 const Req = require('../index')
 
 beforeEach(mockRequest.mockClear)

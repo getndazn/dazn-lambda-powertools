@@ -8,7 +8,8 @@ const Log = require('../index')
 CorrelationIds.set('id', '42')
 CorrelationIds.set('name', 'theburningmonk')
 
-const consoleLog = jest.spyOn(global.console, 'log')
+const consoleLog = jest.fn()
+global.console.log = consoleLog
 
 beforeEach(consoleLog.mockReset)
 

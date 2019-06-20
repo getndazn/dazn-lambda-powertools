@@ -16,7 +16,11 @@ process.env.DATADOG_TAGS = `awsRegion:${AWS_REGION},functionName:${FUNCTION_NAME
 
 module.exports = f => {
   return middy(f)
-    .use(captureCorrelationIds({ sampleDebugLogRate: 0.01 }))
-    .use(sampleLogging({ sampleRate: 0.01 }))
+    .use(captureCorrelationIds({
+      sampleDebugLogRate: parseFloat(process.env.SAMPLE_DEBUG_LOG_RATE || '0.01')
+    }))
+    .use(sampleLogging({
+      sampleRate: parseFloat(process.env.SAMPLE_DEBUG_LOG_RATE || '0.01')
+    }))
     .use(logTimeout())
 }

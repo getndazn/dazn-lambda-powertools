@@ -4,6 +4,8 @@ const captureCorrelationIds = require('../index')
 const uuid = require('uuid/v4')
 const _ = require('lodash')
 
+global.console.log = jest.fn()
+
 const invokeHandler = (event, awsRequestId, sampleDebugLogRate, f) => {
   const handler = middy((event, context, cb) => {
     const correlationIds = CorrelationIds.get()

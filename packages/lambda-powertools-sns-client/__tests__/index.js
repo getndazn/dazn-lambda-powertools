@@ -1,5 +1,7 @@
 const AWS = require('aws-sdk')
 
+global.console.log = jest.fn()
+
 const mockPublish = jest.fn()
 AWS.SNS.prototype.publish = mockPublish
 

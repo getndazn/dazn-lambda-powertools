@@ -6,7 +6,8 @@ process.env.STAGE = 'dev'
 
 const Log = require('../index')
 
-const consoleLog = jest.spyOn(global.console, 'log')
+const consoleLog = jest.fn()
+global.console.log = consoleLog
 
 beforeEach(consoleLog.mockClear)
 

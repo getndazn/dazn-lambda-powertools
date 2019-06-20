@@ -1,4 +1,5 @@
-const consoleLog = jest.spyOn(global.console, 'log')
+const consoleLog = jest.fn()
+global.console.log = consoleLog
 
 const middy = require('middy')
 const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')

@@ -48,11 +48,16 @@ const genericObfuscater = (obfuscationFilters, filteringMode, filterOnAfter) => 
 
 const obfuscaterPattern = (obfuscationFilters, f, filterOnAfter = false, filteringMode = FILTERING_MODE.BLACKLIST) => {
   return middy(f)
-    .use(captureCorrelationIds({ sampleDebugLogRate: 0.01 }))
+    .use(captureCorrelationIds({
+      sampleDebugLogRate: parseFloat(process.env.SAMPLE_DEBUG_LOG_RATE || '0.01')
+    }))
     // Ensure that the error part of the code is executed last as middy runs before1 > before2 > before3 > after 3 > after 2 > after 1
     // but runs errors error1 > error2 > error 3.
     .use(errorObfuscater(obfuscationFilters, filteringMode))
-    .use(sampleLogging({ sampleRate: 0.01, obfuscationFilters }))
+    .use(sampleLogging({
+      sampleRate: parseFloat(process.env.SAMPLE_DEBUG_LOG_RATE || '0.01'),
+      obfuscationFilters
+    }))
     .use(genericObfuscater(obfuscationFilters, filteringMode, filterOnAfter))
     .use(logTimeout())
 }
