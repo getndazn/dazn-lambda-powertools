@@ -2,6 +2,7 @@ const consoleLog = jest.spyOn(global.console, 'log')
 
 const middy = require('middy')
 const logTimeoutMiddleware = require('../index')
+const util = require('util')
 
 jest.useFakeTimers()
 
@@ -10,15 +11,20 @@ beforeEach(() => {
 })
 
 const invokeSuccessHandler = async (threshold) => {
+  const context = {
+    awsRequestId: 'test-id',
+    getRemainingTimeInMillis: () => 1000
+  }
+
   const middleware = threshold
     ? logTimeoutMiddleware(threshold)
     : logTimeoutMiddleware()
 
-  const handler = middy(async () => {
-  })
-  handler.use(middleware)
+  const handler = util.promisify(
+    middy(async () => {}).use(middleware)
+  )
 
-  await handler({}, { awsRequestId: 'test-id' }, () => {})
+  await handler({}, context)
 }
 
 const invokeTimedOutHandler = async (event, awsRequestId, threshold) => {
@@ -35,12 +41,21 @@ const invokeTimedOutHandler = async (event, awsRequestId, threshold) => {
     ? 1000 - threshold
     : 990 // default threshold is 10ms
 
-  const handler = middy(async () => {
-    jest.advanceTimersByTime(elapsedTime)
-  })
-  handler.use(middleware)
+  const handler = util.promisify(
+    middy(async () => {
+      jest.advanceTimersByTime(elapsedTime)
+    }).use(middleware)
+  )
 
-  await handler(event, context, () => {})
+  await handler(event, context)
+}
+
+const invokeEmptyContextHandler = async () => {
+  const handler = util.promisify(
+    middy(async () => {}).use(logTimeoutMiddleware())
+  )
+
+  await handler({}, {})
 }
 
 const errorLogWasWritten = (f) => {
@@ -99,6 +114,13 @@ describe('Log timeout middleware', () => {
           expect(JSON.parse(x.invocationEvent)).toEqual(event)
         })
       })
+    })
+  })
+
+  describe('if context does not define a getRemainingTimeInMillis method', () => {
+    it('should skip', async () => {
+      await invokeEmptyContextHandler()
+      expect(consoleLog).not.toBeCalled()
     })
   })
 })

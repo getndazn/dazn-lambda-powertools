@@ -1,16 +1,25 @@
 const Log = require('@perform/lambda-powertools-logger')
 
+const getTimer = (event, context, thresholdMillis) => {
+  if (typeof context.getRemainingTimeInMillis !== 'function') {
+    return null
+  }
+
+  const timeLeft = context.getRemainingTimeInMillis()
+  const timeoutMs = timeLeft - thresholdMillis
+  const timer = setTimeout(() => {
+    const awsRequestId = context.awsRequestId
+    const invocationEvent = JSON.stringify(event)
+    Log.error('invocation timed out', { awsRequestId, invocationEvent })
+  }, timeoutMs)
+
+  return timer
+}
+
 module.exports = (thresholdMillis = 10) => {
   return {
     before: (handler, next) => {
-      const timeLeft = handler.context.getRemainingTimeInMillis()
-      const timeoutMs = timeLeft - thresholdMillis
-      const timer = setTimeout(() => {
-        const awsRequestId = handler.context.awsRequestId
-        const invocationEvent = JSON.stringify(handler.event)
-        Log.error('invocation timed out', { awsRequestId, invocationEvent })
-      }, timeoutMs)
-
+      const timer = getTimer(handler.event, handler.context, thresholdMillis)
       Object.defineProperty(handler.context, 'lambdaPowertoolsLogTimeoutMiddleware', {
         enumerable: false,
         value: { timer }
@@ -19,11 +28,17 @@ module.exports = (thresholdMillis = 10) => {
       next()
     },
     after: (handler, next) => {
-      clearTimeout(handler.context.lambdaPowertoolsLogTimeoutMiddleware.timer)
+      if (handler.context.lambdaPowertoolsLogTimeoutMiddleware.timer) {
+        clearTimeout(handler.context.lambdaPowertoolsLogTimeoutMiddleware.timer)
+      }
+
       next()
     },
     onError: (handler, next) => {
-      clearTimeout(handler.context.lambdaPowertoolsLogTimeoutMiddleware.timer)
+      if (handler.context.lambdaPowertoolsLogTimeoutMiddleware.timer) {
+        clearTimeout(handler.context.lambdaPowertoolsLogTimeoutMiddleware.timer)
+      }
+
       next(handler.error)
     }
   }
