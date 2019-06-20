@@ -7,6 +7,8 @@ const mockRequest = jest.spyOn(http, 'request')
 // mock the metrics module to check if they're invoked
 const Metrics = require('@perform/dazn-datadog-metrics')
 
+global.console.log = jest.fn()
+
 const mockHistogram = jest.fn()
 Metrics.histogram = mockHistogram
 const mockIncrement = jest.fn()

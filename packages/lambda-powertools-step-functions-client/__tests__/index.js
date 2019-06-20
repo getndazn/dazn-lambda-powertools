@@ -1,5 +1,7 @@
 const AWS = require('aws-sdk')
 
+global.console.log = jest.fn()
+
 const mockStartExecution = jest.fn()
 AWS.StepFunctions.prototype.startExecution = mockStartExecution
 

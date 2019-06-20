@@ -1,5 +1,7 @@
 const CorrelationIds = require('../index')
 
+global.console.log = jest.fn()
+
 const suite = (correlationIds) => () => {
   afterEach(correlationIds.clearAll)
   describe('.set', () => {

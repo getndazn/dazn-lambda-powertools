@@ -1,6 +1,8 @@
 const { obfuscate, FILTERING_MODE } = require('../obfuscater')
 const OBFUSCATION_MASK = Object.freeze('******')
 
+global.console.log = jest.fn()
+
 const invokeObfuscater = (event, obfuscationFilters, filteringMode) => {
   return obfuscate(event, obfuscationFilters, filteringMode)
 }

@@ -1,4 +1,5 @@
-const consoleLog = jest.spyOn(global.console, 'log')
+const consoleLog = jest.fn()
+global.console.log = consoleLog
 process.env.LOG_LEVEL = 'INFO'
 const Log = require('@perform/lambda-powertools-logger')
 const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
