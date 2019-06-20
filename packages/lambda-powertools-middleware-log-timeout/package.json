@@ -1,6 +1,6 @@
 {
   "name": "@perform/lambda-powertools-middleware-log-timeout",
-  "version": "1.3.0",
+  "version": "1.4.2",
   "description": "Middy middleware to log an error message when a function times out.",
   "author": "Yan Cui <theburningmonk@gmail.com>",
   "homepage": "https://github.com/getndazn/dazn-lambda-powertools#readme",

@@ -1,6 +1,6 @@
 {
   "name": "@perform/lambda-powertools-pattern-basic",
-  "version": "1.4.0",
+  "version": "1.4.2",
   "description": "Basic template that configures a 1% smaple rate for debug logs",
   "main": "index.js",
   "scripts": {},
@@ -8,7 +8,7 @@
   "author": "Yan Cui",
   "dependencies": {
     "@perform/lambda-powertools-middleware-correlation-ids": "^1.4.0",
-    "@perform/lambda-powertools-middleware-log-timeout": "^1.3.0",
+    "@perform/lambda-powertools-middleware-log-timeout": "^1.4.2",
     "@perform/lambda-powertools-middleware-sample-logging": "^1.3.0",
     "middy": "^0.15.0"
   },
