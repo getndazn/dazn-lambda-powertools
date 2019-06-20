@@ -12,9 +12,24 @@ if (!process.env.DATADOG_PREFIX) {
   process.env.DATADOG_PREFIX = FUNCTION_NAME + '.'
 }
 
-if (!process.env.DATADOG_TAGS) {
-  process.env.DATADOG_TAGS = `awsRegion:${AWS_REGION},functionName:${FUNCTION_NAME},functionVersion:${FUNCTION_VERSION},environment:${ENV}`
+const supplementCsv = (existing, toAdd) => {
+  // existing will be in the format '<key1>:<value1>,<key2>:<value2>'
+  // Map requires as [[key1, value1], [key2, value2]]
+  const existingNormalised = existing.split(',').map(pair => pair.split(':'))
+
+  // Assigning to a map to stop any duplicates keys (existing taking precedence)
+  const allTags = new Map([...toAdd, ...existingNormalised])
+
+  // convert back to original csv format
+  return Array.from(allTags).map(i => i.join(':')).join(',')
 }
+
+process.env.DATADOG_TAGS = supplementCsv(process.env.DATADOG_TAGS, [
+  ['awsRegion', AWS_REGION],
+  ['functionName', FUNCTION_NAME],
+  ['functionVersion', FUNCTION_VERSION],
+  ['environment', ENV]
+])
 
 module.exports = f => {
   return middy(f)
