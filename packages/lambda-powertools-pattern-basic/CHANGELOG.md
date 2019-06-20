@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.4.2...v1.5.0) (2019-06-20)
+
+
+### Features
+
+* support override for sample debug log rate ([cae31bf](https://github.com/getndazn/dazn-lambda-powertools/commit/cae31bf)), closes [#45](https://github.com/getndazn/dazn-lambda-powertools/issues/45)
+
+
+
+
+
 ## [1.4.2](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.4.1...v1.4.2) (2019-06-20)
 
 **Note:** Version bump only for package @perform/lambda-powertools-pattern-basic
