@@ -8,7 +8,7 @@ function addCorrelationIds (correlationIds, messageAttributes) {
   for (const key in ids) {
     attributes[key] = {
       DataType: 'String',
-      StringValue: ids[key]
+      StringValue: `${ids[key]}`
     }
   }
 

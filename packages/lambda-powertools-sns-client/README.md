@@ -4,9 +4,9 @@ SNS client wrapper that knows how to forward correlation IDs (captured via `@per
 
 Main features:
 
-* auto-injects correlation IDs into SNS message when you call `publish`
-
 * direct replacement for `AWS.SNS` client
+* auto-injects correlation IDs into SNS message when you call `publish`
+* allow correlation IDs to be overriden with `publishWithCorrelationIds` (useful when processing batch-based event sources such as SQS and Kinesis, where every record has its own set of correlation IDs)
 
 ## Getting Started
 

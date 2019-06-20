@@ -4,9 +4,9 @@ SQS client wrapper that knows how to forward correlation IDs (captured via `@per
 
 Main features:
 
-* auto-injects correlation IDs into SQS message when you call `sendMessage` or `sendMessageBatch`
-
 * direct replacement for `AWS.SQS` client
+* auto-injects correlation IDs into SQS message when you call `sendMessage` or `sendMessageBatch`
+* allow correlation IDs to be overriden with `sendMessageWithCorrelationIds` and `sendMessageBatchWithCorrelationIds` (useful when processing batch-based event sources such as SQS and Kinesis, where every record has its own set of correlation IDs)
 
 ## Getting Started
 

@@ -41,7 +41,8 @@ describe('SNS client', () => {
       it('forwards them in MessageAttributes', async () => {
         CorrelationIds.replaceAllWith({
           'x-correlation-id': 'id',
-          'debug-log-enabled': 'true'
+          'debug-log-enabled': 'true',
+          'call-chain-length': 1
         })
 
         const params = {
@@ -61,6 +62,10 @@ describe('SNS client', () => {
             'debug-log-enabled': {
               DataType: 'String',
               StringValue: 'true'
+            },
+            'call-chain-length': {
+              DataType: 'String',
+              StringValue: '1'
             }
           }
         })
@@ -72,7 +77,8 @@ describe('SNS client', () => {
     it('forwards given correlationIds in MessageAttributes field', async () => {
       const correlationIds = new CorrelationIds({
         'x-correlation-id': 'child-id',
-        'debug-log-enabled': 'true'
+        'debug-log-enabled': 'true',
+        'call-chain-length': 1
       })
 
       const params = {
@@ -92,6 +98,10 @@ describe('SNS client', () => {
           'debug-log-enabled': {
             DataType: 'String',
             StringValue: 'true'
+          },
+          'call-chain-length': {
+            DataType: 'String',
+            StringValue: '1'
           }
         }
       })
