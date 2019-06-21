@@ -91,6 +91,23 @@ describe('HTTP client (correlationIds)', () => {
         })
       })
     })
+
+    describe('when there are null or undefined correlation IDs', () => {
+      it('does not add them to HTTP headers', async () => {
+        CorrelationIds.replaceAllWith({
+          awsRequestId: undefined,
+          awsRegion: null,
+          'x-correlation-id': 'theburningmonk'
+        })
+
+        await verifyHeaders({}, headers => {
+          expect(headers['x-correlation-id']).toBe('theburningmonk')
+          const headerKeys = Object.keys(headers)
+          expect(headerKeys).not.toContain('awsRequestId')
+          expect(headerKeys).not.toContain('awsRegion')
+        })
+      })
+    })
   })
 
   describe('when the correlationIds option is provided', () => {

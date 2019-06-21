@@ -34,7 +34,10 @@ function getRequest (uri, method) {
 function setHeaders (request, headers) {
   const headerNames = Object.keys(headers)
   headerNames.forEach(h => {
-    request = request.set(h, headers[h])
+    const headerValue = headers[h]
+    if (!!headerValue) {
+      request = request.set(h, headerValue)
+    }
   })
 
   return request
