@@ -77,7 +77,7 @@ describe('HTTP client (metrics)', () => {
       expect(mockHistogram).toBeCalled()
       const [key, value, tags] = mockHistogram.mock.calls[0]
       expect(key).toBe('theburningmonk.com.response.latency')
-      expect(value).toBeLessThan(200) // come on, no way it'll be higher than this with Nock
+      expect(value).toBeLessThan(500) // come on, no way it'll be higher than this with Nock
 
       verifyTags(tags)
     })
@@ -101,7 +101,7 @@ describe('HTTP client (metrics)', () => {
       expect(mockHistogram).toBeCalled()
       const [key, value, tags] = mockHistogram.mock.calls[0]
       expect(key).toBe('theburningmonk.com.response.latency')
-      expect(value).toBeLessThan(200) // come on, no way it'll be higher than this with Nock
+      expect(value).toBeLessThan(500) // come on, no way it'll be higher than this with Nock
 
       verifyTags(tags, 500)
     })
