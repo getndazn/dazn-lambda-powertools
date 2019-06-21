@@ -72,14 +72,14 @@ const invokeKinesisHandler = (event, awsRequestId, sampleDebugLogRate, handlerF,
   })
 }
 
-const apig = require('./apig.json')
+const apig = require('./event_templates/apig.json')
 const genApiGatewayEvent = (correlationIds = {}) => {
   const event = _.cloneDeep(apig)
   event.headers = correlationIds
   return event
 }
 
-const sns = require('./sns.json')
+const sns = require('./event_templates/sns.json')
 const genSnsEvent = (correlationIDs = {}) => {
   const event = _.cloneDeep(sns)
   const messageAttributes = _.mapValues(correlationIDs, value => ({
@@ -92,8 +92,8 @@ const genSnsEvent = (correlationIDs = {}) => {
   return event
 }
 
-const sqs = require('./sqs.json')
-const sqsWithoutRawDelivery = require('./sqs-wrapped-sns.json')
+const sqs = require('./event_templates/sqs.json')
+const sqsWithoutRawDelivery = require('./event_templates/sqs-wrapped-sns.json')
 const genSqsEvent = (wrappedSns, correlationIDs = {}) => {
   if (wrappedSns) {
     const event = _.cloneDeep(sqsWithoutRawDelivery)
@@ -121,7 +121,7 @@ const genSqsEvent = (wrappedSns, correlationIDs = {}) => {
   }
 }
 
-const kinesis = require('./kinesis')
+const kinesis = require('./event_templates/kinesis.json')
 const genKinesisEvent = (correlationIDs = {}) => {
   const event = _.cloneDeep(kinesis)
 
@@ -140,7 +140,7 @@ const genKinesisEventWithoutJSON = (correlationIDs = {}) => {
   return _.cloneDeep(kinesis)
 }
 
-const sfn = require('./sfn.json')
+const sfn = require('./event_templates/sfn.json')
 const genSfnEvent = (correlationIDs = {}) => {
   const event = _.cloneDeep(sfn)
   event.__context__ = correlationIDs
