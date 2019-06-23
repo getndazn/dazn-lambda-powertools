@@ -6,7 +6,7 @@ Main features:
 
 * auto-forwards any correlation IDs captured with the `@perform/lambda-powertools-correlation-ids` package as HTTP headers
 
-* auto-record custom metrics using the `@perform/dazn-datadog-metrics` package, which defaults to async mode (i.e. writing to `stdout` in DogStatsD format) but can be configured via the `DATADOG_METRICS_MODE` environment variable
+* auto-record custom metrics using the `@perform/lambda-powertools-datadog-metrics` package, which defaults to async mode (i.e. writing to `stdout` in DogStatsD format) but can be configured via the `DATADOG_METRICS_MODE` environment variable
 
 * custom metrics include:
 
