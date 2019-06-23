@@ -9,7 +9,7 @@
   "license": "MIT",
   "author": "Yan Cui",
   "dependencies": {
-    "@perform/dazn-datadog-metrics": "^1.0.0",
+    "@perform/lambda-powertools-datadog-metrics": "^1.5.2",
     "@perform/lambda-powertools-correlation-ids": "^1.5.0",
     "superagent": "^3.8.3",
     "superagent-promise": "^1.1.0"

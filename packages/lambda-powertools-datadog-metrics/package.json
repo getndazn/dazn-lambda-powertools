@@ -1,0 +1,25 @@
+{
+  "name": "@perform/lambda-powertools-datadog-metrics",
+  "version": "1.5.2",
+  "description": "Records metrics with Datadog, supports both synchronous (via HTTP) and asynchronous (via Datadog's Lambda integration) modes. Defaults to asynchronous mode.",
+  "author": "Yan Cui <theburningmonk@gmail.com>",
+  "homepage": "https://github.com/getndazn/dazn-lambda-powertools#readme",
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/getndazn/dazn-lambda-powertools.git"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "datadog-metrics": "^0.8.1"
+  },
+  "bugs": {
+    "url": "https://github.com/getndazn/dazn-lambda-powertools/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

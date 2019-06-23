@@ -1,6 +1,6 @@
 const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
 const HTTP = require('superagent-promise')(require('superagent'), Promise)
-const Metrics = require('@perform/dazn-datadog-metrics')
+const Metrics = require('@perform/lambda-powertools-datadog-metrics')
 const URL = require('url')
 
 const AWS_REGION = process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION
@@ -35,7 +35,7 @@ function setHeaders (request, headers) {
   const headerNames = Object.keys(headers)
   headerNames.forEach(h => {
     const headerValue = headers[h]
-    if (!!headerValue) {
+    if (headerValue) {
       request = request.set(h, headerValue)
     }
   })
