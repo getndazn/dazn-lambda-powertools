@@ -100,8 +100,9 @@ describe('HTTP client (correlationIds)', () => {
           'x-correlation-id': 'theburningmonk'
         })
 
-        await verifyHeaders({}, headers => {
+        await verifyHeaders({ 'zero': 0 }, headers => {
           expect(headers['x-correlation-id']).toBe('theburningmonk')
+          expect(headers['zero']).toBe(0)
           const headerKeys = Object.keys(headers)
           expect(headerKeys).not.toContain('awsRequestId')
           expect(headerKeys).not.toContain('awsRegion')
