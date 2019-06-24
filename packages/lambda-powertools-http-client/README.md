@@ -20,6 +20,8 @@ Main features:
 
 * you can add additional tags by passing them in via the `metricTags` option (see below for details)
 
+* supports timeout
+
 ## Getting Started
 
 Install from NPM: `npm install @perform/lambda-powertools-http-client`
@@ -53,5 +55,6 @@ It's essentially a function that accepts a request of type:
   body    : object
   metricName [optional] : string     // override the default metric name, e.g. 'adyenApi', which changes metrics to 'adyenapi.latency' and 'adyenapi.202'
   metricTags [optional] : string []  // additional tags for metrics, e.g. ['request_type:submit', 'load_test']
+  timeout [optional] : int (millis)
 }
 ```
