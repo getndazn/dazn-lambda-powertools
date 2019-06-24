@@ -32,7 +32,7 @@ describe('basic pattern', () => {
   describe('when there are no overrides', () => {
     it('should set sample debug log rate to 0.01', async () => {
       const wrap = require('../index')
-      const handler = util.promisify(wrap(async () => {}))
+      const handler = util.promisify(wrap(async () => { }))
       await handler({}, {})
       expect(CaptureCorrelationIds).toHaveBeenCalledWith({ sampleDebugLogRate: 0.01 })
       expect(SampleLogging).toHaveBeenCalledWith({ sampleRate: 0.01 })
@@ -46,7 +46,7 @@ describe('basic pattern', () => {
 
     it('should set sample debug log rate to 0.03', async () => {
       const wrap = require('../index')
-      const handler = util.promisify(wrap(async () => {}))
+      const handler = util.promisify(wrap(async () => { }))
       await handler({}, {})
       expect(CaptureCorrelationIds).toHaveBeenCalledWith({ sampleDebugLogRate: 0.03 })
       expect(SampleLogging).toHaveBeenCalledWith({ sampleRate: 0.03 })
