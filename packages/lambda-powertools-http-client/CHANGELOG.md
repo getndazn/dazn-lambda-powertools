@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.6.0...v1.6.1) (2019-06-25)
+
+
+### Bug Fixes
+
+* fixed overly aggressive null/undefined check ([f0e2047](https://github.com/getndazn/dazn-lambda-powertools/commit/f0e2047)), closes [#64](https://github.com/getndazn/dazn-lambda-powertools/issues/64)
+
+
+
+
+
 # [1.6.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.5.2...v1.6.0) (2019-06-24)
 
 
