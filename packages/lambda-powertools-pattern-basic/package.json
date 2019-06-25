@@ -1,6 +1,6 @@
 {
   "name": "@perform/lambda-powertools-pattern-basic",
-  "version": "1.5.0",
+  "version": "1.7.0",
   "description": "Basic template that configures a 1% smaple rate for debug logs",
   "main": "index.js",
   "scripts": {
