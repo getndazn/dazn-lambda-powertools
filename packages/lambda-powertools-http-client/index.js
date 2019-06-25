@@ -35,7 +35,7 @@ function setHeaders (request, headers) {
   const headerNames = Object.keys(headers)
   headerNames.forEach(h => {
     const headerValue = headers[h]
-    if (headerValue) {
+    if (headerValue !== null && headerValue !== undefined) {
       request = request.set(h, headerValue)
     }
   })
