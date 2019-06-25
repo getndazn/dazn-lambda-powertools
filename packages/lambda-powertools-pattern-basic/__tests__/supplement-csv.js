@@ -13,7 +13,11 @@ describe('supplement csv', () => {
     it('should return csv string of key value pairs provided', () => {
       const expected = 'key1:value1,key2:value2,key3:value3'
       const inputs = {
-        additional: 'key1:value1,key2:value2,key3:value3'
+        additional: {
+          key1: 'value1',
+          key2: 'value2',
+          key3: 'value3'
+        }
       }
 
       const actual = supplementCsv(inputs)
@@ -37,35 +41,102 @@ describe('supplement csv', () => {
 
   describe('when there is an existing csv string', () => {
     it('should supplement with items to add', () => {
-      const expected = 'key1:value1,key2:value2,key3:value3,key4:value4,key5:value5,key6:value6'.split(',')
+      const expected = [
+        'key1:value1',
+        'key2:value2',
+        'key3:value3',
+        'key4:value4',
+        'key5:value5',
+        'key6:value6'
+      ]
+
       const inputs = {
         existing: 'key1:value1,key2:value2,key3:value3',
-        additional: 'key4:value4,key5:value5,key6:value6'
+        additional: {
+          key4: 'value4',
+          key5: 'value5',
+          key6: 'value6'
+        }
       }
 
-      const actual = supplementCsv(inputs).split(',')
+      const actual = supplementCsv(inputs)
 
-      actual.forEach(pair => {
-        expect(expected).toContainEqual(pair)
-      })
-
-      expect(actual.length).toEqual(expected.length)
+      expected.forEach(value =>
+        expect(actual).toEqual(expect.stringContaining(value))
+      )
     })
 
     it('should not overwrite existing keys with items to add', () => {
-      const expected = 'key1:value1,key2:value2,key3:value3,key5:value5,key6:value6'.split(',')
+      const expected = [
+        'key1:value1',
+        'key2:value2',
+        'key3:value3',
+        'key5:value5',
+        'key6:value6'
+      ]
+
       const inputs = {
         existing: 'key1:value1,key2:value2,key3:value3',
-        additional: 'key1:newValue1,key5:value5,key6:value6'
+        additional: {
+          key1: 'newValue1',
+          key5: 'value5',
+          key6: 'value6'
+        }
       }
 
-      const actual = supplementCsv(inputs).split(',')
+      const actual = supplementCsv(inputs)
 
-      actual.forEach(pair => {
-        expect(expected).toContainEqual(pair)
-      })
+      expected.forEach(value =>
+        expect(actual).toEqual(expect.stringContaining(value))
+      )
+    })
 
-      expect(actual.length).toEqual(expected.length)
+    it('should allow values that include a colon', () => {
+      const expected = [
+        'key1:value1:subValue1',
+        'key2:value2',
+        'key3:value3',
+        'key5:value5',
+        'key6:value6'
+      ]
+      const inputs = {
+        existing: 'key1:value1:subValue1,key2:value2,key3:value3',
+        additional: {
+          key1: 'newValue1',
+          key5: 'value5',
+          key6: 'value6'
+        }
+      }
+
+      const actual = supplementCsv(inputs)
+
+      expected.forEach(value =>
+        expect(actual).toEqual(expect.stringContaining(value))
+      )
+    })
+
+    it('should allow values with no key', () => {
+      const expected = [
+        'value1',
+        'key2:value2',
+        'key3:value3',
+        'key5:value5',
+        'key6:value6'
+      ]
+
+      const inputs = {
+        existing: 'value1,key2:value2,key3:value3',
+        additional: {
+          key5: 'value5',
+          key6: 'value6'
+        }
+      }
+
+      const actual = supplementCsv(inputs)
+
+      expected.forEach(value =>
+        expect(actual).toEqual(expect.stringContaining(value))
+      )
     })
   })
 })

@@ -15,7 +15,12 @@ if (!process.env.DATADOG_PREFIX) {
 
 process.env.DATADOG_TAGS = supplementCsv({
   existing: process.env.DATADOG_TAGS,
-  additional: `awsRegion:${AWS_REGION},functionName:${FUNCTION_NAME},functionVersion:${FUNCTION_VERSION},environment:${ENV}`
+  additional: {
+    awsRegion: AWS_REGION,
+    functionName: FUNCTION_NAME,
+    functionVersion: FUNCTION_VERSION,
+    environment: ENV
+  }
 })
 
 module.exports = f => {
