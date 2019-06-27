@@ -1,4 +1,4 @@
-# dazn-datadog-metrics
+# lambda-powertools-datadog-metrics
 
 Helper module for recording metrics with Datadog. It supports both synchronous (via HTTP) and asynchronous (via Datadog's Lambda integration) modes. **Defaults to asynchronous mode.**
 
@@ -24,7 +24,7 @@ Configuration options (environment variables):
 
 ## Getting Started
 
-Install from NPM: `npm install @perform/dazn-datadog-metrics`
+Install from NPM: `npm install @perform/lambda-powertools-datadog-metrics`
 
 ## API
 
@@ -33,11 +33,9 @@ Basic usage looks like this:
 ```js
 // if process.env.DATADOG_METRICS_MODE === 'sync' then this will be recording
 // metrics with the 'datadog-metrics' package, and would require flushing
-// you can use @perform/lambda-powertools-middleware-flush-datadog-metrics to
-// take care of that
 // if process.env.DATADOG_METRICS_MODE === 'async' then metrics would be
 // sent to stdout, using the DogStatsD format
-const Datadog = require('@perform/dazn-datadog-metrics')
+const Datadog = require('@perform/lambda-powertools-datadog-metrics')
 
 Datadog.gauge('key', 42)                        // guage without tags
 Datadog.gauge('key', 42, [ 'tag1', 'tag2:42' ]) // gauge with tags
