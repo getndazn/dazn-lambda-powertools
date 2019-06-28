@@ -35,7 +35,7 @@ function setHeaders (request, headers) {
   const headerNames = Object.keys(headers)
   headerNames.forEach(h => {
     const headerValue = headers[h]
-    if (headerValue) {
+    if (headerValue !== null && headerValue !== undefined) {
       request = request.set(h, headerValue)
     }
   })
@@ -67,6 +67,7 @@ function setBody (request, body) {
 //    body    : object
 //    metricName [optional] : string  (e.g. adyenApi)
 //    metricTags [optional] : string []  (e.g. ['request_type:submit', 'load_test'], by default we add function name, version, HTTP method, path, and response statusCode for you as tags)
+//    timeout [optional] : int (ms)
 //    correlationIds : CorrelationIds (an instance of @perform/lambda-powertools-correlation-ids class)
 //  }
 const Req = (options) => {
@@ -89,6 +90,10 @@ const Req = (options) => {
   request = setHeaders(request, headers)
   request = setQueryStrings(request, options.qs)
   request = setBody(request, options.body)
+
+  if (options.timeout && typeof options.timeout === 'number') {
+    request = request.timeout({ deadline: options.timeout })
+  }
 
   const start = Date.now()
   const url = new URL.URL(options.uri)

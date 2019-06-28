@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.6.1...v1.7.0) (2019-06-25)
+
+
+### Bug Fixes
+
+* fixes datadog tags overwritten ([7312901](https://github.com/getndazn/dazn-lambda-powertools/commit/7312901))
+* supplements existing datadog tags with our own ([d78bd77](https://github.com/getndazn/dazn-lambda-powertools/commit/d78bd77))
+
+
+### Features
+
+* allows values with colon and values without keys in csv ([5689eab](https://github.com/getndazn/dazn-lambda-powertools/commit/5689eab))
+* reworked supplementing csv values for datadog metrics ([3ce679b](https://github.com/getndazn/dazn-lambda-powertools/commit/3ce679b))
+
+
+
+
+
 # [1.5.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.4.2...v1.5.0) (2019-06-20)
 
 

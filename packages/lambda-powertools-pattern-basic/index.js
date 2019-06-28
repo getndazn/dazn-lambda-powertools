@@ -2,6 +2,7 @@ const middy = require('middy')
 const sampleLogging = require('@perform/lambda-powertools-middleware-sample-logging')
 const captureCorrelationIds = require('@perform/lambda-powertools-middleware-correlation-ids')
 const logTimeout = require('@perform/lambda-powertools-middleware-log-timeout')
+const supplementCsv = require('./supplement-csv')
 
 const AWS_REGION = process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION
 const FUNCTION_NAME = process.env.AWS_LAMBDA_FUNCTION_NAME
@@ -12,7 +13,15 @@ if (!process.env.DATADOG_PREFIX) {
   process.env.DATADOG_PREFIX = FUNCTION_NAME + '.'
 }
 
-process.env.DATADOG_TAGS = `awsRegion:${AWS_REGION},functionName:${FUNCTION_NAME},functionVersion:${FUNCTION_VERSION},environment:${ENV}`
+process.env.DATADOG_TAGS = supplementCsv({
+  existing: process.env.DATADOG_TAGS,
+  additional: {
+    awsRegion: AWS_REGION,
+    functionName: FUNCTION_NAME,
+    functionVersion: FUNCTION_VERSION,
+    environment: ENV
+  }
+})
 
 module.exports = f => {
   return middy(f)
