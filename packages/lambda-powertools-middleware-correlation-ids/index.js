@@ -1,12 +1,12 @@
 const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
 
-const generic = require('./event_sources/generic')
+const generic = require('./event-sources/generic')
 const eventSources = [
-  require('./event_sources/api_gateway'),
-  require('./event_sources/sns'),
-  require('./event_sources/sqs'),
-  require('./event_sources/kinesis'),
-  require('./event_sources/direct_invoke')
+  require('./event-sources/api-gateway'),
+  require('./event-sources/sns'),
+  require('./event-sources/sqs'),
+  require('./event-sources/kinesis'),
+  require('./event-sources/direct-invoke')
 ]
 
 module.exports = ({ sampleDebugLogRate }) => {

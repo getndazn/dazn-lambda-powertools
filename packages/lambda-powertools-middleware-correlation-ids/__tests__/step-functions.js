@@ -3,7 +3,7 @@ const { standardTests } = require('./lib')
 
 global.console.log = jest.fn()
 
-const sfn = require('./event_templates/sfn.json')
+const sfn = require('./event-templates/sfn.json')
 const genSfnEvent = (correlationIDs = {}) => {
   const event = _.cloneDeep(sfn)
   event.__context__ = correlationIDs

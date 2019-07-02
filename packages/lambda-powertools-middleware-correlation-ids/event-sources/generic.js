@@ -1,5 +1,5 @@
 const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
-const consts = require('./../consts')
+const consts = require('../consts')
 
 function isMatch (event) {
   return true

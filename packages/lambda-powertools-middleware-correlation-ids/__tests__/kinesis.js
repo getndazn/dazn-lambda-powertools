@@ -31,7 +31,7 @@ const invokeKinesisHandler = (event, awsRequestId, sampleDebugLogRate, handlerF,
   })
 }
 
-const kinesis = require('./event_templates/kinesis.json')
+const kinesis = require('./event-templates/kinesis.json')
 const genKinesisEvent = (correlationIDs = {}) => {
   const event = _.cloneDeep(kinesis)
 

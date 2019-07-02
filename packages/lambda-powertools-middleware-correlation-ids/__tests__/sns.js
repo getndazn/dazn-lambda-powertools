@@ -3,7 +3,7 @@ const { standardTests } = require('./lib')
 
 global.console.log = jest.fn()
 
-const sns = require('./event_templates/sns.json')
+const sns = require('./event-templates/sns.json')
 const genSnsEvent = (correlationIDs = {}) => {
   const event = _.cloneDeep(sns)
   const messageAttributes = _.mapValues(correlationIDs, value => ({

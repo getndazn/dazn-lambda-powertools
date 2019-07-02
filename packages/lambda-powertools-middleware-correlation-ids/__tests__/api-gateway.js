@@ -3,7 +3,7 @@ const { standardTests } = require('./lib')
 
 global.console.log = jest.fn()
 
-const apig = require('./event_templates/apig.json')
+const apig = require('./event-templates/apig.json')
 const genApiGatewayEvent = (correlationIds = {}) => {
   const event = _.cloneDeep(apig)
   event.headers = correlationIds

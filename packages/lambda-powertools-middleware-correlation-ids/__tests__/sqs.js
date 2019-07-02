@@ -6,8 +6,8 @@ const captureCorrelationIds = require('../index')
 
 global.console.log = jest.fn()
 
-const sqs = require('./event_templates/sqs.json')
-const sqsWithoutRawDelivery = require('./event_templates/sqs-wrapped-sns.json')
+const sqs = require('./event-templates/sqs.json')
+const sqsWithoutRawDelivery = require('./event-templates/sqs-wrapped-sns.json')
 const genSqsEvent = (wrappedSns, correlationIDs = {}) => {
   if (wrappedSns) {
     const event = _.cloneDeep(sqsWithoutRawDelivery)
