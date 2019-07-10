@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.7.0...v1.8.0) (2019-07-10)
+
+
+### Features
+
+* enable HTTP keep alive on AWS clients ([6a963ac](https://github.com/getndazn/dazn-lambda-powertools/commit/6a963ac)), closes [#66](https://github.com/getndazn/dazn-lambda-powertools/issues/66)
+
+
+
+
+
 # [1.5.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.4.2...v1.5.0) (2019-06-20)
 
 **Note:** Version bump only for package @perform/lambda-powertools-kinesis-client

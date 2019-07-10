@@ -1,6 +1,6 @@
 {
   "name": "@perform/lambda-powertools-logger",
-  "version": "1.5.0",
+  "version": "1.8.0",
   "description": "Logger that is tightly integrated with the rest of the lambda-powertools",
   "main": "index.js",
   "types": "index.d.ts",
