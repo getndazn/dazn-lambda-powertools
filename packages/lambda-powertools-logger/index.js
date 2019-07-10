@@ -123,6 +123,10 @@ class Logger {
   static resetLevel () {
     globalLogger.resetLevel()
   }
+
+  static get level() {
+    return globalLogger.level;
+  }
 }
 
 const globalLogger = new Logger()
