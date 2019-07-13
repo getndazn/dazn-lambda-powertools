@@ -47,12 +47,12 @@ workflows:
   ci:
     jobs:
       - build
-      - test12:
+      - test-12:
           requires:
             - build
-      - test10:
+      - test-10:
           requires:
             - build
-      - test8:
+      - test-8:
           requires:
             - build
