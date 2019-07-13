@@ -1,45 +1,57 @@
 version: 2
-
 references:
-  persist_to_workspace: &persist_to_workspace
+  persist_to_workspace: &PERSIST_TO_WORKSPACE
     persist_to_workspace:
       root: $CIRCLE_WORKING_DIRECTORY
       paths: .
-  attach_workspace: &attach_workspace
+  attach_workspace: &ATTACH_WORKSPACE
     attach_workspace:
       at: $CIRCLE_WORKING_DIRECTORY
-
+commands:
+  run_tests:
+    steps:
+      - run: npm test
 jobs:
   build:
     docker:
       - image: circleci/node:10.15
     steps:
       - checkout
-#     - TODO: .npmrc
+      - run:
+          name: npm auth
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
       - run: npm ci
       - run: npm run install
-      - *persist_to_workspace
-
+      - *PERSIST_TO_WORKSPACE
   test-12:
     docker:
       - image: circleci/node:12
     steps:
-      - *attach_workspace
-      - checkout
-      - run: npm test
-
+      - *ATTACH_WORKSPACE
+      - run_tests
   test-10:
     docker:
       - image: circleci/node:10
     steps:
-      - *attach_workspace
-      - checkout
-      - run: npm test
-
+      - *ATTACH_WORKSPACE
+      - run_tests
   test-8:
     docker:
       - image: circleci/node:8
     steps:
-      - *attach_workspace
-      - checkout
-      - run: npm test
+      - *ATTACH_WORKSPACE
+      - run_tests
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test12:
+          requires:
+            - build
+      - test10:
+          requires:
+            - build
+      - test8:
+          requires:
+            - build
