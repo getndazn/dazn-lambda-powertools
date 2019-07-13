@@ -44,11 +44,9 @@ jobs:
 
 workflows:
   version: 2
-  build:
+  ci:
     jobs:
       - build
-  test:
-    jobs:
       - test12:
           requires:
             - build
