@@ -26,6 +26,8 @@ jobs:
   test-node12:
     docker:
       - image: circleci/node:12
+      - image: circleci/node:10
+      - image: circleci/node:8
     steps:
       - *ATTACH_WORKSPACE
       - run_tests
@@ -64,17 +66,17 @@ workflows:
       - test-node12:
           requires:
             - build
-      - test-node10:
-          requires:
-            - build
-      - test-node8:
-          requires:
-            - build
+#      - test-node10:
+#          requires:
+#            - build
+#      - test-node8:
+#          requires:
+#            - build
       - new-version:
           requires:
             - test-node12
-            - test-node10
-            - test-node8
+#            - test-node10
+#            - test-node8
           filters:
             branches:
               only: master
