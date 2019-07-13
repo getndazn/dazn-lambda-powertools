@@ -19,7 +19,7 @@ jobs:
       - checkout
       - run:
           name: npm auth
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
       - run: npm ci
       - run: npm run install
       - *PERSIST_TO_WORKSPACE
