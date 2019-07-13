@@ -1,0 +1,45 @@
+version: 2
+
+references:
+  persist_to_workspace: &persist_to_workspace
+    persist_to_workspace:
+      root: $CIRCLE_WORKING_DIRECTORY
+      paths: .
+  attach_workspace: &attach_workspace
+    attach_workspace:
+      at: $CIRCLE_WORKING_DIRECTORY
+
+jobs:
+  build:
+    docker:
+      - image: circleci/node:10.15
+    steps:
+      - checkout
+#     - TODO: .npmrc
+      - run: npm ci
+      - run: npm run install
+      - *persist_to_workspace
+
+  test-12:
+    docker:
+      - image: circleci/node:12
+    steps:
+      - *attach_workspace
+      - checkout
+      - run: npm test
+
+  test-10:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - *attach_workspace
+      - checkout
+      - run: npm test
+
+  test-8:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - *attach_workspace
+      - checkout
+      - run: npm test
