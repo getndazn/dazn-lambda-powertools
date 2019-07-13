@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 references:
   persist_to_workspace: &PERSIST_TO_WORKSPACE
     persist_to_workspace:
