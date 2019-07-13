@@ -45,18 +45,18 @@ jobs:
 #    TODO: add GH_TOKEN env var
     docker:
       - image: circleci/node:10
-      steps:
-        - *ATTACH_WORKSPACE
-        - run: git status
-        # git complains if you don't set an email for some reason
-        - run: git config user.email "dazn-bot@dazn.com"
-        - run: npm run new-version
+    steps:
+      - *ATTACH_WORKSPACE
+      - run: git status
+      # git complains if you don't set an email for some reason
+      - run: git config user.email "dazn-bot@dazn.com"
+      - run: npm run new-version
   publish:
     docker:
       - image: circleci/node:10
-      steps:
-        - *ATTACH_WORKSPACE
-        - run: npm run new-version
+    steps:
+      - *ATTACH_WORKSPACE
+      - run: npm run new-version
 workflows:
   main:
     jobs:
