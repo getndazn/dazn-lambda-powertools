@@ -14,7 +14,7 @@ commands:
 jobs:
   build:
     docker:
-      - image: circleci/node:10.15
+      - image: circleci/node:10
     steps:
       - checkout
       - run:
@@ -42,7 +42,6 @@ jobs:
       - *ATTACH_WORKSPACE
       - run_tests
   new-version:
-#    TODO: add GH_TOKEN env var
     docker:
       - image: circleci/node:10
     steps:
