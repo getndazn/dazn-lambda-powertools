@@ -51,6 +51,7 @@ jobs:
       # git complains if you don't set an email for some reason
       - run: git config user.email "dazn-bot@dazn.com"
       - run: npm run new-version
+      - *PERSIST_TO_WORKSPACE
   publish:
     docker:
       - image: circleci/node:10
