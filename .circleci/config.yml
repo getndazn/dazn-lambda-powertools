@@ -1,17 +1,8 @@
 version: 2.1
-references:
-  persist_to_workspace: &PERSIST_TO_WORKSPACE
-    persist_to_workspace:
-      root: ~/project
-      paths: .
-  attach_workspace: &ATTACH_WORKSPACE
-    attach_workspace:
-      at: ~/project
 commands:
-  run_tests:
+  install:
     steps:
       - checkout
-      - run: npm test
       - run:
           name: npm auth
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
@@ -22,32 +13,39 @@ jobs:
     docker:
       - image: circleci/node:12
     steps:
-      - run_tests
+      - install
+      - run: npm test
   test-node10:
     docker:
       - image: circleci/node:10
     steps:
-      - run_tests
+      - install
+      - run: npm test
   test-node8:
     docker:
       - image: circleci/node:8
     steps:
-      - run_tests
+      - install
+      - run: npm test
   new-version:
     docker:
       - image: circleci/node:10
     steps:
       - add_ssh_keys
+      - install
       - run: git status
       # git complains if you don't set an email for some reason
       - run: git config user.email "dazn-bot@dazn.com"
       - run: npm run new-version
-      - *PERSIST_TO_WORKSPACE
+      - persist_to_workspace:
+          root: ~/project
+          paths: .
   publish:
     docker:
       - image: circleci/node:10
     steps:
-      - *ATTACH_WORKSPACE
+      - attach_workspace:
+          at: ~/project
       - run: npm run publish
 workflows:
   main:
