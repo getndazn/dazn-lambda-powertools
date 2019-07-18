@@ -50,9 +50,9 @@ jobs:
 workflows:
   main:
     jobs:
-      - test-node12
-      - test-node10
-      - test-node8
+      - test-node12:
+      - test-node10:
+      - test-node8:
       - new-version:
           requires:
             - test-node12
