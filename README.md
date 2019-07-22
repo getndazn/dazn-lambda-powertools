@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/getndazn/dazn-lambda-powertools.svg?style=svg)](https://circleci.com/gh/getndazn/dazn-lambda-powertools)
+
 # dazn-lambda-power-tools
 
 An integrated suite of powertools for Lambda functions to make it effortless for you to comply with our guidelines around logging and monitoring:
