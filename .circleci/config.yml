@@ -60,7 +60,7 @@ jobs:
       - image: circleci/node:10
     steps:
       - *ATTACH_WORKSPACE
-      - run: npm run new-version
+      - run: npm run publish
 workflows:
   main:
     jobs:
