@@ -1,6 +1,6 @@
 {
   "name": "@perform/lambda-powertools-http-client",
-  "version": "1.6.1",
+  "version": "1.8.1",
   "description": "HTTP client that supports forwarding correlation IDs (captured via @perform/lambda-powertools-correlation-ids) and auto-records metrics",
   "main": "index.js",
   "scripts": {

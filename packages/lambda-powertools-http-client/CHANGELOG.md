@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.8.0...v1.8.1) (2019-07-23)
+
+
+### Bug Fixes
+
+* **http-client:** update metrics package ([0fa03e0](https://github.com/getndazn/dazn-lambda-powertools/commit/0fa03e0))
+
+
+
+
+
 ## [1.6.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.6.0...v1.6.1) (2019-06-25)
 
 
