@@ -48,7 +48,8 @@ jobs:
       - run: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
       - run: git status
       # git complains if you don't set an email for some reason
-      - run: git config user.email "dazn-bot@dazn.com"
+      - run: git config --global user.email "dazn-bot@dazn.com"
+      - run: git config --global user.name "DAZN Bot"
       - run: npm run new-version
       - *PERSIST_TO_WORKSPACE
   publish:
