@@ -1,0 +1,90 @@
+version: 2.1
+references:
+  persist_to_workspace: &PERSIST_TO_WORKSPACE
+    persist_to_workspace:
+      root: ~/project
+      paths: .
+  attach_workspace: &ATTACH_WORKSPACE
+    attach_workspace:
+      at: ~/project
+commands:
+  run_tests:
+    steps:
+      - run: npm test
+jobs:
+  build:
+    docker:
+      - image: circleci/node:10.15
+    steps:
+      - checkout
+      - run: npm ci
+      - run: npm run install
+
+      - *PERSIST_TO_WORKSPACE
+  test-node12:
+    docker:
+      - image: circleci/node:12
+    steps:
+      - *ATTACH_WORKSPACE
+      - run_tests
+  test-node10:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - *ATTACH_WORKSPACE
+      - run_tests
+  test-node8:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - *ATTACH_WORKSPACE
+      - run_tests
+  new-version:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - *ATTACH_WORKSPACE
+      - add_ssh_keys
+      - run: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+      - run: git status
+      # git complains if you don't set an email for some reason
+      - run: git config --global user.email "dazn-bot@dazn.com"
+      - run: git config --global user.name "DAZN Bot"
+      - run: npm run new-version
+      - *PERSIST_TO_WORKSPACE
+  publish:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - *ATTACH_WORKSPACE
+      - run:
+          name: npm auth
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+      - run: npm run publish
+workflows:
+  main:
+    jobs:
+      - build
+      - test-node12:
+          requires:
+            - build
+      - test-node10:
+          requires:
+            - build
+      - test-node8:
+          requires:
+            - build
+      - new-version:
+          requires:
+            - test-node12
+            - test-node10
+            - test-node8
+          filters:
+            branches:
+              only: master
+      - publish:
+          requires:
+            - new-version
+          filters:
+            branches:
+              only: master
