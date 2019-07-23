@@ -17,10 +17,6 @@ jobs:
       - image: circleci/node:10.15
     steps:
       - checkout
-      # TODO: remove npm auth after PR #63 resolution
-      - run:
-          name: npm auth
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
       - run: npm ci
       - run: npm run install
 
@@ -60,6 +56,9 @@ jobs:
       - image: circleci/node:10
     steps:
       - *ATTACH_WORKSPACE
+      - run:
+          name: npm auth
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
       - run: npm run publish
 workflows:
   main:
