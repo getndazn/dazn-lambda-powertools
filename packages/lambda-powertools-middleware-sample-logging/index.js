@@ -1,5 +1,5 @@
-const Log = require('@perform/lambda-powertools-logger')
-const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
+const Log = require('@dazn/lambda-powertools-logger')
+const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
 
 // config should be { sampleRate: double } where sampleRate is between 0.0-1.0
 module.exports = ({ sampleRate }) => {

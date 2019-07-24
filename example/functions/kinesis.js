@@ -1,5 +1,5 @@
-const SNS = require('@perform/lambda-powertools-sns-client')
-const kinesisProcessor = require('@perform/lambda-powertools-pattern-basic')
+const SNS = require('@dazn/lambda-powertools-sns-client')
+const kinesisProcessor = require('@dazn/lambda-powertools-pattern-basic')
 
 module.exports.handler = kinesisProcessor(async (event, context) => {
   const events = context.parsedKinesisEvents

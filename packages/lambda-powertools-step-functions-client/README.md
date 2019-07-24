@@ -1,6 +1,6 @@
 # lambda-powertools-step-functions-client
 
-Step Functions (SFN) client wrapper that knows how to forward correlation IDs (captured via `@perform/lambda-powertools-correlation-ids`).
+Step Functions (SFN) client wrapper that knows how to forward correlation IDs (captured via `@dazn/lambda-powertools-correlation-ids`).
 
 Main features:
 
@@ -10,14 +10,14 @@ Main features:
 
 ## Getting Started
 
-Install from NPM: `npm install @perform/lambda-powertools-step-functions-client`
+Install from NPM: `npm install @dazn/lambda-powertools-step-functions-client`
 
 ## API
 
 It's exactly the same as the Step Functions (SFN) client from the AWS SDK.
 
 ```js
-const SFN = require('@perform/lambda-powertools-step-functions-client')
+const SFN = require('@dazn/lambda-powertools-step-functions-client')
 
 const publishMessage = async () => {
   const req = {

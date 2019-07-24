@@ -6,7 +6,7 @@ const mockPublish = jest.fn()
 AWS.SNS.prototype.publish = mockPublish
 
 const SNS = require('../index')
-const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
+const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
 
 beforeEach(() => {
   mockPublish.mockReturnValueOnce({

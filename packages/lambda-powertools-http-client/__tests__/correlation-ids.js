@@ -1,4 +1,4 @@
-const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
+const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
 const nock = require('nock')
 
 // spy on https.request to see when it's actually called

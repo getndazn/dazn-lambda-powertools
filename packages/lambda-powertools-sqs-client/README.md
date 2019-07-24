@@ -1,6 +1,6 @@
 # lambda-powertools-sqs-client
 
-SQS client wrapper that knows how to forward correlation IDs (captured via `@perform/lambda-powertools-correlation-ids`).
+SQS client wrapper that knows how to forward correlation IDs (captured via `@dazn/lambda-powertools-correlation-ids`).
 
 Main features:
 
@@ -10,14 +10,14 @@ Main features:
 
 ## Getting Started
 
-Install from NPM: `npm install @perform/lambda-powertools-sqs-client`
+Install from NPM: `npm install @dazn/lambda-powertools-sqs-client`
 
 ## API
 
 It's exactly the same as the SQS client from the AWS SDK.
 
 ```js
-const SQS = require('@perform/lambda-powertools-sqs-client')
+const SQS = require('@dazn/lambda-powertools-sqs-client')
 
 const sendMessage = async () => {
   const req = {

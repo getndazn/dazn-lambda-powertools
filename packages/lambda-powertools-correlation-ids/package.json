@@ -1,5 +1,5 @@
 {
-  "name": "@perform/lambda-powertools-correlation-ids",
+  "name": "@dazn/lambda-powertools-correlation-ids",
   "version": "1.5.0",
   "description": "Module for recording correlation IDs",
   "main": "index.js",

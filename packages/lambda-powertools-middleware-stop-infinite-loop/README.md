@@ -8,20 +8,20 @@ Main features:
 
 ## Getting Started
 
-Install from NPM: `npm install @perform/lambda-powertools-middleware-stop-infinite-loop`
+Install from NPM: `npm install @dazn/lambda-powertools-middleware-stop-infinite-loop`
 
 ## API
 
 The middleware accepts an optional constructor parameter `threshold`, which is the max length allowed for the entire call chain.
 
-This middleware is intended to be used alongside `@perform/lambda-powertools-middleware-correlation-ids`, which is responsible for collecting correlation IDs and incrementing the `call-chain-length` (i.e. the number of function invocations that are chained together) at the start of an invocation.
+This middleware is intended to be used alongside `@dazn/lambda-powertools-middleware-correlation-ids`, which is responsible for collecting correlation IDs and incrementing the `call-chain-length` (i.e. the number of function invocations that are chained together) at the start of an invocation.
 
-Because this middleware relies on `@perform/lambda-powertools-middleware-correlation-ids`, it needs to be applied **AFTER** `@perform/lambda-powertools-middleware-correlation-ids` (as seen below).
+Because this middleware relies on `@dazn/lambda-powertools-middleware-correlation-ids`, it needs to be applied **AFTER** `@dazn/lambda-powertools-middleware-correlation-ids` (as seen below).
 
 ```js
 const middy = require('middy')
-const correlationIds = require('@perform/lambda-powertools-middleware-correlation-ids')
-const stopInfiniteLoop = require('@perform/lambda-powertools-middleware-stop-infinite-loop')
+const correlationIds = require('@dazn/lambda-powertools-middleware-correlation-ids')
+const stopInfiniteLoop = require('@dazn/lambda-powertools-middleware-stop-infinite-loop')
 
 const handler = async (event, context) => {
   return 42

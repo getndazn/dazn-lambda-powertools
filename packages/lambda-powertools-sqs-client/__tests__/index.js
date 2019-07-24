@@ -8,7 +8,7 @@ AWS.SQS.prototype.sendMessage = mockSendMessage
 AWS.SQS.prototype.sendMessageBatch = mockSendMessageBatch
 
 const SQS = require('../index')
-const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
+const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
 
 beforeEach(() => {
   mockSendMessage.mockReturnValueOnce({

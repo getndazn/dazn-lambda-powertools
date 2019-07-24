@@ -8,9 +8,9 @@ Main features:
 
 ## Getting Started
 
-Install from NPM: `npm install @perform/lambda-powertools-middleware-log-timeout`
+Install from NPM: `npm install @dazn/lambda-powertools-middleware-log-timeout`
 
-Alternatively, if you use the template `@perform/lambda-powertools-pattern-basic` then this would be configured for you.
+Alternatively, if you use the template `@dazn/lambda-powertools-pattern-basic` then this would be configured for you.
 
 ## API
 
@@ -18,7 +18,7 @@ The middleware accepts an optional constructor parameter `thresholdMillis`, whic
 
 ```js
 const middy = require('middy')
-const logTimeout = require('@perform/lambda-powertools-middleware-log-timeout')
+const logTimeout = require('@dazn/lambda-powertools-middleware-log-timeout')
 
 const handler = async (event, context) => {
   return 42
@@ -30,4 +30,4 @@ module.exports = middy(handler)
 }
 ```
 
-It's **recommended** that you use the `@perform/lambda-powertools-pattern-basic` which configures this middleware along with other useful middlewares.
+It's **recommended** that you use the `@dazn/lambda-powertools-pattern-basic` which configures this middleware along with other useful middlewares.

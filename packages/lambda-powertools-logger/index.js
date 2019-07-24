@@ -1,4 +1,4 @@
-const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
+const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
 
 // Levels here are identical to bunyan practices
 // https://github.com/trentm/node-bunyan#levels
@@ -124,8 +124,8 @@ class Logger {
     globalLogger.resetLevel()
   }
 
-  static get level() {
-    return globalLogger.level;
+  static get level () {
+    return globalLogger.level
   }
 }
 
