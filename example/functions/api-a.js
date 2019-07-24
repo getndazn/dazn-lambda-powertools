@@ -1,9 +1,9 @@
-const Log = require('@perform/lambda-powertools-logger')
-const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
-const Datadog = require('@perform/dazn-datadog-metrics')
-const HTTP = require('@perform/lambda-powertools-http-client')
-const Kinesis = require('@perform/lambda-powertools-kinesis-client')
-const apiGateway = require('@perform/lambda-powertools-pattern-basic')
+const Log = require('@dazn/lambda-powertools-logger')
+const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
+const Datadog = require('@dazn/datadog-metrics')
+const HTTP = require('@dazn/lambda-powertools-http-client')
+const Kinesis = require('@dazn/lambda-powertools-kinesis-client')
+const apiGateway = require('@dazn/lambda-powertools-pattern-basic')
 const uuid = require('uuid/v4')
 
 module.exports.handler = apiGateway(async (event, context) => {

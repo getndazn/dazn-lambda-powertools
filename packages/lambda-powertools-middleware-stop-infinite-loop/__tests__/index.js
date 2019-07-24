@@ -2,7 +2,7 @@ const consoleLog = jest.fn()
 global.console.log = consoleLog
 
 const middy = require('middy')
-const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
+const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
 const stopInfiniteLoop = require('../index')
 
 const invokeHandler = async (event, awsRequestId) => {

@@ -6,7 +6,7 @@ const mockStartExecution = jest.fn()
 AWS.StepFunctions.prototype.startExecution = mockStartExecution
 
 const SFN = require('../index')
-const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
+const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
 
 beforeEach(() => {
   mockStartExecution.mockReturnValueOnce({

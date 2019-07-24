@@ -1,6 +1,6 @@
 # lambda-powertools-logger
 
-Logger that is tightly integrated with the rest of the `lambda-powertools`, and knows to automatically include any correlation IDs that have been captured with `@perform/lambda-powertools-correlation-ids`.
+Logger that is tightly integrated with the rest of the `lambda-powertools`, and knows to automatically include any correlation IDs that have been captured with `@dazn/lambda-powertools-correlation-ids`.
 
 Main features:
 
@@ -16,14 +16,14 @@ Main features:
 
 ## Getting Started
 
-Install from NPM: `npm install @perform/lambda-powertools-logger`
+Install from NPM: `npm install @dazn/lambda-powertools-logger`
 
 ## API
 
 This illustrates the API for logging:
 
 ```js
-const Log = require('@perform/lambda-powertools-logger')
+const Log = require('@dazn/lambda-powertools-logger')
 
 Log.debug('this is a debug message')
 Log.debug('this is a debug message with attributes', { userId: 'theburningmonk' })
@@ -54,12 +54,12 @@ We don't want to leave debug logging ON in production, as there are significant 
 
 Instead, we should sample debug logs for, say, 1% of invocations.
 
-When used with other lambda-powertools, e.g. `@perform/lambda-powertools-middleware-sample-logging`, debug logging can be enabled during an invocation using `enableDebug` function.
+When used with other lambda-powertools, e.g. `@dazn/lambda-powertools-middleware-sample-logging`, debug logging can be enabled during an invocation using `enableDebug` function.
 
-The `@perform/lambda-powertools-middleware-correlation-ids` middleware also supplements this behaviour by allowing you to propagate decisions to enable sample logging as a special correlation IDs. This allows an entire call chain (e.g. API Gateway -> Lambda -> Kinesis -> Lambda -> SNS -> Lambda -> HTTP -> API Gateway -> Lambda) to respect the sampling decisions.
+The `@dazn/lambda-powertools-middleware-correlation-ids` middleware also supplements this behaviour by allowing you to propagate decisions to enable sample logging as a special correlation IDs. This allows an entire call chain (e.g. API Gateway -> Lambda -> Kinesis -> Lambda -> SNS -> Lambda -> HTTP -> API Gateway -> Lambda) to respect the sampling decisions.
 
 ```js
-const Log = require('@perform/lambda-powertools-logger')
+const Log = require('@dazn/lambda-powertools-logger')
 // LOG_LEVEL is set to WARN via serverless.yml
 
 Log.debug('this is not logged')

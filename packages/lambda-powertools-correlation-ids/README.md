@@ -12,12 +12,12 @@ Main features:
 
 ## Getting Started
 
-Install from NPM: `npm install @perform/lambda-powertools-correlation-ids`
+Install from NPM: `npm install @dazn/lambda-powertools-correlation-ids`
 
 ## API
 
 ```js
-const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
+const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
 
 // automatically inserts 'x-correlation-' prefix if not provided
 CorrelationIds.set('id', '12345678') // records id as x-correlation-id
@@ -38,7 +38,7 @@ CorrelationIds.replaceAllWith({  // bypasses the 'x-correlation-' convention
 
 In practice, you're likely to only need `set` when you want to record correlation IDs from your function.
 
-The middleware, `@perform/lambda-powertools-middleware-correlation-ids`, would automatically capture the correlation IDs from the invocation event for supported event sources:
+The middleware, `@dazn/lambda-powertools-middleware-correlation-ids`, would automatically capture the correlation IDs from the invocation event for supported event sources:
 
 * API Gateway (via HTTP headers)
 
@@ -50,14 +50,14 @@ The middleware, `@perform/lambda-powertools-middleware-correlation-ids`, would a
 
 Whilst other power tools would use `get` to make use of the correlation IDs:
 
-* `@perform/lambda-powertools-logger` includes recorded correlation IDs in logs
+* `@dazn/lambda-powertools-logger` includes recorded correlation IDs in logs
 
-* `@perform/lambda-powertools-http-client` includes recorded correlation IDs as HTTP headers when you make a HTTP request
+* `@dazn/lambda-powertools-http-client` includes recorded correlation IDs as HTTP headers when you make a HTTP request
 
-* `@perform/lambda-powertools-sns-client` includes recorded correlation IDs as SNS message attributes when you publish a message to SNS (ie. `SNS.publish`)
+* `@dazn/lambda-powertools-sns-client` includes recorded correlation IDs as SNS message attributes when you publish a message to SNS (ie. `SNS.publish`)
 
-* `@perform/lambda-powertools-kinesis-client` injects recorded correlation IDs as part of the event payload when you publish event(s) to Kinesis (ie. `Kinesis.putRecord` and `Kinesis.putRecords`)
+* `@dazn/lambda-powertools-kinesis-client` injects recorded correlation IDs as part of the event payload when you publish event(s) to Kinesis (ie. `Kinesis.putRecord` and `Kinesis.putRecords`)
 
-* `@perform/lambda-powertools-step-functions-client` injects recorded correlation IDs as part of the payload when you start a Step Functions execution (ie. `SFN.startExecution`)
+* `@dazn/lambda-powertools-step-functions-client` injects recorded correlation IDs as part of the payload when you start a Step Functions execution (ie. `SFN.startExecution`)
 
-* `@perform/lambda-powertools-lambda-client` injects recorded correlation IDs as part of the invocation payload when you invoke a Lambda function directly (ie. `Lambda.invoke` and `Lambda.invokeAsync`)
+* `@dazn/lambda-powertools-lambda-client` injects recorded correlation IDs as part of the invocation payload when you invoke a Lambda function directly (ie. `Lambda.invoke` and `Lambda.invokeAsync`)

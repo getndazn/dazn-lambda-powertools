@@ -1,8 +1,8 @@
 const consoleLog = jest.fn()
 global.console.log = consoleLog
 process.env.LOG_LEVEL = 'INFO'
-const Log = require('@perform/lambda-powertools-logger')
-const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
+const Log = require('@dazn/lambda-powertools-logger')
+const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
 
 const middy = require('middy')
 const sampleLogMiddleware = require('../index')

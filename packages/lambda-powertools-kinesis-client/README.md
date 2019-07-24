@@ -1,6 +1,6 @@
 # lambda-powertools-kinesis-client
 
-Kinesis client wrapper that knows how to forward correlation IDs (captured via `@perform/lambda-powertools-correlation-ids`).
+Kinesis client wrapper that knows how to forward correlation IDs (captured via `@dazn/lambda-powertools-correlation-ids`).
 
 Main features:
 
@@ -10,14 +10,14 @@ Main features:
 
 ## Getting Started
 
-Install from NPM: `npm install @perform/lambda-powertools-kinesis-client`
+Install from NPM: `npm install @dazn/lambda-powertools-kinesis-client`
 
 ## API
 
 It's exactly the same as the Kinesis client from the AWS SDK.
 
 ```js
-const Kinesis = require('@perform/lambda-powertools-kinesis-client')
+const Kinesis = require('@dazn/lambda-powertools-kinesis-client')
 
 const publishEvent = async () => {
   const putRecordReq = {

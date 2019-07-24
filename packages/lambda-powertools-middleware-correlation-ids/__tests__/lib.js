@@ -1,6 +1,6 @@
 const uuid = require('uuid/v4')
 const middy = require('middy')
-const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
+const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
 const captureCorrelationIds = require('../index')
 
 const invokeHandler = (event, awsRequestId, sampleDebugLogRate, f) => {
