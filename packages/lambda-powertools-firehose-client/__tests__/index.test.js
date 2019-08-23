@@ -33,14 +33,16 @@ const verifyPutRecordContext = async (f) => {
     username: 'theburningmonk'
   })
   const params = {
-    Data: data,
+    Record: {
+      Data: data
+    },
     DeliveryStreamName: 'test'
   }
   await Firehose.putRecord(params).promise()
 
   expect(mockPutRecord).toBeCalled()
   const actualParams = mockPutRecord.mock.calls[0][0]
-  const actualData = JSON.parse(actualParams.Data)
+  const actualData = JSON.parse(actualParams.Record.Data)
   f(actualData.__context__)
 }
 
@@ -50,14 +52,16 @@ const verifyPutRecordWithCorrelationIdsContext = async (correlationIds, f) => {
     username: 'theburningmonk'
   })
   const params = {
-    Data: data,
+    Record: {
+      Data: data
+    },
     DeliveryStreamName: 'test'
   }
   await Firehose.putRecordWithCorrelationIds(correlationIds, params).promise()
 
   expect(mockPutRecord).toBeCalled()
   const actualParams = mockPutRecord.mock.calls[0][0]
-  const actualData = JSON.parse(actualParams.Data)
+  const actualData = JSON.parse(actualParams.Record.Data)
   f(actualData.__context__)
 }
 
@@ -143,7 +147,9 @@ describe('Firehose client', () => {
     describe('when payload is not JSON', () => {
       it('does not modify the request', async () => {
         const params = {
-          Data: 'dGhpcyBpcyBub3QgSlNPTg==',
+          Record: {
+            Data: 'dGhpcyBpcyBub3QgSlNPTg=='
+          },
           DeliveryStreamName: 'test'
         }
         await Firehose.putRecord(params).promise()
@@ -156,7 +162,9 @@ describe('Firehose client', () => {
       it('does not modify the request', async () => {
         const params = {
           DeliveryStreamName: 'test',
-          Data: Buffer.from('dGhpcyBpcyBub3QgSlNPTg==', 'base64')
+          Record: {
+            Data: Buffer.from('dGhpcyBpcyBub3QgSlNPTg==', 'base64')
+          }
         }
 
         await Firehose.putRecord(params).promise()

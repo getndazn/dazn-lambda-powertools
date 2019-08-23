@@ -52,10 +52,12 @@ client.putRecord = (...args) => {
 }
 
 client.putRecordWithCorrelationIds = (correlationIds, params, ...args) => {
-  const newData = addCorrelationIds(correlationIds, params.Data)
+  const newData = addCorrelationIds(correlationIds, params.Record.Data)
   const extendedParams = {
     ...params,
-    Data: newData
+    Record: {
+      Data: newData
+    }
   }
 
   return client._putRecord(extendedParams, ...args)
