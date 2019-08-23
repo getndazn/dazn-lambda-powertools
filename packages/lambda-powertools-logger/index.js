@@ -84,11 +84,13 @@ class Logger {
   }
 
   warn (msg, params, err) {
-    this.log('WARN', msg, this.appendError(params, err))
+    const parameters = !err && params instanceof Error ? this.appendError({}, params) : this.appendError(params, err)
+    this.log('WARN', msg, parameters)
   }
 
   error (msg, params, err) {
-    this.log('ERROR', msg, this.appendError(params, err))
+    const parameters = !err && params instanceof Error ? this.appendError({}, params) : this.appendError(params, err)
+    this.log('ERROR', msg, parameters)
   }
 
   enableDebug () {

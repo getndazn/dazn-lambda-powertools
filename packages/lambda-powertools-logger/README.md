@@ -33,10 +33,12 @@ Log.info('this is an info message with attributes', { userId: 'theburningmonk' }
 
 Log.warn('this is a warning message')
 Log.warn('this is a warning message with attributes', { userId: 'theburningmonk' })
+Log.warn('this is a warning message', new Error('oops'))
 Log.warn('this is a warning message with attributes, and error details', { userId: 'theburningmonk' }, new Error('oops'))
 
 Log.error('this is an error message')
 Log.error('this is an error message with attributes', { userId: 'theburningmonk' })
+Log.error('this is an error message', new Error('oops'))
 Log.error('this is an error message with attributes, and error details', { userId: 'theburningmonk' }, new Error('oops'))
 ```
 
