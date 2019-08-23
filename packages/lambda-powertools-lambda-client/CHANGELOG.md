@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.8.3...v1.9.0) (2019-08-23)
+
+**Note:** Version bump only for package @dazn/lambda-powertools-lambda-client
+
+
+
+
+
 ## [1.8.2](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.8.1...v1.8.2) (2019-07-24)
 
 **Note:** Version bump only for package @dazn/lambda-powertools-lambda-client
