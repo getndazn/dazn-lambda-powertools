@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.9.0...v1.9.1) (2019-08-24)
+
+
+### Bug Fixes
+
+* **log-timeout:** check timer is set before attempting to clear ([b2f3c21](https://github.com/getndazn/dazn-lambda-powertools/commit/b2f3c21)), closes [#82](https://github.com/getndazn/dazn-lambda-powertools/issues/82)
+
+
+
+
+
 # [1.9.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.8.3...v1.9.0) (2019-08-23)
 
 **Note:** Version bump only for package @dazn/lambda-powertools-middleware-log-timeout
