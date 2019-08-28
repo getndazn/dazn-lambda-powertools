@@ -1,0 +1,14 @@
+{
+  "name": "layer",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "package": "sam package --template-file template.yml --output-template-file packaged.yml --s3-bucket sar-dazn-lambda-powertools",
+    "publish": "sam publish --template packaged.yml --region us-east-1"
+  },
+  "keywords": [],
+  "author": "Yan Cui",
+  "license": "MIT"
+}

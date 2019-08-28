@@ -1,0 +1,35 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: dazn-lambda-powertools
+    Description: >
+      An integrated suite of powertools for Lambda functions to make it easy for you to 
+      implement structured logging, tracking correlation IDs, log sampling and much more.
+    Author: DAZN
+    SpdxLicenseId: MIT
+    LicenseUrl: ../LICENSE
+    ReadmeUrl: ../README.md
+    Labels: ['lambda', 'powertools', 'nodejs', 'middleware', 'logging']
+    HomePageUrl: https://github.com/getndazn/dazn-lambda-powertools
+    SemanticVersion: 1.9.1
+    SourceCodeUrl: https://github.com/getndazn/dazn-lambda-powertools
+
+Resources:
+  DaznLambdaPowertools:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: dazn-lambda-powertools
+      Description: DAZN lambda powertools
+      ContentUri: layer.zip
+      CompatibleRuntimes:
+        - nodejs8.10
+        - nodejs10.x
+      LicenseInfo: https://raw.githubusercontent.com/getndazn/dazn-lambda-powertools/master/LICENSE
+      RetentionPolicy: Retain
+
+Outputs:
+  LayerVersion:
+    Description: Layer ARN Reference
+    Value: !Ref DaznLambdaPowertools
