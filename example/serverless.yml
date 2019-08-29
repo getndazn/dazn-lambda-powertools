@@ -14,6 +14,10 @@ provider:
     DATADOG_API_KEY: idunno
     DATADOG_PREFIX: lambda-powertools-demo.
 
+custom:
+  pseudoParameters:
+    allowReferences: true
+
 functions:
   api-a:
     handler: functions/api-a.handler
@@ -21,12 +25,23 @@ functions:
       - http:
           path: /
           method: get
+    environment:
+      KINESIS_STREAM: 
+        Ref: KinesisStream
+      FIREHOSE_STREAM: 
+        Ref: FirehoseStream
     iamRoleStatements:
       - Effect: Allow
         Action: kinesis:PutRecord
         Resource: 
           Fn::GetAtt:
             - KinesisStream
+            - Arn
+      - Effect: Allow
+        Action: firehose:PutRecord
+        Resource: 
+          Fn::GetAtt:
+            - FirehoseStream
             - Arn
   
   api-b:
@@ -76,6 +91,17 @@ functions:
             - StandDashaloneLambdaFunction
             - Arn
 
+  firehose:
+    handler: functions/firehose.handler
+    environment:
+      TOPIC_ARN:
+        Ref: SnsTopic
+    iamRoleStatements:
+      - Effect: Allow
+        Action: sns:Publish
+        Resource:
+          Ref: SnsTopic
+
   stand-alone:
     handler: functions/stand-alone.handler
 
@@ -95,12 +121,14 @@ stepFunctions:
         States:
           Add:
             Type: Task
-            Resource: arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:service}-dev-add
+            Resource:
+              Fn::GetAtt: [add, Arn]
             ResultPath: $.z
             Next: Double
           Double:
             Type: Task
-            Resource: arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:service}-dev-double
+            Resource:
+              Fn::GetAtt: [double, Arn]
             ResultPath: $.result
             End: true
 
@@ -109,8 +137,79 @@ resources:
     KinesisStream:
       Type: AWS::Kinesis::Stream
       Properties: 
-        Name: lambda-powertools-demo
         ShardCount: 1
+
+    S3Bucket:
+      Type: AWS::S3::Bucket
+
+    FirehoseDeliveryIamRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service: firehose.amazonaws.com
+              Action: sts:AssumeRole
+        Path: "/"
+        Policies:
+          - PolicyName: root
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action: glue:GetTableVersions
+                  Resource: "*"
+                - Effect: Allow
+                  Action:
+                    - s3:AbortMultipartUpload
+                    - s3:GetBucketLocation
+                    - s3:GetObject
+                    - s3:ListBucket
+                    - s3:ListBucketMultipartUploads
+                    - s3:PutObject
+                  Resource:
+                    - "#{S3Bucket.Arn}"
+                    - "#{S3Bucket.Arn}/*"
+                - Effect: Allow
+                  Action:
+                    - kinesis:DescribeStream
+                    - kinesis:GetShardIterator
+                    - kinesis:GetRecords
+                  Resource: arn:aws:kinesis:#{AWS::Region}:#{AWS::AccountId}:stream/%FIREHOSE_STREAM_NAME%
+                - Effect: Allow
+                  Action:
+                    - lambda:InvokeFunction
+                    - lambda:GetFunctionConfiguration
+                  Resource:
+                    - arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:%FIREHOSE_DEFAULT_FUNCTION%:%FIREHOSE_DEFAULT_VERSION%
+                    - "#{FirehoseLambdaFunction.Arn}"
+
+    FirehoseStream:
+      Type: AWS::KinesisFirehose::DeliveryStream
+      Properties:
+        DeliveryStreamType: DirectPut
+        ExtendedS3DestinationConfiguration:
+          BucketARN:
+            Fn::GetAtt: [S3Bucket, Arn]
+          BufferingHints:
+            IntervalInSeconds: 60
+            SizeInMBs: 5
+          CloudWatchLoggingOptions:
+            Enabled: false
+          CompressionFormat: GZIP
+          Prefix: ""
+          RoleARN: 
+            Fn::GetAtt: [FirehoseDeliveryIamRole, Arn]
+          ProcessingConfiguration:
+            Enabled: true
+            Processors:
+              - Type: Lambda
+                Parameters:
+                  - ParameterName: LambdaArn
+                    ParameterValue: 
+                      Fn::GetAtt: [FirehoseLambdaFunction, Arn]
 
     SnsTopic:
       Type: AWS::SNS::Topic      

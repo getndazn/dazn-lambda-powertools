@@ -6,6 +6,7 @@ const eventSources = [
   require('./event-sources/sns'),
   require('./event-sources/sqs'),
   require('./event-sources/kinesis'),
+  require('./event-sources/firehose'),
   require('./event-sources/direct-invoke')
 ]
 

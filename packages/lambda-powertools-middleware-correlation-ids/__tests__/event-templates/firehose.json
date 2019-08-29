@@ -1,0 +1,12 @@
+{
+  "invocationId": "bccf5b1a-e1fa-4d67-8768-2cf8fc8ea12b",
+  "deliveryStreamArn": "arn:aws:firehose:eu-west-2:374852340823:deliverystream/lambda-powertools-demo-dev-FirehoseStream-1W6KFW0PGM2PQ",
+  "region": "eu-west-2",
+  "records": [
+      {
+          "recordId": "49598839143799596963016290027566258010016840765054910466000000",
+          "approximateArrivalTimestamp": 1566603777401,
+          "data": ""
+      }
+  ]
+}
