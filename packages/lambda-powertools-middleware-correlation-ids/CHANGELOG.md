@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.9.1...v1.10.0) (2019-08-29)
+
+
+### Features
+
+* **firehose:** add middleware support for firehose ([4a8803c](https://github.com/getndazn/dazn-lambda-powertools/commit/4a8803c)), closes [#27](https://github.com/getndazn/dazn-lambda-powertools/issues/27)
+
+
+
+
+
 # [1.9.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.8.3...v1.9.0) (2019-08-23)
 
 **Note:** Version bump only for package @dazn/lambda-powertools-middleware-correlation-ids
