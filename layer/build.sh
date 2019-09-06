@@ -31,5 +31,7 @@ echo "incrementing template.yml's version"
 PATTERN="<VERSION>"
 sed "s/${PATTERN}/${VERSION}/g" template.txt >> template.yml
 
+zip -r layer.zip nodejs
+
 npm run package
 npm run publish
