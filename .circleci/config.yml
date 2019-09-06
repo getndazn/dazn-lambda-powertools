@@ -61,6 +61,16 @@ jobs:
           name: npm auth
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
       - run: npm run publish
+  publish-layer:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - *ATTACH_WORKSPACE
+      - run:
+          name: Install jq
+          command: sudo apt-get install jq
+      - run: cd layer
+      - run: build.sh
 workflows:
   main:
     jobs:

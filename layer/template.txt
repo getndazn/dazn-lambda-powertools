@@ -13,7 +13,7 @@ Metadata:
     ReadmeUrl: ../README.md
     Labels: ['lambda', 'powertools', 'nodejs', 'middleware', 'logging']
     HomePageUrl: https://github.com/getndazn/dazn-lambda-powertools
-    SemanticVersion: 1.9.1
+    SemanticVersion: <VERSION>
     SourceCodeUrl: https://github.com/getndazn/dazn-lambda-powertools
 
 Resources:
