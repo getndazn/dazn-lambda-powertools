@@ -69,6 +69,9 @@ jobs:
       - run:
           name: Install jq
           command: sudo apt-get install jq
+      - run:
+          name: Install sed
+          command: sudo apt-get install sed
       - run: cd layer
       - run: build.sh
 workflows:
