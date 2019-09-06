@@ -1,14 +1,16 @@
 const SNS = require('@dazn/lambda-powertools-sns-client')
-const kinesisProcessor = require('@dazn/lambda-powertools-pattern-basic')
+const firehoseProcessor = require('@dazn/lambda-powertools-pattern-basic')
 
-module.exports.handler = kinesisProcessor(async (event, context) => {
-  const events = context.parsedKinesisEvents
+module.exports.handler = firehoseProcessor(async (event, context) => {
+  console.log(JSON.stringify(event))
+
+  const events = context.parsedFirehoseEvents
 
   await Promise.all(events.map(evt => {
-    evt.correlationIds.set('sns-sender', 'kinesis')
+    evt.correlationIds.set('sns-sender', 'firehose')
 
     // event has a `logger` attached to it, with the specific correlation IDs for that record
-    evt.logger.debug('publishing kinesis event as SNS message...', { event: evt })
+    evt.logger.debug('publishing firehose event as SNS message...', { event: evt })
 
     const req = {
       Message: JSON.stringify(evt),

@@ -38,6 +38,8 @@ An integrated suite of powertools for Lambda functions to make it effortless for
 
 * [Kinesis client](/packages/lambda-powertools-kinesis-client): Kinesis client that automatically forwards any correlation IDs you have captured or created when you publish record(s) to a Kinesis stream
 
+* [Firehose client](/packages/lambda-powertools-firehose-client): Firehose client that automatically forwards any correlation IDs you have captured or created when you publish record(s) to a Firehose delivery stream
+
 * [Step Functions client](/packages/lambda-powertools-step-functions-client): Step Functions client that automatically forwards any correlation IDs you have captured or created when you start an execution
 
 * [Lambda client](/packages/lambda-powertools-lambda-client): Lambda client that automatically forwards any correlation IDs you have captured or created when you invokes a Lambda function directly
@@ -52,11 +54,11 @@ An integrated suite of powertools for Lambda functions to make it effortless for
 
 Compliance with our guidelines around logging and monitoring should be the default behaviour. These tools make it simple for you to **do the right thing** and **gets out of your way** as much as possible.
 
-Individually they are useful on their own right, but together they're so much more useful!
+Individually they are useful in their own right, but together they're so much more useful!
 
 The middlewares capture incoming correlation IDs, and the logger automatically includes them in every log message, and the other clients (HTTP, Kinesis, SNS, etc.) would also automatically forward them on to external systems.
 
-Even if your function doens't do anything with correlation IDs, the tools make sure that it behalves correctly as these correlation IDs flows through it.
+Even if your function doesn't do anything with correlation IDs, the tools make sure that it behaves correctly as these correlation IDs flow through it.
 
 ![](powertools-illustrated.png)
 
