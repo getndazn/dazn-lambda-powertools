@@ -101,3 +101,9 @@ workflows:
           filters:
             branches:
               only: master
+      - publish-layer:
+          requires:
+            - publish
+          filters:
+            branches:
+              only: master
