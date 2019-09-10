@@ -88,6 +88,8 @@ DaznLambdaPowertoolsLayer:
 
 and reference the output `Outputs.LayerVersion` to get the ARN of the layer to reference in your function. e.g. `Fn::GetAtt: [DaznLambdaPowertoolsLayer, Outputs.LayerVersion]`.
 
+You can find the latest version of the SAR app in the `lerna.json` file [here](/lerna.json), in the `version` property.
+
 ## Design goal
 
 Compliance with our guidelines around logging and monitoring should be the default behaviour. These tools make it simple for you to **do the right thing** and **gets out of your way** as much as possible.
