@@ -14,8 +14,14 @@ Alternatively, if you use the template `@dazn/lambda-powertools-pattern-basic` t
 
 ## API
 
-The middleware accepts an optional constructor parameter `thresholdMillis`, which is the number of millis before an invocation is timed out, that an error message is logged. `thresholdMillis` defaults to **10ms**.
-
+The middleware accepts the following optional constructor parameters:
+- `thresholdMillis` 
+  - number of millis before an invocation is timed out, that an error message is logged. [default: **10ms**]
+- `customLogger` 
+  - custom logging function which will be invoked when a timeout occurs. [default: `Log.error('invocation timed out', { awsRequestId, invocationEvent })`]
+  - function will be invoked with `(event, context)` as input params
+  
+Default configuration:
 ```js
 const middy = require('middy')
 const logTimeout = require('@dazn/lambda-powertools-middleware-log-timeout')
@@ -29,5 +35,30 @@ module.exports = middy(handler)
   .use(logTimeout()) // defaults to 10ms
 }
 ```
+
+Custom configuration:
+```js
+const middy = require('middy')
+const logTimeout = require('@dazn/lambda-powertools-middleware-log-timeout')
+const metrics = require('@dazn/datadog-metrics');
+
+const handler = async (event, context) => {
+  return 42
+}
+
+module.exports = middy(handler)
+  // log the timeout error message 50ms before invocation times out
+  .use(logTimeout(50, (event, context) => {
+    // construct custom log messages
+    console.log(JSON.stringify({
+      message: 'custom log',
+      invocationEvent: event,
+      awsRequestId: context.awsRequestId
+    }))
+    metrics.increment('failed.timeout', 1);
+  })
+}
+```
+
 
 It's **recommended** that you use the `@dazn/lambda-powertools-pattern-basic` which configures this middleware along with other useful middlewares.

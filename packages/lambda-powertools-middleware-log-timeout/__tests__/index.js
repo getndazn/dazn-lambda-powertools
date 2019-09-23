@@ -11,14 +11,14 @@ beforeEach(() => {
   consoleLog.mockClear()
 })
 
-const invokeSuccessHandler = async (threshold) => {
+const invokeSuccessHandler = async (threshold, customLogger) => {
   const context = {
     awsRequestId: 'test-id',
     getRemainingTimeInMillis: () => 1000
   }
 
-  const middleware = threshold
-    ? logTimeoutMiddleware(threshold)
+  const middleware = threshold || customLogger
+    ? logTimeoutMiddleware(threshold, customLogger)
     : logTimeoutMiddleware()
 
   const handler = util.promisify(
@@ -28,14 +28,14 @@ const invokeSuccessHandler = async (threshold) => {
   await handler({}, context)
 }
 
-const invokeTimedOutHandler = async (event, awsRequestId, threshold) => {
+const invokeTimedOutHandler = async (event, awsRequestId, threshold, customLogger) => {
   const context = {
     awsRequestId,
     getRemainingTimeInMillis: () => 1000
   }
 
-  const middleware = threshold
-    ? logTimeoutMiddleware(threshold)
+  const middleware = threshold || customLogger
+    ? logTimeoutMiddleware(threshold, customLogger)
     : logTimeoutMiddleware()
 
   const elapsedTime = threshold
@@ -114,6 +114,38 @@ describe('Log timeout middleware', () => {
           expect(x.invocationEvent).toBeDefined()
           expect(JSON.parse(x.invocationEvent)).toEqual(event)
         })
+      })
+    })
+  })
+
+  describe('custom logger', () => {
+    describe('when function finishes successfully', () => {
+      it('does not log anything', async () => {
+        await invokeSuccessHandler(150, () => {
+          console.log('do-not-call')
+        })
+        expect(consoleLog).not.toBeCalled()
+      })
+    })
+
+    describe('when function times out', () => {
+      it('logs an error message', async () => {
+        const event = { test: 'wat' }
+        const awsRequestId = 'test-id'
+
+        await invokeTimedOutHandler(event, awsRequestId, 150, (event, context) => {
+          console.log(JSON.stringify({
+            message: 'test',
+            invocationEvent: event,
+            awsRequestId: context.awsRequestId
+          }))
+        })
+
+        expect(consoleLog).toBeCalled()
+        const log = JSON.parse(consoleLog.mock.calls[0])
+        expect(log.message).toBe('test')
+        expect(log.awsRequestId).toBe(awsRequestId)
+        expect(log.invocationEvent).toBeDefined()
       })
     })
   })

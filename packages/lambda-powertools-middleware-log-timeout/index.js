@@ -1,6 +1,6 @@
 const Log = require('@dazn/lambda-powertools-logger')
 
-const createTimer = (event, context, thresholdMillis) => {
+const createTimer = (event, context, thresholdMillis, customLogger) => {
   if (typeof context.getRemainingTimeInMillis !== 'function') {
     return null
   }
@@ -10,9 +10,12 @@ const createTimer = (event, context, thresholdMillis) => {
   const timer = setTimeout(() => {
     const awsRequestId = context.awsRequestId
     const invocationEvent = JSON.stringify(event)
-    Log.error('invocation timed out', { awsRequestId, invocationEvent })
+    if (customLogger) {
+      customLogger(event, context)
+    } else {
+      Log.error('invocation timed out', { awsRequestId, invocationEvent })
+    }
   }, timeoutMs)
-
   return timer
 }
 
@@ -21,10 +24,10 @@ const hasTimer = (context) => {
     context.lambdaPowertoolsLogTimeoutMiddleware.timer
 }
 
-module.exports = (thresholdMillis = 10) => {
+module.exports = (thresholdMillis = 10, customLogger) => {
   return {
     before: (handler, next) => {
-      const timer = createTimer(handler.event, handler.context, thresholdMillis)
+      const timer = createTimer(handler.event, handler.context, thresholdMillis, customLogger)
       Object.defineProperty(handler.context, 'lambdaPowertoolsLogTimeoutMiddleware', {
         enumerable: false,
         value: { timer }
