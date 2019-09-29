@@ -9,8 +9,8 @@
   "license": "MIT",
   "author": "Yan Cui",
   "dependencies": {
-    "@perform/lambda-powertools-correlation-ids": "^1.5.0",
-    "@perform/lambda-powertools-logger": "^1.8.0",
+    "@dazn/lambda-powertools-correlation-ids": "^1.5.0",
+    "@dazn/lambda-powertools-logger": "^1.8.0",
     "aws-sdk": "^2.496.0"
   },
   "devDependencies": {

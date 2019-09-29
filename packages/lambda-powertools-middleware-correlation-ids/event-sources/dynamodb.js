@@ -1,6 +1,6 @@
 const dynamo = require('aws-sdk/clients/dynamodb')
-const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
-const Log = require('@perform/lambda-powertools-logger')
+const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
+const Log = require('@dazn/lambda-powertools-logger')
 const consts = require('../consts')
 
 function isMatch (event) {
@@ -38,6 +38,7 @@ function captureCorrelationIds ({ Records }, context, sampleDebugLogRate) {
 
       // delete __context__ from old image if any as its no longer relevant
       if (event.dynamodb.hasOwnProperty('OldImage') &&
+        event.dynamodb.hasOwnProperty('NewImage') &&
         event.dynamodb.NewImage.hasOwnProperty('__context__')) {
         delete event.dynamodb.OldImage.__context__
       }
