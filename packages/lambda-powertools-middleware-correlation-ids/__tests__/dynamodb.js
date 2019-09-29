@@ -49,9 +49,13 @@ const genDynamoEvent = (correlationIDs = {}) => {
   return event
 }
 
-// const genDynamoEventWithoutJSON = (correlationIDs = {}) => {
-//   return _.cloneDeep(dynamo)
-// }
+const genDynamoEventWithoutNewImage = (correlationIDs = {}) => {
+  const event = _.cloneDeep(dynamo)
+  const record = event.Records[0]
+  delete record.dynamodb.NewImage
+
+  return event
+}
 
 const dynamoTests = () => {
   describe('when sampleDebugLogRate = 0', () => {
@@ -70,20 +74,22 @@ const dynamoTests = () => {
     })
   })
 
-  // describe('when event lacks JSON payload', () => {
-  //   it('should ignore the event', () => {
-  //     const requestId = uuid()
-  //     invokeDynamoHandler(genDynamoEventWithoutJSON(), requestId, 0,
-  //       x => {
-  //         expect(x['awsRequestId']).toBe(requestId)
-  //         expect(x['debug-log-enabled']).toBe('false')
-  //       },
-  //       parsedRecord => {
-  //         // We didn't parse any records as they were json.
-  //         expect(parsedRecord).toBeUndefined()
-  //       })
-  //   })
-  // })
+  describe('when event lacks NewImage', () => {
+    it('should set default correlation id', () => {
+      const requestId = uuid()
+      invokeDynamoHandler(genDynamoEventWithoutNewImage(), requestId, 0,
+        x => {
+          expect(x['awsRequestId']).toBe(requestId)
+          expect(x['debug-log-enabled']).toBe('false')
+        },
+        record => {
+          const x = record.correlationIds.get()
+          // correlation IDs at the record level should just take from the handler
+          expect(x['x-correlation-id']).toBe(requestId)
+          expect(x['awsRequestId']).toBe(requestId)
+        })
+    })
+  })
 
   describe('when sampleDebugLogRate = 1', () => {
     it('always sets debug-log-enabled to true', () => {
@@ -211,6 +217,6 @@ const dynamoTests = () => {
   })
 }
 
-describe('Correlation IDs middleware (Kinesis)', () => {
+describe('Correlation IDs middleware (Dynamo)', () => {
   dynamoTests()
 })
