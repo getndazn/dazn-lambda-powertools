@@ -2,7 +2,7 @@
 // might affect other tests. Rather than carefully plan around when to clear them, etc.
 // I thought it'd be easier to just isolate them
 
-const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
+const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
 const Log = require('../index')
 
 CorrelationIds.set('id', '42')

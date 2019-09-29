@@ -1,4 +1,5 @@
 {
+  "name": "@dazn/lambda-powertools",
   "private": true,
   "license": "MIT",
   "scripts": {

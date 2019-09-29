@@ -1,4 +1,4 @@
-const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
+const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
 
 const generic = require('./event-sources/generic')
 const eventSources = [
@@ -7,6 +7,7 @@ const eventSources = [
   require('./event-sources/sqs'),
   require('./event-sources/kinesis'),
   require('./event-sources/dynamodb'),
+  require('./event-sources/firehose'),
   require('./event-sources/direct-invoke')
 ]
 

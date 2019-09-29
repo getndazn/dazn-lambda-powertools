@@ -124,4 +124,29 @@ describe('Log timeout middleware', () => {
       expect(consoleLog).not.toBeCalled()
     })
   })
+
+  describe('if another middle errors in the before step', () => {
+    it('should not error (issue #82)', async () => {
+      const throwOnBefore = {
+        before: (handler, next) => {
+          throw new Error('boom')
+        },
+        onError: (handler, next) => {
+          expect(handler.error.message).toBe('boom')
+          next()
+        }
+      }
+
+      // when executing on the before stage, it goes throwOnBefore => logTimeoutMiddleware
+      // but then on the onError, it flows logTimeoutMiddleware => throwOnBefore
+      // so the `expect` in throwOnBefore.onError would verify that we're still dealing
+      // with the original error it threw
+      const handler = util.promisify(
+        middy(async () => {})
+          .use(throwOnBefore)
+          .use(logTimeoutMiddleware()))
+
+      await handler({}, {})
+    })
+  })
 })

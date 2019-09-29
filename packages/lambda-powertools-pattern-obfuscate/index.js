@@ -1,8 +1,8 @@
 const middy = require('middy')
-const sampleLogging = require('@perform/lambda-powertools-middleware-sample-logging')
-const { obfuscaterMiddleware, FILTERING_MODE: obfuscaterFilteringMode } = require('@perform/lambda-powertools-middleware-obfuscater')
-const captureCorrelationIds = require('@perform/lambda-powertools-middleware-correlation-ids')
-const logTimeout = require('@perform/lambda-powertools-middleware-log-timeout')
+const sampleLogging = require('@dazn/lambda-powertools-middleware-sample-logging')
+const { obfuscaterMiddleware, FILTERING_MODE: obfuscaterFilteringMode } = require('@dazn/lambda-powertools-middleware-obfuscater')
+const captureCorrelationIds = require('@dazn/lambda-powertools-middleware-correlation-ids')
+const logTimeout = require('@dazn/lambda-powertools-middleware-log-timeout')
 
 const AWS_REGION = process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION
 const FUNCTION_NAME = process.env.AWS_LAMBDA_FUNCTION_NAME

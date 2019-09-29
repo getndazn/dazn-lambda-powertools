@@ -1,6 +1,6 @@
-const Log = require('@perform/lambda-powertools-logger')
+const Log = require('@dazn/lambda-powertools-logger')
 
-const getTimer = (event, context, thresholdMillis) => {
+const createTimer = (event, context, thresholdMillis) => {
   if (typeof context.getRemainingTimeInMillis !== 'function') {
     return null
   }
@@ -16,10 +16,15 @@ const getTimer = (event, context, thresholdMillis) => {
   return timer
 }
 
+const hasTimer = (context) => {
+  return context.lambdaPowertoolsLogTimeoutMiddleware &&
+    context.lambdaPowertoolsLogTimeoutMiddleware.timer
+}
+
 module.exports = (thresholdMillis = 10) => {
   return {
     before: (handler, next) => {
-      const timer = getTimer(handler.event, handler.context, thresholdMillis)
+      const timer = createTimer(handler.event, handler.context, thresholdMillis)
       Object.defineProperty(handler.context, 'lambdaPowertoolsLogTimeoutMiddleware', {
         enumerable: false,
         value: { timer }
@@ -28,14 +33,14 @@ module.exports = (thresholdMillis = 10) => {
       next()
     },
     after: (handler, next) => {
-      if (handler.context.lambdaPowertoolsLogTimeoutMiddleware.timer) {
+      if (hasTimer(handler.context)) {
         clearTimeout(handler.context.lambdaPowertoolsLogTimeoutMiddleware.timer)
       }
 
       next()
     },
     onError: (handler, next) => {
-      if (handler.context.lambdaPowertoolsLogTimeoutMiddleware.timer) {
+      if (hasTimer(handler.context)) {
         clearTimeout(handler.context.lambdaPowertoolsLogTimeoutMiddleware.timer)
       }
 

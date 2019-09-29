@@ -1,10 +1,13 @@
-const Log = require('@perform/lambda-powertools-logger')
-const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
-const Datadog = require('@perform/dazn-datadog-metrics')
-const HTTP = require('@perform/lambda-powertools-http-client')
-const Kinesis = require('@perform/lambda-powertools-kinesis-client')
-const apiGateway = require('@perform/lambda-powertools-pattern-basic')
+const Log = require('@dazn/lambda-powertools-logger')
+const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
+const Datadog = require('@dazn/datadog-metrics')
+const HTTP = require('@dazn/lambda-powertools-http-client')
+const Kinesis = require('@dazn/lambda-powertools-kinesis-client')
+const Firehose = require('@dazn/lambda-powertools-firehose-client')
+const apiGateway = require('@dazn/lambda-powertools-pattern-basic')
 const uuid = require('uuid/v4')
+
+const { FIREHOSE_STREAM, KINESIS_STREAM } = process.env
 
 module.exports.handler = apiGateway(async (event, context) => {
   Datadog.gauge('api-a', 1)
@@ -28,19 +31,31 @@ module.exports.handler = apiGateway(async (event, context) => {
     Log.error('api-b errored', { httpRequest }, err) // WARN and ERROR logs lets you log with an error object too
   }
 
-  const putRecordReq = {
-    StreamName: 'lambda-powertools-demo',
-    PartitionKey: uuid(),
-    Data: JSON.stringify({ message: 'hello kinesis' })
+  try {
+    await Datadog.trackExecTime(
+      () => Kinesis.putRecord({
+        StreamName: KINESIS_STREAM,
+        PartitionKey: uuid(),
+        Data: JSON.stringify({ message: 'hello kinesis' })
+      }).promise(),
+      'Kinesis.putRecord'
+    )
+  } catch (err) {
+    Log.error('failed to put record to Kinesis', { streamName: KINESIS_STREAM }, err)
   }
 
   try {
     await Datadog.trackExecTime(
-      () => Kinesis.putRecord(putRecordReq).promise(),
-      'Kinesis.putRecord'
+      () => Firehose.putRecord({
+        DeliveryStreamName: FIREHOSE_STREAM,
+        Record: {
+          Data: JSON.stringify({ message: 'hello firehose' })
+        }
+      }).promise(),
+      'Firehose.putRecord'
     )
   } catch (err) {
-    Log.error('failed to put record to Kinesis', { putRecordReq }, err)
+    Log.error('failed to put record to Firehose', { streamName: FIREHOSE_STREAM }, err)
   }
 
   return {

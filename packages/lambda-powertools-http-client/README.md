@@ -1,10 +1,10 @@
 # lambda-powertools-http-client
 
-HTTP client that automatically forwards correlation IDs (captured via `@perform/lambda-powertools-correlation-ids`), and follows DAZN's convention around recording metrics around integration points.
+HTTP client that automatically forwards correlation IDs (captured via `@dazn/lambda-powertools-correlation-ids`), and follows DAZN's convention around recording metrics around integration points.
 
 Main features:
 
-* auto-forwards any correlation IDs captured with the `@perform/lambda-powertools-correlation-ids` package as HTTP headers
+* auto-forwards any correlation IDs captured with the `@dazn/lambda-powertools-correlation-ids` package as HTTP headers
 
 * auto-record custom metrics using the `@dazn/datadog-metrics` package, which defaults to async mode (i.e. writing to `stdout` in DogStatsD format) but can be configured via the `DATADOG_METRICS_MODE` environment variable
 
@@ -24,14 +24,14 @@ Main features:
 
 ## Getting Started
 
-Install from NPM: `npm install @perform/lambda-powertools-http-client`
+Install from NPM: `npm install @dazn/lambda-powertools-http-client`
 
 ## API
 
 Basic usage looks like this:
 
 ```js
-const HTTP = require('@perform/lambda-powertools-http-client')
+const HTTP = require('@dazn/lambda-powertools-http-client')
 
 const sayIt = async () => {
   const httpRequest = {

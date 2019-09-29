@@ -3,6 +3,72 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.10.0...v1.11.0) (2019-09-05)
+
+
+### Features
+
+* use API GW request ID as correlation ID ([00e5153](https://github.com/getndazn/dazn-lambda-powertools/commit/00e5153)), closes [#92](https://github.com/getndazn/dazn-lambda-powertools/issues/92)
+
+
+
+
+
+# [1.10.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.9.1...v1.10.0) (2019-08-29)
+
+
+### Bug Fixes
+
+* **firehose:** fixed mixmatched event structure (missing Record) ([f4b742e](https://github.com/getndazn/dazn-lambda-powertools/commit/f4b742e))
+
+
+### Features
+
+* added firehose client ([535e788](https://github.com/getndazn/dazn-lambda-powertools/commit/535e788)), closes [#27](https://github.com/getndazn/dazn-lambda-powertools/issues/27)
+* **firehose:** add middleware support for firehose ([4a8803c](https://github.com/getndazn/dazn-lambda-powertools/commit/4a8803c)), closes [#27](https://github.com/getndazn/dazn-lambda-powertools/issues/27)
+
+
+
+
+
+## [1.9.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.9.0...v1.9.1) (2019-08-24)
+
+
+### Bug Fixes
+
+* **log-timeout:** check timer is set before attempting to clear ([b2f3c21](https://github.com/getndazn/dazn-lambda-powertools/commit/b2f3c21)), closes [#82](https://github.com/getndazn/dazn-lambda-powertools/issues/82)
+
+
+
+
+
+# [1.9.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.8.3...v1.9.0) (2019-08-23)
+
+
+### Features
+
+* **logger:** make params optional when logging the error stack ([c095376](https://github.com/getndazn/dazn-lambda-powertools/commit/c095376))
+
+
+
+
+
+## [1.8.3](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.8.2...v1.8.3) (2019-07-25)
+
+**Note:** Version bump only for package @dazn/lambda-powertools
+
+
+
+
+
+## [1.8.2](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.8.1...v1.8.2) (2019-07-24)
+
+**Note:** Version bump only for package @dazn/lambda-powertools
+
+
+
+
+
 ## [1.8.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.8.0...v1.8.1) (2019-07-23)
 
 

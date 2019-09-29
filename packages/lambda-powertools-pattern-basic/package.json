@@ -1,6 +1,6 @@
 {
-  "name": "@perform/lambda-powertools-pattern-basic",
-  "version": "1.8.0",
+  "name": "@dazn/lambda-powertools-pattern-basic",
+  "version": "1.11.0",
   "description": "Basic template that configures a 1% smaple rate for debug logs",
   "main": "index.js",
   "scripts": {
@@ -9,9 +9,9 @@
   "license": "MIT",
   "author": "Yan Cui",
   "dependencies": {
-    "@perform/lambda-powertools-middleware-correlation-ids": "^1.8.0",
-    "@perform/lambda-powertools-middleware-log-timeout": "^1.8.0",
-    "@perform/lambda-powertools-middleware-sample-logging": "^1.8.0",
+    "@dazn/lambda-powertools-middleware-correlation-ids": "^1.11.0",
+    "@dazn/lambda-powertools-middleware-log-timeout": "^1.9.1",
+    "@dazn/lambda-powertools-middleware-sample-logging": "^1.9.0",
     "middy": "^0.15.0"
   },
   "publishConfig": {

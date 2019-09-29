@@ -1,18 +1,19 @@
-const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
-const Log = require('@perform/lambda-powertools-logger')
+const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
+const Log = require('@dazn/lambda-powertools-logger')
 const consts = require('../consts')
 
 function isMatch (event) {
   return event.hasOwnProperty('httpMethod')
 }
 
-function captureCorrelationIds ({ headers }, { awsRequestId }, sampleDebugLogRate) {
+function captureCorrelationIds ({ requestContext, headers }, { awsRequestId }, sampleDebugLogRate) {
   if (!headers) {
     Log.warn(`Request ${awsRequestId} is missing headers`)
     return
   }
 
-  const correlationIds = { awsRequestId }
+  const apiGatewayRequestId = requestContext ? requestContext.requestId : undefined
+  const correlationIds = { awsRequestId, apiGatewayRequestId }
   for (const header in headers) {
     if (header.toLowerCase().startsWith('x-correlation-')) {
       correlationIds[header] = headers[header]
@@ -20,7 +21,7 @@ function captureCorrelationIds ({ headers }, { awsRequestId }, sampleDebugLogRat
   }
 
   if (!correlationIds[consts.X_CORRELATION_ID]) {
-    correlationIds[consts.X_CORRELATION_ID] = awsRequestId
+    correlationIds[consts.X_CORRELATION_ID] = apiGatewayRequestId || awsRequestId
   }
 
   // forward the original User-Agent on

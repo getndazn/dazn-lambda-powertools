@@ -1,4 +1,4 @@
-const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
+const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
 
 // Levels here are identical to bunyan practices
 // https://github.com/trentm/node-bunyan#levels
@@ -84,11 +84,13 @@ class Logger {
   }
 
   warn (msg, params, err) {
-    this.log('WARN', msg, this.appendError(params, err))
+    const parameters = !err && params instanceof Error ? this.appendError({}, params) : this.appendError(params, err)
+    this.log('WARN', msg, parameters)
   }
 
   error (msg, params, err) {
-    this.log('ERROR', msg, this.appendError(params, err))
+    const parameters = !err && params instanceof Error ? this.appendError({}, params) : this.appendError(params, err)
+    this.log('ERROR', msg, parameters)
   }
 
   enableDebug () {
@@ -124,8 +126,8 @@ class Logger {
     globalLogger.resetLevel()
   }
 
-  static get level() {
-    return globalLogger.level;
+  static get level () {
+    return globalLogger.level
   }
 }
 

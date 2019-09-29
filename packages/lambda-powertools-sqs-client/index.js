@@ -14,7 +14,7 @@ AWS.config.update({
 })
 
 const client = new AWS.SQS()
-const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
+const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
 
 function addCorrelationIds (correlationIds, messageAttributes) {
   const attributes = {}

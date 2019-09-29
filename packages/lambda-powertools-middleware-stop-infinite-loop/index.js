@@ -1,5 +1,5 @@
-const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
-const Log = require('@perform/lambda-powertools-logger')
+const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
+const Log = require('@dazn/lambda-powertools-logger')
 
 module.exports = (threshold = 10) => {
   return {

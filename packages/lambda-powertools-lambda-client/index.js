@@ -14,8 +14,8 @@ AWS.config.update({
 })
 
 const client = new AWS.Lambda()
-const Log = require('@perform/lambda-powertools-logger')
-const CorrelationIds = require('@perform/lambda-powertools-correlation-ids')
+const Log = require('@dazn/lambda-powertools-logger')
+const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
 
 function tryJsonParse (input) {
   if (typeof input !== 'string') {

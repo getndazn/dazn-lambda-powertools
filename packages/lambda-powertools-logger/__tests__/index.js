@@ -65,6 +65,15 @@ const errorsAreIncluded = log => {
   })
 }
 
+const errorsAreIncludedButNotParams = log => {
+  log('test', new Error('boom'))
+  verify(x => {
+    expect(x.errorName).toBe('Error')
+    expect(x.errorMessage).toBe('boom')
+    expect(x).toHaveProperty('stackTrace')
+  })
+}
+
 const enabledAt = (method, enabledLevels) => {
   const expected = new Set(enabledLevels)
   const allLevels = [ 'DEBUG', 'INFO', 'WARN', 'ERROR' ]
@@ -115,9 +124,14 @@ describe('Logger', () => {
     })
   })
 
-  describe('Error details', () => {
+  describe('Error details with params included', () => {
     it('includes error details in warn logs', () => errorsAreIncluded(Log.warn))
     it('includes error details in error logs', () => errorsAreIncluded(Log.error))
+  })
+
+  describe('Error details with params NOT included', () => {
+    it('includes error details in warn logs', () => errorsAreIncludedButNotParams(Log.warn))
+    it('includes error details in error logs', () => errorsAreIncludedButNotParams(Log.error))
   })
 
   describe('Log level', () => {
