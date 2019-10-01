@@ -10,7 +10,7 @@
   "author": "Yan Cui",
   "dependencies": {
     "@dazn/lambda-powertools-correlation-ids": "^1.8.2",
-    "aws-sdk": "^2.246.1"
+    "aws-sdk": "^2.540.0"
   },
   "publishConfig": {
     "access": "public"
