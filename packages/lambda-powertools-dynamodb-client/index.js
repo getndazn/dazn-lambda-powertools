@@ -1,7 +1,8 @@
-const chunk = require('lodash.chunk')
+process.env.AWS_NODEJS_CONNECTION_REUSE_ENABLED = '1'
 const AWS = require('aws-sdk')
 const client = new AWS.DynamoDB.DocumentClient()
 const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
+const chunk = require('lodash.chunk')
 
 const addCorrelationIds = (correlationIds, item) => {
   const ids = correlationIds.get()
