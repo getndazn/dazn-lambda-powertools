@@ -23,7 +23,6 @@ function captureCorrelationIds ({ Records }, context, sampleDebugLogRate) {
 
       // the wrapped dynamodb client would put the correlation IDs as part of
       // the row item as a special __context__ property
-
       let correlationIds = {}
 
       if (event.dynamodb.hasOwnProperty('NewImage') &&

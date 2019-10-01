@@ -49,7 +49,7 @@ const genDynamoEvent = (correlationIDs = {}) => {
   return event
 }
 
-const genDynamoEventWithoutNewImage = (correlationIDs = {}) => {
+const genDynamoEventWithoutNewImage = () => {
   const event = _.cloneDeep(dynamo)
   const record = event.Records[0]
   delete record.dynamodb.NewImage
