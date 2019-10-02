@@ -26,23 +26,15 @@ functions:
           path: /
           method: get
     environment:
-      KINESIS_STREAM: 
-        Ref: KinesisStream
-      FIREHOSE_STREAM: 
-        Ref: FirehoseStream
+      KINESIS_STREAM: !Ref KinesisStream
+      FIREHOSE_STREAM: !Ref FirehoseStream
     iamRoleStatements:
       - Effect: Allow
         Action: kinesis:PutRecord
-        Resource: 
-          Fn::GetAtt:
-            - KinesisStream
-            - Arn
+        Resource: !GetAtt KinesisStream.Arn
       - Effect: Allow
         Action: firehose:PutRecord
-        Resource: 
-          Fn::GetAtt:
-            - FirehoseStream
-            - Arn
+        Resource: !GetAtt FirehoseStream.Arn
   
   api-b:
     handler: functions/api-b.handler
@@ -56,51 +48,55 @@ functions:
     events:
       - stream:
           type: kinesis
-          arn:
-            Fn::GetAtt:
-              - KinesisStream
-              - Arn
+          arn: !GetAtt KinesisStream.Arn
     environment:
-      TOPIC_ARN:
-        Ref: SnsTopic
+      TOPIC_ARN: !Ref SnsTopic
+      TABLE_NAME: !Ref DynamoDBTable
     iamRoleStatements:
       - Effect: Allow
         Action: sns:Publish
-        Resource:
-          Ref: SnsTopic
+        Resource: !Ref SnsTopic
+      - Effect: Allow
+        Action: dynamodb:PutItem
+        Resource: !GetAtt DynamoDBTable.Arn
 
+  dynamodb:
+    handler: functions/dynamodb.handler    
+    events:
+      - stream:
+          type: dynamodb
+          arn: !GetAtt DynamoDBTable.StreamArn
+    environment:
+      TOPIC_ARN: !Ref SnsTopic
+    iamRoleStatements:
+      - Effect: Allow
+        Action: sns:Publish
+        Resource: !Ref SnsTopic
+  
   sns:
     handler: functions/sns.handler
     events:
       - sns: 
-          arn:
-            Ref: SnsTopic
+          arn: !Ref SnsTopic
           topicName: lambda-powertools-demo
     environment:
-      STATE_MACHINE_ARN:
-        Ref: LambdaPowertoolsDemo
+      STATE_MACHINE_ARN: !Ref LambdaPowertoolsDemo
     iamRoleStatements:
       - Effect: Allow
         Action: states:StartExecution
-        Resource: 
-          Ref: LambdaPowertoolsDemo
+        Resource: !Ref LambdaPowertoolsDemo
       - Effect: Allow
         Action: lambda:InvokeFunction
-        Resource:
-          Fn::GetAtt: 
-            - StandDashaloneLambdaFunction
-            - Arn
+        Resource: !GetAtt StandDashaloneLambdaFunction.Arn
 
   firehose:
     handler: functions/firehose.handler
     environment:
-      TOPIC_ARN:
-        Ref: SnsTopic
+      TOPIC_ARN: !Ref SnsTopic
     iamRoleStatements:
       - Effect: Allow
         Action: sns:Publish
-        Resource:
-          Ref: SnsTopic
+        Resource: !Ref SnsTopic
 
   stand-alone:
     handler: functions/stand-alone.handler
@@ -216,3 +212,16 @@ resources:
       Properties: 
         DisplayName: lambda-powertools-demo
         TopicName: lambda-powertools-demo
+
+    DynamoDBTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: Id
+            KeyType: HASH
+        AttributeDefinitions:
+          - AttributeName: Id
+            AttributeType: S
+        StreamSpecification:
+          StreamViewType: NEW_IMAGE
