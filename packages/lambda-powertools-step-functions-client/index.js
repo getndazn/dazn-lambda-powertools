@@ -1,6 +1,6 @@
 process.env.AWS_NODEJS_CONNECTION_REUSE_ENABLED = '1'
-const AWS = require('aws-sdk')
-const client = new AWS.StepFunctions()
+const StepFunctions = require('aws-sdk/clients/stepfunctions')
+const client = new StepFunctions()
 const Log = require('@dazn/lambda-powertools-logger')
 const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
 
