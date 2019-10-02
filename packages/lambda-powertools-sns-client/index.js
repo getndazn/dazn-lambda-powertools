@@ -1,19 +1,6 @@
-const AWS = require('aws-sdk')
-const https = require('https')
-const sslAgent = new https.Agent({
-  keepAlive: true,
-  maxSockets: 50,
-  rejectUnauthorized: true
-})
-sslAgent.setMaxListeners(0)
-
-AWS.config.update({
-  httpOptions: {
-    agent: sslAgent
-  }
-})
-
-const client = new AWS.SNS()
+process.env.AWS_NODEJS_CONNECTION_REUSE_ENABLED = '1'
+const SNS = require('aws-sdk/clients/sns')
+const client = new SNS()
 const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
 
 function addCorrelationIds (correlationIds, messageAttributes) {
