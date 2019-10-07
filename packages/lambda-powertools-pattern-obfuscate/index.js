@@ -4,6 +4,8 @@ const { obfuscaterMiddleware, FILTERING_MODE: obfuscaterFilteringMode } = requir
 const captureCorrelationIds = require('@dazn/lambda-powertools-middleware-correlation-ids')
 const logTimeout = require('@dazn/lambda-powertools-middleware-log-timeout')
 
+const supplementCsv = require('./supplement-csv')
+
 const AWS_REGION = process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION
 const FUNCTION_NAME = process.env.AWS_LAMBDA_FUNCTION_NAME
 const FUNCTION_VERSION = process.env.AWS_LAMBDA_FUNCTION_VERSION
@@ -18,7 +20,15 @@ if (!process.env.DATADOG_PREFIX) {
   process.env.DATADOG_PREFIX = FUNCTION_NAME + '.'
 }
 
-process.env.DATADOG_TAGS = `awsRegion:${AWS_REGION},functionName:${FUNCTION_NAME},functionVersion:${FUNCTION_VERSION},environment:${ENV}`
+process.env.DATADOG_TAGS = supplementCsv({
+  existing: process.env.DATADOG_TAGS,
+  additional: {
+    awsRegion: AWS_REGION,
+    functionName: FUNCTION_NAME,
+    functionVersion: FUNCTION_VERSION,
+    environment: ENV
+  }
+})
 
 const toObfuscaterFilteringMode = (mode) => {
   if (FILTERING_MODE.BLACKLIST === mode) {
