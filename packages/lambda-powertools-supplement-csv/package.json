@@ -1,0 +1,14 @@
+{
+  "name": "@dazn/lambda-powertools-supplement-csv",
+  "version": "1.0.0",
+  "description": "A helper function to update comma-separated string values.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "license": "MIT",
+  "author": "Chris Westcott",
+  "publishConfig": {
+    "access": "public"
+  }
+}
