@@ -1,6 +1,6 @@
 {
   "name": "@dazn/lambda-powertools-pattern-obfuscate",
-  "version": "1.11.0",
+  "version": "1.12.1",
   "description": "Basic template that configures a 1% smaple rate for debug logs and obfuscation",
   "main": "index.js",
   "scripts": {},

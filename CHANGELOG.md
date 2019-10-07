@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.12.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.12.0...v1.12.1) (2019-10-07)
+
+
+### Bug Fixes
+
+* **pattern-obfuscate:** keep original DATADOG_TAGS values ([c2a11b6](https://github.com/getndazn/dazn-lambda-powertools/commit/c2a11b6))
+
+
+
+
+
 # [1.12.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.11.0...v1.12.0) (2019-10-02)
 
 
