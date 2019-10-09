@@ -54,4 +54,31 @@ describe('obfuscate pattern', () => {
       expect(SampleLogging).toHaveBeenCalledWith({ sampleRate: 0.03, obfuscationFilters: expect.anything() })
     })
   })
+
+  describe('when there are predefined DATADOG_TAGS', () => {
+    const originalTags = 'environment:test,custom:tag,key:value'
+    const expectedTags = 'awsRegion:__region__,functionName:,functionVersion:,environment:test,custom:tag,key:value'
+
+    const OLD_ENV = process.env
+
+    beforeEach(() => {
+      // Force require to reload the module.
+      jest.resetModules()
+      process.env = { ...OLD_ENV }
+      process.env.DATADOG_TAGS = originalTags
+      // Hardcode region envvar because local environment (local or CI) may
+      // have different values.
+      process.env.AWS_REGION = '__region__'
+    })
+
+    it('should keep original DATADOG_TAGS values', () => {
+      // DATADOG_TAGS are modified on package load.
+      require('../index')
+      expect(process.env.DATADOG_TAGS).toEqual(expectedTags)
+    })
+
+    afterEach(() => {
+      process.env = OLD_ENV
+    })
+  })
 })
