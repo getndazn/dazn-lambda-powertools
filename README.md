@@ -75,14 +75,14 @@ An integrated suite of powertools for Lambda functions to make it effortless for
 
 ### via Lambda layer
 
-You can also deploy the layer via our SAR app, which you can deploy either via [this page](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:374852340823:applications~dazn-lambda-powertools) (click `Deploy` and follow the instructions) or using CloudFormation/Serverless framework/AWS SAM:
+You can also deploy the layer via our SAR app, which you can deploy either via [this page](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:570995107280:applications~dazn-lambda-powertools) (click `Deploy` and follow the instructions) or using CloudFormation/Serverless framework/AWS SAM:
 
 ```yml
 DaznLambdaPowertoolsLayer:
   Type: AWS::Serverless::Application
   Properties:
     Location:
-      ApplicationId: arn:aws:serverlessrepo:us-east-1:374852340823:applications/dazn-lambda-powertools
+      ApplicationId: arn:aws:serverlessrepo:us-east-1:570995107280:applications/dazn-lambda-powertools
       SemanticVersion: <enter latest version>
 ```
 
