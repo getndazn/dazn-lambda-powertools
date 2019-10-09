@@ -5,7 +5,7 @@
   "scripts": {
     "install": "lerna bootstrap",
     "test:lint": "eslint .",
-    "test": "lerna run --concurrency 2 test -- -- --config=../../jest.config.js",
+    "test": "lerna run --concurrency 1 test -- -- --config=../../jest.config.js",
     "diff": "lerna diff",
     "new-version": "lerna version --conventional-commits --github-release --yes",
     "publish": "lerna publish from-package --yes",

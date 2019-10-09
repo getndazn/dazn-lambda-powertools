@@ -1,0 +1,39 @@
+{
+  "Records": [
+    {
+      "eventID": "ed9a8fba8a1ed22d265bbe0680d4351b",
+      "eventName": "MODIFY",
+      "eventVersion": "1.1",
+      "eventSource": "aws:dynamodb",
+      "awsRegion": "eu-central-1",
+      "dynamodb": {
+        "ApproximateCreationDateTime": 1563715652,
+        "Keys": {
+          "id": {
+            "S": "1294854"
+          }
+        },
+        "NewImage": {
+          "name": {
+            "S": "droid"
+          },
+          "id": {
+            "S": "1294854"
+          }
+        },
+        "OldImage": {
+          "name": {
+            "S": "nano"
+          },
+          "id": {
+            "S": "1294854"
+          }
+        },
+        "SequenceNumber": "2578200000000009967171042",
+        "SizeBytes": 76,
+        "StreamViewType": "NEW_AND_OLD_IMAGES"
+      },
+      "eventSourceARN": "arn:aws:dynamodb:eu-central-1:123456789182:table/gsinghbots/stream/2019-07-20T20:53:00.785"
+    }
+  ]
+}

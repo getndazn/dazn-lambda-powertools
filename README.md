@@ -44,6 +44,8 @@ An integrated suite of powertools for Lambda functions to make it effortless for
 
 * [Lambda client](/packages/lambda-powertools-lambda-client): Lambda client that automatically forwards any correlation IDs you have captured or created when you invokes a Lambda function directly
 
+* [DynamoDB client](/packages/lambda-powertools-dynamodb-client): DynamoDB client that automatically forwards any correlation IDs you have captured or created when you perform put or update operations against DynamoDB. These correlation IDs are then available to functions processing these events from the table's DynamoDB Stream.
+
 ### Patterns
 
 * [basic template for a function](/packages/lambda-powertools-pattern-basic): wrapper for your function that applies and configures the function to work well with datadog metrics and sample logging
@@ -57,6 +59,7 @@ An integrated suite of powertools for Lambda functions to make it effortless for
 | Package | Install command |
 | --- | --- |
 | correlation-ids | npm install @dazn/lambda-powertools-correlation-ids |
+| dynamodb-client | npm install @dazn/lambda-powertools-dynamodb-client |
 | firehose-client | npm install @dazn/lambda-powertools-firehose-client |
 | http-client | npm install @dazn/lambda-powertools-http-client |
 | kinesis-client | npm install @dazn/lambda-powertools-kinesis-client |
