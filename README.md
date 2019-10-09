@@ -50,6 +50,46 @@ An integrated suite of powertools for Lambda functions to make it effortless for
 
 * [obfuscate template](/packages/lambda-powertools-pattern-obfuscate): basic template (above) + obfuscate the invocation event so sensitive data is obfuscated in the `after` and `onError` handlers.
 
+## Installing the powertools
+
+### via NPM
+
+| Package | Install command |
+| --- | --- |
+| correlation-ids | npm install @dazn/lambda-powertools-correlation-ids |
+| firehose-client | npm install @dazn/lambda-powertools-firehose-client |
+| http-client | npm install @dazn/lambda-powertools-http-client |
+| kinesis-client | npm install @dazn/lambda-powertools-kinesis-client |
+| lambda-client | npm install @dazn/lambda-powertools-lambda-client |
+| logger | npm install @dazn/lambda-powertools-logger |
+| middleware-correlation-ids | npm install @dazn/lambda-powertools-middleware-correlation-ids |
+| middleware-log-timeout | npm install @dazn/lambda-powertools-middleware-log-timeout |
+| middleware-obfuscater | npm install @dazn/lambda-powertools-middleware-obfuscater |
+| middleware-sample-logging | npm install @dazn/lambda-powertools-middleware-sample-logging |
+| middleware-stop-infinite-loop | npm install @dazn/lambda-powertools-middleware-stop-infinite-loop |
+| pattern-basic | npm install @dazn/lambda-powertools-pattern-basic |
+| pattern-obfuscate | npm install @dazn/lambda-powertools-pattern-obfuscate |
+| sns-client | npm install @dazn/lambda-powertools-sns-client |
+| sqs-client | npm install @dazn/lambda-powertools-sqs-client |
+| step-functions-client | npm install @dazn/lambda-powertools-step-functions-client |
+
+### via Lambda layer
+
+You can also deploy the layer via our SAR app, which you can deploy either via [this page](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:570995107280:applications~dazn-lambda-powertools) (click `Deploy` and follow the instructions) or using CloudFormation/Serverless framework/AWS SAM:
+
+```yml
+DaznLambdaPowertoolsLayer:
+  Type: AWS::Serverless::Application
+  Properties:
+    Location:
+      ApplicationId: arn:aws:serverlessrepo:us-east-1:570995107280:applications/dazn-lambda-powertools
+      SemanticVersion: <enter latest version>
+```
+
+and reference the output `Outputs.LayerVersion` to get the ARN of the layer to reference in your function. e.g. `Fn::GetAtt: [DaznLambdaPowertoolsLayer, Outputs.LayerVersion]`.
+
+You can find the latest version of the SAR app in the `lerna.json` file [here](/lerna.json), in the `version` property.
+
 ## Design goal
 
 Compliance with our guidelines around logging and monitoring should be the default behaviour. These tools make it simple for you to **do the right thing** and **gets out of your way** as much as possible.

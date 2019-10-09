@@ -61,6 +61,19 @@ jobs:
           name: npm auth
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
       - run: npm run publish
+  publish-layer:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - *ATTACH_WORKSPACE
+      - run:
+          name: Install jq
+          command: sudo apt-get install jq
+      - run:
+          name: Install sed
+          command: sudo apt-get install sed
+      - run: cd layer
+      - run: build.sh
 workflows:
   main:
     jobs:
@@ -85,6 +98,12 @@ workflows:
       - publish:
           requires:
             - new-version
+          filters:
+            branches:
+              only: master
+      - publish-layer:
+          requires:
+            - publish
           filters:
             branches:
               only: master
