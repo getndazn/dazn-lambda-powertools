@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.13.0...v1.14.0) (2019-10-09)
+
+
+### Bug Fixes
+
+* add missing shebang to layer script ([7e2f01e](https://github.com/getndazn/dazn-lambda-powertools/commit/7e2f01e))
+
+
+### Features
+
+* **middleware-corr-ids:** support for dynamodb streams ([9cd167c](https://github.com/getndazn/dazn-lambda-powertools/commit/9cd167c))
+* add dynamodb client to layer ([3f6897b](https://github.com/getndazn/dazn-lambda-powertools/commit/3f6897b))
+* added dynamodb-client project ([f0e6de2](https://github.com/getndazn/dazn-lambda-powertools/commit/f0e6de2))
+
+
+
+
+
 # [1.13.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.12.1...v1.13.0) (2019-10-09)
 
 

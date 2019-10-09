@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.13.0...v1.14.0) (2019-10-09)
+
+
+### Features
+
+* add dynamodb client to layer ([3f6897b](https://github.com/getndazn/dazn-lambda-powertools/commit/3f6897b))
+* added dynamodb-client project ([f0e6de2](https://github.com/getndazn/dazn-lambda-powertools/commit/f0e6de2))
+
+
+
+
+
 # [1.9.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.8.3...v1.9.0) (2019-08-23)
 
 **Note:** Version bump only for package @dazn/lambda-powertools-lambda-client
