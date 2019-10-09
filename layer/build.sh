@@ -2,6 +2,7 @@ cd nodejs
 
 echo 'installing DAZN powertools'
 npm install @dazn/lambda-powertools-correlation-ids
+npm install @dazn/lambda-powertools-dynamodb-client
 npm install @dazn/lambda-powertools-firehose-client
 npm install @dazn/lambda-powertools-http-client
 npm install @dazn/lambda-powertools-kinesis-client
