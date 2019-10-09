@@ -8,7 +8,8 @@
     "test": "lerna run --concurrency 1 test -- -- --config=../../jest.config.js",
     "diff": "lerna diff",
     "new-version": "lerna version --conventional-commits --github-release --yes",
-    "publish": "lerna publish from-package --yes"
+    "publish": "lerna publish from-package --yes",
+    "lerna": "lerna"
   },
   "devDependencies": {
     "@commitlint/cli": "^7.5.2",

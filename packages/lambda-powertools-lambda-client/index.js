@@ -1,19 +1,6 @@
-const AWS = require('aws-sdk')
-const https = require('https')
-const sslAgent = new https.Agent({
-  keepAlive: true,
-  maxSockets: 50,
-  rejectUnauthorized: true
-})
-sslAgent.setMaxListeners(0)
-
-AWS.config.update({
-  httpOptions: {
-    agent: sslAgent
-  }
-})
-
-const client = new AWS.Lambda()
+process.env.AWS_NODEJS_CONNECTION_REUSE_ENABLED = '1'
+const Lambda = require('aws-sdk/clients/lambda')
+const client = new Lambda()
 const Log = require('@dazn/lambda-powertools-logger')
 const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
 
