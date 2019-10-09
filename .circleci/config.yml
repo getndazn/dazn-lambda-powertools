@@ -68,7 +68,7 @@ jobs:
     steps:
       - *ATTACH_WORKSPACE
       - run: apt-get update
-      - run: apt-get install jq sed -y
+      - run: apt-get install jq sed zip -y
       - run: pip install awscli aws-sam-cli
       - run: sh build.sh
 workflows:
