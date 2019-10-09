@@ -73,7 +73,7 @@ jobs:
           name: Install sed
           command: sudo apt-get install sed
       - run: cd layer
-      - run: build.sh
+      - run: sh build.sh
 workflows:
   main:
     jobs:
