@@ -63,16 +63,12 @@ jobs:
       - run: npm run publish
   publish-layer:
     docker:
-      - image: circleci/node:10
+      - image: nikolaik/python-nodejs:python3.7-nodejs10
+    working_directory: ~/project/layer
     steps:
       - *ATTACH_WORKSPACE
-      - run:
-          name: Install jq
-          command: sudo apt-get install jq
-      - run:
-          name: Install sed
-          command: sudo apt-get install sed
-      - run: cd layer
+      - run: sudo apt-get install jq sed
+      - run: pip install awscli aws-sam-cli
       - run: sh build.sh
 workflows:
   main:
