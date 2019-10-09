@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 cd nodejs
 
 echo 'installing DAZN powertools'
