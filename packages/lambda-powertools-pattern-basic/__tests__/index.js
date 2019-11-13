@@ -52,4 +52,30 @@ describe('basic pattern', () => {
       expect(SampleLogging).toHaveBeenCalledWith({ sampleRate: 0.03 })
     })
   })
+
+  describe('override DATADOG_PREFIX if not defined', () => {
+    const funcName = 'lambda-powertools-func'
+
+    beforeAll(() => {
+      process.env.AWS_LAMBDA_FUNCTION_NAME = funcName
+      delete process.env.DATADOG_PREFIX
+      jest.resetModules()
+    })
+
+    afterAll(() => {
+      delete process.env.DATADOG_PREFIX
+      delete process.env.AWS_LAMBDA_FUNCTION_NAME
+    })
+
+    it('should override DATADOG_PREFIX not defined', () => {
+      require('../index')
+      expect(process.env.DATADOG_PREFIX).toBe(funcName + '.')
+    })
+
+    it('should NOT override DATADOG_PREFIX if defined', () => {
+      process.env.DATADOG_PREFIX = ''
+      require('../index')
+      expect(process.env.DATADOG_PREFIX).toStrictEqual('')
+    })
+  })
 })
