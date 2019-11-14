@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.2](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.15.1...v1.15.2) (2019-11-14)
+
+**Note:** Version bump only for package @dazn/lambda-powertools-middleware-stop-infinite-loop
+
+
+
+
+
 # [1.9.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.8.3...v1.9.0) (2019-08-23)
 
 **Note:** Version bump only for package @dazn/lambda-powertools-middleware-stop-infinite-loop
