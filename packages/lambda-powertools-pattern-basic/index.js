@@ -9,7 +9,7 @@ const FUNCTION_NAME = process.env.AWS_LAMBDA_FUNCTION_NAME
 const FUNCTION_VERSION = process.env.AWS_LAMBDA_FUNCTION_VERSION
 const ENV = process.env.ENVIRONMENT || process.env.STAGE
 
-if (!process.env.DATADOG_PREFIX) {
+if (process.env.DATADOG_PREFIX === undefined) {
   process.env.DATADOG_PREFIX = FUNCTION_NAME + '.'
 }
 

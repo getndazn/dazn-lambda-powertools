@@ -16,7 +16,7 @@ const ENV = process.env.ENVIRONMENT || process.env.STAGE
  */
 const FILTERING_MODE = Object.freeze({ 'BLACKLIST': 'BLACKLIST', 'WHITELIST': 'WHITELIST' })
 
-if (!process.env.DATADOG_PREFIX) {
+if (process.env.DATADOG_PREFIX === undefined) {
   process.env.DATADOG_PREFIX = FUNCTION_NAME + '.'
 }
 
