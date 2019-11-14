@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.14.0...v1.15.0) (2019-11-14)
+
+
+### Features
+
+* override DATADOG_PREFIX only if undefined ([f7b2bae](https://github.com/getndazn/dazn-lambda-powertools/commit/f7b2bae))
+
+
+
+
+
 # [1.14.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.13.0...v1.14.0) (2019-10-09)
 
 **Note:** Version bump only for package @dazn/lambda-powertools-pattern-basic

@@ -1,6 +1,6 @@
 {
   "name": "@dazn/lambda-powertools-pattern-basic",
-  "version": "1.14.0",
+  "version": "1.15.0",
   "description": "Basic template that configures a 1% smaple rate for debug logs",
   "main": "index.js",
   "scripts": {
