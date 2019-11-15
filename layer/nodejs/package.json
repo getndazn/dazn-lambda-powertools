@@ -1,7 +1,7 @@
 {
   "name": "dazn-lambda-powertools-layer",
   "private": true,
-  "version": "1.15.5",
+  "version": "1.15.6",
   "description": "",
   "main": "handler.js",
   "scripts": {},
@@ -12,7 +12,7 @@
     "@dazn/lambda-powertools-correlation-ids": "^1.8.2",
     "@dazn/lambda-powertools-dynamodb-client": "^1.14.0",
     "@dazn/lambda-powertools-firehose-client": "^1.15.2",
-    "@dazn/lambda-powertools-http-client": "^1.15.1",
+    "@dazn/lambda-powertools-http-client": "^1.15.6",
     "@dazn/lambda-powertools-kinesis-client": "^1.15.2",
     "@dazn/lambda-powertools-lambda-client": "^1.15.2",
     "@dazn/lambda-powertools-logger": "^1.15.2",
