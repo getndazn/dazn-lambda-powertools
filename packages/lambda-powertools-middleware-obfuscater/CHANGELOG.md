@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.5](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.15.4...v1.15.5) (2019-11-15)
+
+**Note:** Version bump only for package @dazn/lambda-powertools-middleware-obfuscater
+
+
+
+
+
 ## [1.15.4](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.15.3...v1.15.4) (2019-11-15)
 
 **Note:** Version bump only for package @dazn/lambda-powertools-middleware-obfuscater

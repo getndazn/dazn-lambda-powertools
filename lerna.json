@@ -4,7 +4,7 @@
     "layer/*",
     "packages/*"
   ],
-  "version": "1.15.4",
+  "version": "1.15.5",
   "command": {
     "version": {
       "allowBranch": "master"
