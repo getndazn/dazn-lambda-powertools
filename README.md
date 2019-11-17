@@ -103,7 +103,7 @@ The middlewares capture incoming correlation IDs, and the logger automatically i
 
 Even if your function doesn't do anything with correlation IDs, the tools make sure that it behaves correctly as these correlation IDs flow through it.
 
-![](powertools-illustrated.png)
+![](powertools-illustrated.svg)
 
 ### Did you consider monkey-patching the clients instead?
 
