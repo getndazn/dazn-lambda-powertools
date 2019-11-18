@@ -2,7 +2,37 @@
 
 # DAZN Lambda Powertools
 
-An integrated suite of powertools for Lambda functions to make it effortless for you to comply with our guidelines around logging and monitoring:
+`dazn-lambda-powertools` is a collection of middlewares, AWS clients and helper libraries that make working with lambda easier.
+
+## Motivation
+
+Writing Lambdas often involves the bootstrapping of specific tooling, like reading and forwarding on correlation-id's, emitting logs on a lambda timeout, and more.
+
+Re-writing and maintaining this bootstrapping logic into every individual lambda can be a pain, so to prevent this re-work we created `dazn-lambda-powertools`.
+
+## Usage
+
+The quickest way to get setup is to use the opinionated [pattern basic](/packages/lambda-powertools-pattern-basic) package, like so:
+
+```javascript
+const wrap = require('@dazn/lambda-powertools-pattern-basic')
+
+module.exports.handler = wrap(async (event, context) => {
+  return 42
+})
+```
+
+For more control, you can pick and choose from the [individual packages](/packages).
+
+## Powertools and Middy
+
+All of the powertool middlewares use the [middy](https://github.com/middyjs/middy) library, and therefore adhere to the middy API.
+
+However, the other tools such as the clients are generic.
+
+## What's in Powertools
+
+An integrated suite of powertools for Lambda functions that reduces the effort to implement common lamdba tasks, such as dealing with correlation-ids.
 
 * support correlation IDs
 
@@ -16,7 +46,7 @@ An integrated suite of powertools for Lambda functions to make it effortless for
 
 * [logger](/packages/lambda-powertools-logger): structured logging with JSON, configurable log levels, and integrates with other tools to support correlation IDs and sampling (only enable debug logs on 1% of invocations)
 
-* [correlation IDs](/packages/lambda-powertools-correlation-ids): create and store correlation IDs that follow our naming convention
+* [correlation IDs](/packages/lambda-powertools-correlation-ids): create and store correlation IDs that follow the DAZN naming convention
 
 * [correlation IDs middleware](/packages/lambda-powertools-middleware-correlation-ids): automatically extract correlation IDs from the invocation event
 
@@ -95,7 +125,7 @@ You can find the latest version of the SAR app in the `lerna.json` file [here](/
 
 ## Design goal
 
-Compliance with our guidelines around logging and monitoring should be the default behaviour. These tools make it simple for you to **do the right thing** and **gets out of your way** as much as possible.
+Compliance with best practices around logging and monitoring should be the default behaviour. These tools make it simple for you to **do the right thing** and **gets out of your way** as much as possible.
 
 Individually they are useful in their own right, but together they're so much more useful!
 
@@ -107,9 +137,9 @@ Even if your function doesn't do anything with correlation IDs, the tools make s
 
 ### Did you consider monkey-patching the clients instead?
 
-Instead of forcing you to use our own AWS clients, we could have monkey patched the AWS SDK clients (which we already do in the tests). We can also monkey patch Node's `http` module (like what [Nock](https://github.com/node-nock/nock) does) to intercept HTTP requests and inject correlation IDs as HTTP headers.
+Instead of forcing you to use dazn-powertools AWS clients, we could have monkey patched the AWS SDK clients (which we already do in the tests). We could also monkey patch Node's `http` module (like what [Nock](https://github.com/node-nock/nock) does) to intercept HTTP requests and inject correlation IDs as HTTP headers.
 
-We can apply these monkey patching when you apply the correlation IDs middleware, and your function would automagically forward correlation IDs without having to use our own client libraries. That way, as a user of the tools, I can use whatever HTTP client I wish, and can use the standard SDK clients as well.
+We could apply the monkey patching when you apply the correlation IDs middleware, and your function would "automagically" forward correlation IDs without having to use our own client libraries. That way, as a user of the tools, you could use whatever HTTP client you wish, and can use the standard SDK clients as well.
 
 We did entertain this idea, but I wanted to leave at least one decision for you to make. The rationale is that when things go wrong (e.g. unhandled error, or bug in our wrapper code) or when they don't work as expected (e.g. you're using an AWS SDK client that we don't support yet), at least you have that one decision to start debugging (change the `require` statement to use the official library instead of our own to see if things things still work).
 
