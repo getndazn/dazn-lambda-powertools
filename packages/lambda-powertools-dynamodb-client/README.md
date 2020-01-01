@@ -1,6 +1,6 @@
 # lambda-powertools-dynamodb-client
 
-Lambda client wrapper that knows how to forward correlation IDs (captured via `@dazn/lambda-powertools-correlation-ids`).
+DynamoDB client wrapper that knows how to forward correlation IDs (captured via `@dazn/lambda-powertools-correlation-ids`).
 
 Main features:
 
