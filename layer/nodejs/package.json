@@ -1,7 +1,7 @@
 {
   "name": "dazn-lambda-powertools-layer",
   "private": true,
-  "version": "1.15.6",
+  "version": "1.16.0",
   "description": "",
   "main": "handler.js",
   "scripts": {},
@@ -19,10 +19,10 @@
     "@dazn/lambda-powertools-middleware-correlation-ids": "^1.15.2",
     "@dazn/lambda-powertools-middleware-log-timeout": "^1.15.2",
     "@dazn/lambda-powertools-middleware-obfuscater": "^1.15.5",
-    "@dazn/lambda-powertools-middleware-sample-logging": "^1.15.2",
+    "@dazn/lambda-powertools-middleware-sample-logging": "^1.16.0",
     "@dazn/lambda-powertools-middleware-stop-infinite-loop": "^1.15.2",
-    "@dazn/lambda-powertools-pattern-basic": "^1.15.2",
-    "@dazn/lambda-powertools-pattern-obfuscate": "^1.15.5",
+    "@dazn/lambda-powertools-pattern-basic": "^1.16.0",
+    "@dazn/lambda-powertools-pattern-obfuscate": "^1.16.0",
     "@dazn/lambda-powertools-sns-client": "^1.12.0",
     "@dazn/lambda-powertools-sqs-client": "^1.12.0",
     "@dazn/lambda-powertools-step-functions-client": "^1.15.2"

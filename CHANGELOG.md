@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.16.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.15.6...v1.16.0) (2020-01-01)
+
+
+### Features
+
+* handle cases when context is undefined ([176810d](https://github.com/getndazn/dazn-lambda-powertools/commit/176810d)), closes [#133](https://github.com/getndazn/dazn-lambda-powertools/issues/133)
+
+
+
+
+
 ## [1.15.6](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.15.5...v1.15.6) (2019-11-15)
 
 **Note:** Version bump only for package @dazn/lambda-powertools
