@@ -28,8 +28,8 @@ module.exports = ({ sampleRate }) => {
       next()
     },
     onError: (handler, next) => {
-      let awsRequestId = handler.context.awsRequestId
-      let invocationEvent = JSON.stringify(handler.event)
+      const awsRequestId = handler.context ? handler.context.awsRequestId : ''
+      const invocationEvent = JSON.stringify(handler.event)
       Log.error('invocation failed', { awsRequestId, invocationEvent }, handler.error)
 
       next(handler.error)

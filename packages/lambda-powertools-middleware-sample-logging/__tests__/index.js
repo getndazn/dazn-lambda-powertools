@@ -89,4 +89,20 @@ describe('Sample logging middleware', () => {
       })
     })
   })
+
+  // it's common for test code to omit context, see #133
+  describe('when context is missing', () => {
+    it('should not error in the onError handler', async () => {
+      const handler = middy((event, context, cb) => {
+        throw new Error('boom')
+      })
+      handler.use(sampleLogMiddleware({ sampleRate: 1 }))
+      handler({}, undefined, () => {})
+      errorLogWasWritten(x => {
+        expect(x.errorName).toBe('Error')
+        expect(x.errorMessage).toBe('boom')
+        expect(x.awsRequestId).toBe('')
+      })
+    })
+  })
 })
