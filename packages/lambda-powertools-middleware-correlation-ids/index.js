@@ -8,6 +8,7 @@ const eventSources = [
   require('./event-sources/kinesis'),
   require('./event-sources/dynamodb'),
   require('./event-sources/firehose'),
+  require('./event-sources/eventbridge'),
   require('./event-sources/direct-invoke')
 ]
 
