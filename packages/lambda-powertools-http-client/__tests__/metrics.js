@@ -33,25 +33,35 @@ afterEach(() => {
 
 afterAll(mockRequest.mockRestore)
 
-const successReq = async () => {
+const successReq = async (metricName = null) => {
   nock(url).get('/').reply(200)
 
-  await Req({
+  const options = {
     uri: url,
     method: 'GET'
-  })
+  }
+  if (metricName) {
+    options.metricName = metricName
+  }
+  await Req(options)
 
   expect(mockRequest).toBeCalled()
 }
 
-const failedReq = async () => {
+const failedReq = async (metricName = null) => {
   nock(url).get('/').reply(500, { test: true })
 
-  await Req({
+  const options = {
     uri: url,
     method: 'GET'
-  // eslint-disable-next-line handle-callback-err
-  }).catch(err => {
+  }
+  if (metricName) {
+    options.metricName = metricName
+  }
+
+  await Req(options
+    // eslint-disable-next-line handle-callback-err
+  ).catch(err => {
     // swallow the exception, we're only interested in the side-effects
     // of recording the metrics
   })
@@ -110,6 +120,53 @@ describe('HTTP client (metrics)', () => {
       expect(mockIncrement).toBeCalled()
       const [key, value, tags] = mockIncrement.mock.calls[0]
       expect(key).toBe('theburningmonk.com.response.500')
+      expect(value).toBe(1)
+
+      verifyTags(tags, 500)
+    })
+  })
+
+  describe('when the request is successful with custom metricName', () => {
+    beforeEach(async () => {
+      await successReq('custom')
+    })
+    it('records custom histogram metric', () => {
+      expect(mockHistogram).toBeCalled()
+      const [key, value, tags] = mockHistogram.mock.calls[0]
+      expect(key).toBe('custom.latency')
+      expect(value).toBeLessThan(500) // come on, no way it'll be higher than this with Nock
+
+      verifyTags(tags)
+    })
+
+    it('records custom count metric', () => {
+      expect(mockIncrement).toBeCalled()
+      const [key, value, tags] = mockIncrement.mock.calls[0]
+      expect(key).toBe('custom.200')
+      expect(value).toBe(1)
+
+      verifyTags(tags)
+    })
+  })
+
+  describe('when the request fails with custom metricName', () => {
+    beforeEach(async () => {
+      await failedReq('custom')
+    })
+
+    it('records custom histogram metric', () => {
+      expect(mockHistogram).toBeCalled()
+      const [key, value, tags] = mockHistogram.mock.calls[0]
+      expect(key).toBe('custom.latency')
+      expect(value).toBeLessThan(500) // come on, no way it'll be higher than this with Nock
+
+      verifyTags(tags, 500)
+    })
+
+    it('records custom count metric', () => {
+      expect(mockIncrement).toBeCalled()
+      const [key, value, tags] = mockIncrement.mock.calls[0]
+      expect(key).toBe('custom.500')
       expect(value).toBe(1)
 
       verifyTags(tags, 500)
