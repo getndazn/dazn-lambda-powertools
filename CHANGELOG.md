@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.16.1...v1.17.0) (2020-01-02)
+
+
+### Features
+
+* **http-client:** add support for patch and url option ([6e70261](https://github.com/getndazn/dazn-lambda-powertools/commit/6e70261))
+
+
+
+
+
 ## [1.16.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.16.0...v1.16.1) (2020-01-02)
 
 
