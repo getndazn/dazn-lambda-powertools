@@ -48,8 +48,8 @@ It's essentially a function that accepts a request of type:
 
 ```js
 {
-  uri     : string
-  method  : GET (default) | POST | PUT | HEAD
+  uri/url : string (either uri or url must be specified)
+  method  : GET (default) | POST | PUT | HEAD | DELETE | PATCH
   headers : object
   qs      : object
   body    : object

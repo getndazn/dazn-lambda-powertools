@@ -26,6 +26,8 @@ function getRequest (uri, method) {
       return HTTP.put(uri)
     case 'delete':
       return HTTP.del(uri)
+    case 'patch':
+      return HTTP.patch(uri)
     default:
       throw new Error(`unsupported method : ${method.toLowerCase()}`)
   }
@@ -60,8 +62,8 @@ function setBody (request, body) {
 }
 
 // options: {
-//    uri     : string
-//    method  : GET (default) | POST | PUT | HEAD
+//    uri/url : string (either uri or url must be specified)
+//    method  : GET (default) | POST | PUT | HEAD | DELETE | PATCH
 //    headers : object
 //    qs      : object
 //    body    : object
@@ -75,8 +77,9 @@ const Req = (options) => {
     throw new Error('no HTTP request options is provided')
   }
 
-  if (!options.uri) {
-    throw new Error('no HTTP uri is specified')
+  const uri = options.uri || options.url
+  if (!uri) {
+    throw new Error('no HTTP uri or url is specified')
   }
 
   const correlationIds = (options.correlationIds || CorrelationIds).get()
@@ -85,7 +88,7 @@ const Req = (options) => {
   let headers = Object.assign({}, correlationIds, options.headers)
 
   const method = options.method || 'get'
-  let request = getRequest(options.uri, method)
+  let request = getRequest(uri, method)
 
   request = setHeaders(request, headers)
   request = setQueryStrings(request, options.qs)
@@ -96,7 +99,7 @@ const Req = (options) => {
   }
 
   const start = Date.now()
-  const url = new URL.URL(options.uri)
+  const url = new URL.URL(uri)
   const metricName = options.metricName || url.hostname + '.response'
   const requestMetricTags = [
     `method:${method}`,
