@@ -97,7 +97,7 @@ const Req = (options) => {
 
   const start = Date.now()
   const url = new URL.URL(options.uri)
-  const metricName = options.methicName || url.hostname + '.response'
+  const metricName = options.metricName || url.hostname + '.response'
   const requestMetricTags = [
     `method:${method}`,
     `path:${url.pathname}`
