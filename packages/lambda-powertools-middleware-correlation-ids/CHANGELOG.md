@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.17.0...v1.18.0) (2020-01-05)
+
+
+### Features
+
+* support eventbridge in correlation ids middleware ([936f3ee](https://github.com/getndazn/dazn-lambda-powertools/commit/936f3ee)), closes [#135](https://github.com/getndazn/dazn-lambda-powertools/issues/135)
+
+
+
+
+
 ## [1.15.2](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.15.1...v1.15.2) (2019-11-14)
 
 **Note:** Version bump only for package @dazn/lambda-powertools-middleware-correlation-ids

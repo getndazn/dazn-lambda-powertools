@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.17.0...v1.18.0) (2020-01-05)
+
+
+### Features
+
+* added CloudWatchEvents client ([d573ce5](https://github.com/getndazn/dazn-lambda-powertools/commit/d573ce5)), closes [#135](https://github.com/getndazn/dazn-lambda-powertools/issues/135)
+* added eventbridge client package ([7d27134](https://github.com/getndazn/dazn-lambda-powertools/commit/7d27134)), closes [#135](https://github.com/getndazn/dazn-lambda-powertools/issues/135)
+* added the new clients to the Lambda layer ([7229d04](https://github.com/getndazn/dazn-lambda-powertools/commit/7229d04))
+* support eventbridge in correlation ids middleware ([936f3ee](https://github.com/getndazn/dazn-lambda-powertools/commit/936f3ee)), closes [#135](https://github.com/getndazn/dazn-lambda-powertools/issues/135)
+
+
+
+
+
 # [1.17.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.16.1...v1.17.0) (2020-01-02)
 
 

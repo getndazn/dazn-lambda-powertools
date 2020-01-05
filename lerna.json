@@ -1,11 +1,11 @@
 {
   "lerna": "3.10.8",
   "packages": [
+    "example",
     "layer/*",
-    "packages/*",
-    "example"
+    "packages/*"
   ],
-  "version": "1.17.0",
+  "version": "1.18.0",
   "command": {
     "version": {
       "allowBranch": "master"
