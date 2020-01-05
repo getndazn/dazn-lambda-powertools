@@ -18,6 +18,11 @@ custom:
   pseudoParameters:
     allowReferences: true
 
+package:
+  exclude:
+    - node_modules/aws-sdk/**
+    - node_modules/@dazn/**/node_modules/aws-sdk/**
+
 functions:
   api-a:
     handler: functions/api-a.handler
@@ -91,6 +96,38 @@ functions:
 
   firehose:
     handler: functions/firehose.handler
+    environment:
+      TOPIC_ARN: !Ref SnsTopic
+    iamRoleStatements:
+      - Effect: Allow
+        Action: sns:Publish
+        Resource: !Ref SnsTopic
+
+  eventbridge:
+    handler: functions/eventbridge.handler
+    events:
+      - eventBridge:
+          pattern:
+            source:
+              - dazn-lambda-powertools-example
+            detail-type:
+              - eventbridge
+    environment:
+      TOPIC_ARN: !Ref SnsTopic
+    iamRoleStatements:
+      - Effect: Allow
+        Action: sns:Publish
+        Resource: !Ref SnsTopic
+
+  cloudwatchevents:
+    handler: functions/cloudwatchevents.handler
+    events:
+      - cloudwatchEvent:
+          event:
+            source:
+              - dazn-lambda-powertools-example
+            detail-type:
+              - cloudwatchevents
     environment:
       TOPIC_ARN: !Ref SnsTopic
     iamRoleStatements:

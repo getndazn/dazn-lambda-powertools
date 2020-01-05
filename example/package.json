@@ -6,8 +6,10 @@
   "author": "Yan Cui",
   "dependencies": {
     "@dazn/datadog-metrics": "^1.3.1",
+    "@dazn/lambda-powertools-cloudwatchevents-client": "^1.15.6",
     "@dazn/lambda-powertools-correlation-ids": "^1.8.2",
     "@dazn/lambda-powertools-dynamodb-client": "^1.9.0",
+    "@dazn/lambda-powertools-eventbridge-client": "^1.15.6",
     "@dazn/lambda-powertools-firehose-client": "^1.8.0",
     "@dazn/lambda-powertools-http-client": "^1.8.2",
     "@dazn/lambda-powertools-kinesis-client": "^1.9.0",

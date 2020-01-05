@@ -62,6 +62,10 @@ An integrated suite of powertools for Lambda functions that reduces the effort t
 
 * [http client](/packages/lambda-powertools-http-client): HTTP client that automatically forwards any correlation IDs you have captured or created, and records both latency as well as response count metrics
 
+* [CloudWatchEvents client](/packages/lambda-powertools-cloudwatchevents-client): CloudWatchEvents client that automatically forwards any correlation IDs you have captured or created when you put events to an event bus
+
+* [EventBridge client](/packages/lambda-powertools-eventbridge-client): EventBridge client that automatically forwards any correlation IDs you have captured or created when you put events to an event bus
+
 * [SNS client](/packages/lambda-powertools-sns-client): SNS client that automatically forwards any correlation IDs you have captured or created when you publish a message to SNS
 
 * [SQS client](/packages/lambda-powertools-sqs-client): SQS client that automatically forwards any correlation IDs you have captured or created when you publish a message to SQS
@@ -88,8 +92,10 @@ An integrated suite of powertools for Lambda functions that reduces the effort t
 
 | Package | Install command |
 | --- | --- |
+| cloudwatchevents-client | npm install @dazn/lambda-powertools-cloudwatchevents-client |
 | correlation-ids | npm install @dazn/lambda-powertools-correlation-ids |
 | dynamodb-client | npm install @dazn/lambda-powertools-dynamodb-client |
+| eventbridge-client | npm install @dazn/lambda-powertools-eventbridge-client |
 | firehose-client | npm install @dazn/lambda-powertools-firehose-client |
 | http-client | npm install @dazn/lambda-powertools-http-client |
 | kinesis-client | npm install @dazn/lambda-powertools-kinesis-client |

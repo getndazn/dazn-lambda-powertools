@@ -4,12 +4,14 @@ const Datadog = require('@dazn/datadog-metrics')
 const HTTP = require('@dazn/lambda-powertools-http-client')
 const Kinesis = require('@dazn/lambda-powertools-kinesis-client')
 const Firehose = require('@dazn/lambda-powertools-firehose-client')
-const apiGateway = require('@dazn/lambda-powertools-pattern-basic')
+const EventBridge = require('@dazn/lambda-powertools-eventbridge-client')
+const CloudWatchEvents = require('@dazn/lambda-powertools-cloudwatchevents-client')
+const wrap = require('@dazn/lambda-powertools-pattern-basic')
 const uuid = require('uuid/v4')
 
 const { FIREHOSE_STREAM, KINESIS_STREAM } = process.env
 
-module.exports.handler = apiGateway(async (event, context) => {
+module.exports.handler = wrap(async (event, context) => {
   Datadog.gauge('api-a', 1)
   const host = event.headers.Host
 
@@ -56,6 +58,36 @@ module.exports.handler = apiGateway(async (event, context) => {
     )
   } catch (err) {
     Log.error('failed to put record to Firehose', { streamName: FIREHOSE_STREAM }, err)
+  }
+
+  try {
+    await Datadog.trackExecTime(
+      () => EventBridge.putEvents({
+        Entries: [{
+          Source: 'dazn-lambda-powertools-example',
+          'Detail-Type': 'eventbridge',
+          Detail: JSON.stringify({ message: 'hello eventbridge' })
+        }]
+      }).promise(),
+      'EventBridge.putEvents'
+    )
+  } catch (err) {
+    Log.error('failed to put events to EventBridge', err)
+  }
+
+  try {
+    await Datadog.trackExecTime(
+      () => CloudWatchEvents.putEvents({
+        Entries: [{
+          Source: 'dazn-lambda-powertools-example',
+          'Detail-Type': 'cloudwatchevents',
+          Detail: JSON.stringify({ message: 'hello cloudwatchevents' })
+        }]
+      }).promise(),
+      'CloudWatchEvents.putEvents'
+    )
+  } catch (err) {
+    Log.error('failed to put events to CloudWatchEvents', err)
   }
 
   return {

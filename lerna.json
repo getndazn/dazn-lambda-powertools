@@ -2,7 +2,8 @@
   "lerna": "3.10.8",
   "packages": [
     "layer/*",
-    "packages/*"
+    "packages/*",
+    "example"
   ],
   "version": "1.17.0",
   "command": {

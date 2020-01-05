@@ -1,0 +1,22 @@
+{
+  "version": "0",
+  "id": "2641b6fa-bb28-5a3a-3478-843d57e92d24",
+  "detail-type": "Step Functions Execution Status Change",
+  "source": "aws.states",
+  "account": "123456789",
+  "time": "2020-01-01T00:58:02Z",
+  "region": "us-east-1",
+  "resources": [
+      "arn:aws:states:us-east-1:123456789:execution:wait-and-error:41d41285-dbef-a1e9-4295-debe4ae29244"
+  ],
+  "detail": {
+      "startDate": 1577840282671,
+      "name": "41d41285-dbef-a1e9-4295-debe4ae29244",
+      "executionArn": "arn:aws:states:us-east-1:123456789:execution:wait-and-error:41d41285-dbef-a1e9-4295-debe4ae29244",
+      "input": "{\n    \"Comment\": \"Insert your JSON here\"\n}",
+      "status": "RUNNING",
+      "stateMachineArn": "arn:aws:states:us-east-1:123456789:stateMachine:wait-and-error",
+      "stopDate": null,
+      "output": null
+  }
+}
