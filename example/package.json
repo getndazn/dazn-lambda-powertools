@@ -1,6 +1,6 @@
 {
   "name": "@dazn/lambda-powertools-demo",
-  "version": "1.18.0",
+  "version": "1.18.1",
   "description": "Example serverless app to demonstrate the powertools",
   "scripts": {},
   "author": "Yan Cui",
