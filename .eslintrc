@@ -5,5 +5,13 @@
   },
   "globals": {
     "BigInt": true
+  },
+  "rules": {
+    "no-prototype-builtins": "off",
+    "quote-props": "off",
+    "prefer-const": "off",
+    "indent": "off",
+    "dot-notation": "off",
+    "quotes": "off"
   }
 }
