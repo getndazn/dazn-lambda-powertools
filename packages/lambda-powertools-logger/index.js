@@ -72,7 +72,10 @@ class Logger {
     }
 
     // re-order message and params to appear earlier in the log row
-    console.log(JSON.stringify({ message, ...params, ...logMsg }))
+    console.log(JSON.stringify({ message, ...params, ...logMsg }, (key, value) => typeof value === 'bigint'
+      ? value.toString()
+      : value
+    ))
   }
 
   debug (msg, params) {
