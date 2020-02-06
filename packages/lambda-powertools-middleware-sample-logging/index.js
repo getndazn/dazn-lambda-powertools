@@ -28,9 +28,11 @@ module.exports = ({ sampleRate }) => {
       next()
     },
     onError: (handler, next) => {
-      const awsRequestId = handler.context ? handler.context.awsRequestId : ''
-      const invocationEvent = JSON.stringify(handler.event)
-      Log.error('invocation failed', { awsRequestId, invocationEvent }, handler.error)
+      if (process.env.POWERTOOLS_IGNORE_ERRORS !== 'true') {
+        const awsRequestId = handler.context ? handler.context.awsRequestId : ''
+        const invocationEvent = JSON.stringify(handler.event)
+        Log.error('invocation failed', { awsRequestId, invocationEvent }, handler.error)
+      }
 
       next(handler.error)
     }

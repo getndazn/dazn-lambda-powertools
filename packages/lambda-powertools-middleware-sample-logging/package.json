@@ -1,6 +1,6 @@
 {
   "name": "@dazn/lambda-powertools-middleware-sample-logging",
-  "version": "1.16.0",
+  "version": "1.19.0",
   "description": "Middy middleware to sample debug logs for a configurable % of invocations",
   "main": "index.js",
   "scripts": {

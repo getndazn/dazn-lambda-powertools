@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.19.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.18.1...v1.19.0) (2020-01-30)
+
+
+### Features
+
+* **sample logging middleware:** optional error catch ([89ce3ed](https://github.com/getndazn/dazn-lambda-powertools/commit/89ce3ed))
+
+
+
+
+
 ## [1.18.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.18.0...v1.18.1) (2020-01-07)
 
 **Note:** Version bump only for package @dazn/lambda-powertools
