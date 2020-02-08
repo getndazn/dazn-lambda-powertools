@@ -10,10 +10,10 @@
   "author": "Yan Cui",
   "dependencies": {
     "@dazn/lambda-powertools-correlation-ids": "^1.5.0",
-    "@dazn/lambda-powertools-logger": "^1.15.2",
-    "aws-sdk": "^2.496.0"
+    "@dazn/lambda-powertools-logger": "^1.15.2"    
   },
   "devDependencies": {
+    "aws-sdk": "^2.496.0",
     "lodash": "^4.17.11",
     "middy": "^0.15.6",
     "uuid": "^3.2.1"
