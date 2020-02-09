@@ -74,7 +74,7 @@ describe('Correlation IDs middleware (ALB)', () => {
       invokeHandler(event, requestId, 0, x => {
         expect(x['x-correlation-id']).toBe(id)
         expect(x['x-correlation-user-id']).toBe(userId)
-        expect(x['user-agent']).toBe('jest test')
+        expect(x['User-Agent']).toBe('jest test')
         expect(x['debug-log-enabled']).toBe('true')
         expect(x['awsRequestId']).toBe(requestId)
       })

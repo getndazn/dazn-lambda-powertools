@@ -24,9 +24,9 @@ function captureCorrelationIds ({ requestContext, headers }, { awsRequestId }, s
     correlationIds[consts.X_CORRELATION_ID] = albRequestId || awsRequestId
   }
 
-  // forward the original User-Agent on
+  // forward the original user-agent on as User-Agent
   if (headers[consts.USER_AGENT_ELB]) {
-    correlationIds[consts.USER_AGENT_ELB] = headers[consts.USER_AGENT_ELB]
+    correlationIds[consts.USER_AGENT] = headers[consts.USER_AGENT_ELB]
   }
 
   if (headers[consts.DEBUG_LOG_ENABLED]) {
