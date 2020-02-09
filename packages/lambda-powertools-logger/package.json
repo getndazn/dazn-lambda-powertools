@@ -1,6 +1,6 @@
 {
   "name": "@dazn/lambda-powertools-logger",
-  "version": "1.15.2",
+  "version": "1.21.0",
   "description": "Logger that is tightly integrated with the rest of the lambda-powertools",
   "main": "index.js",
   "types": "index.d.ts",

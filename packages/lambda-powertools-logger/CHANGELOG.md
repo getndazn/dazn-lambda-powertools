@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.21.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.20.0...v1.21.0) (2020-02-09)
+
+
+### Features
+
+* **logger:** added support for BigInt ([e745d02](https://github.com/getndazn/dazn-lambda-powertools/commit/e745d02))
+
+
+
+
+
 ## [1.15.2](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.15.1...v1.15.2) (2019-11-14)
 
 **Note:** Version bump only for package @dazn/lambda-powertools-logger
