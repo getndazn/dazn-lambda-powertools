@@ -3,7 +3,7 @@ const Log = require('@dazn/lambda-powertools-logger')
 const consts = require('../consts')
 
 function isMatch (event) {
-  return event.hasOwnProperty('httpMethod') && !event.requestContext.hasOwnProperty('elb')
+  return event.hasOwnProperty('httpMethod') && event.requestContext.hasOwnProperty('elb')
 }
 
 function captureCorrelationIds ({ requestContext, headers }, { awsRequestId }, sampleDebugLogRate) {
@@ -12,8 +12,8 @@ function captureCorrelationIds ({ requestContext, headers }, { awsRequestId }, s
     return
   }
 
-  const apiGatewayRequestId = requestContext ? requestContext.requestId : undefined
-  const correlationIds = { awsRequestId, apiGatewayRequestId }
+  const albRequestId = awsRequestId
+  const correlationIds = { awsRequestId, albRequestId }
   for (const header in headers) {
     if (header.toLowerCase().startsWith('x-correlation-')) {
       correlationIds[header] = headers[header]
@@ -21,12 +21,12 @@ function captureCorrelationIds ({ requestContext, headers }, { awsRequestId }, s
   }
 
   if (!correlationIds[consts.X_CORRELATION_ID]) {
-    correlationIds[consts.X_CORRELATION_ID] = apiGatewayRequestId || awsRequestId
+    correlationIds[consts.X_CORRELATION_ID] = albRequestId || awsRequestId
   }
 
   // forward the original User-Agent on
-  if (headers[consts.USER_AGENT]) {
-    correlationIds[consts.USER_AGENT] = headers[consts.USER_AGENT]
+  if (headers[consts.USER_AGENT_ELB]) {
+    correlationIds[consts.USER_AGENT_ELB] = headers[consts.USER_AGENT_ELB]
   }
 
   if (headers[consts.DEBUG_LOG_ENABLED]) {
