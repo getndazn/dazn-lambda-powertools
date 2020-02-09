@@ -29,10 +29,11 @@ const hasRightLevel = (log, expectedSLevel, expectedLevel) => {
 }
 
 const paramsAreIncluded = log => {
-  log('test', { id: 42, name: 'theburningmonk' })
+  log('test', { id: 42, name: 'theburningmonk', bigInt: BigInt(5) })
   verify(x => {
     expect(x.id).toBe(42)
     expect(x.name).toBe('theburningmonk')
+    expect(x.bigInt).toBe('5')
   })
 }
 
@@ -76,7 +77,7 @@ const errorsAreIncludedButNotParams = log => {
 
 const enabledAt = (method, enabledLevels) => {
   const expected = new Set(enabledLevels)
-  const allLevels = [ 'DEBUG', 'INFO', 'WARN', 'ERROR' ]
+  const allLevels = ['DEBUG', 'INFO', 'WARN', 'ERROR']
   allLevels.forEach(level => {
     process.env.LOG_LEVEL = level
     const levelLogger = new Log()
@@ -135,10 +136,10 @@ describe('Logger', () => {
   })
 
   describe('Log level', () => {
-    it('enables debug logs at DEBUG level', () => enabledAt('debug', [ 'DEBUG' ]))
-    it('enables info logs at DEBUG and INFO levels', () => enabledAt('info', [ 'DEBUG', 'INFO' ]))
-    it('enables warn logs at at DEBUG, INFO and WARN levels', () => enabledAt('warn', [ 'DEBUG', 'INFO', 'WARN' ]))
-    it('enables error logs at all levels', () => enabledAt('error', [ 'DEBUG', 'INFO', 'WARN', 'ERROR' ]))
+    it('enables debug logs at DEBUG level', () => enabledAt('debug', ['DEBUG']))
+    it('enables info logs at DEBUG and INFO levels', () => enabledAt('info', ['DEBUG', 'INFO']))
+    it('enables warn logs at at DEBUG, INFO and WARN levels', () => enabledAt('warn', ['DEBUG', 'INFO', 'WARN']))
+    it('enables error logs at all levels', () => enabledAt('error', ['DEBUG', 'INFO', 'WARN', 'ERROR']))
   })
 
   describe('.enableDebug', () => {
