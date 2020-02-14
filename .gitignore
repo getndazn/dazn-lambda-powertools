@@ -65,3 +65,6 @@ typings/
 
 # dstore
 .DS_Store
+
+# gitbook
+_book
