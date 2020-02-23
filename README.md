@@ -12,7 +12,9 @@ Re-writing and maintaining this bootstrapping logic into every individual lambda
 
 ## Usage
 
-The quickest way to get setup is to use the opinionated [pattern basic](/packages/lambda-powertools-pattern-basic) package, like so:
+The quickest way to get setup is to use the opinionated [pattern basic](/packages/lambda-powertools-pattern-basic) package.
+
+`npm install @dazn/lambda-powertools-pattern-basic`
 
 ```javascript
 const wrap = require('@dazn/lambda-powertools-pattern-basic')
