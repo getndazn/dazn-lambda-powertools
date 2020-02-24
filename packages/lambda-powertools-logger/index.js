@@ -9,6 +9,13 @@ const LogLevels = {
   ERROR: 50
 }
 
+const consoleMethod = {
+  DEBUG: console.debug,
+  INFO: console.info,
+  WARN: console.warn,
+  ERROR: console.error
+}
+
 // most of these are available through the Node.js execution environment for Lambda
 // see https://docs.aws.amazon.com/lambda/latest/dg/current-supported-versions.html
 const DEFAULT_CONTEXT = {
@@ -72,7 +79,7 @@ class Logger {
     }
 
     // re-order message and params to appear earlier in the log row
-    console.log(JSON.stringify({ message, ...params, ...logMsg }, (key, value) => typeof value === 'bigint'
+    consoleMethod[levelName](JSON.stringify({ message, ...params, ...logMsg }, (key, value) => typeof value === 'bigint'
       ? value.toString()
       : value
     ))
