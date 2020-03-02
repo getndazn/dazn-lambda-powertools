@@ -10,7 +10,7 @@
     "new-version": "lerna version --conventional-commits --github-release --yes",
     "publish": "lerna publish from-package --yes",
     "lerna": "lerna",
-    "docs": "gitbook build"
+    "docs": "gitbook build . docs"
   },
   "devDependencies": {
     "@commitlint/cli": "^7.5.2",
