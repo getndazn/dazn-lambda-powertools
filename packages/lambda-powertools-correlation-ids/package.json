@@ -1,0 +1,14 @@
+{
+  "name": "@dazn/lambda-powertools-correlation-ids",
+  "version": "1.8.2",
+  "description": "Module for recording correlation IDs",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Yan Cui",
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "Records": [
+    {
+      "eventID": "FakeEventID",
+      "eventName": "INSERT",
+      "eventVersion": "1.1",
+      "eventSource": "aws:dynamodb",
+      "awsRegion": "eu-central-1",
+      "dynamodb": {
+        "ApproximateCreationDateTime": 1550484579,
+        "Keys": { "id": { "S": "77cabef8-72d5-4d0a-aa5e-686306a3dbac" } },
+        "NewImage": {
+          "country": { "S": "******" },
+          "lastName": { "S": "******" },
+          "hashedEmail": {
+            "S": "******"
+          },
+          "viewerId": { "S": "******" },
+          "emailEncodingKey": { "S": "******" },
+          "needsZuoraSalesforceId": { "BOOL": "******" },
+          "createdAt": { "N": "******" },
+          "ingestedAt": { "NULL": "******" },
+          "password": {
+            "S": "******"
+          },
+         
+          "alias": { "S": "******" },
+          "id": { "S": "77cabef8-72d5-4d0a-aa5e-686306a3dbac"},
+          "pauseIsScheduled": { "BOOL": "******"},
+          "email": { "S": "******" },
+          "updatedAt": { "N": "******" },
+          "timeZoneSidKey": { "S": "******" },
+          "communityNickName": { "S": "******" },
+          "cancelledAt": { "NULL": "******" },
+          "subscribedAt": { "NULL": "******" },
+          "ipAddress": { "S": "******" },
+          "languageLocaleKey": { "S": "******" },
+          "allowMarketingEmails": { "BOOL": "******" },
+          "firstName": { "S": "******" },
+          "localeSidKey": { "S": "******" },
+          "cancelled": { "BOOL": "******" },
+          "myAccountStatus": { "N": "******"},
+          "status": { "S": "******"}
+        },
+        "SequenceNumber": "63727200000000005079250112",
+        "SizeBytes": 735,
+        "StreamViewType": "NEW_AND_OLD_IMAGES"
+      },
+      "eventSourceARN": "FAKEARN"
+    },
+    {
+      "eventID": "FakeEventID",
+      "eventName": "MODIFY",
+      "eventVersion": "1.1",
+      "eventSource": "aws:dynamodb",
+      "awsRegion": "eu-central-1",
+      "dynamodb": {
+        "ApproximateCreationDateTime": 1550484579,
+        "Keys": { "id": { "S": "77cabef8-72d5-4d0a-aa5e-686306a3dbac" } },
+        "NewImage": {
+          "country": { "S": "******" },
+          "lastName": { "S": "******"},
+          "hashedEmail": {
+            "S": "******"
+          },
+          "viewerId": { "S": "******" },
+          "emailEncodingKey": { "S": "******"},
+          "createdAt": { "N": "******" },
+          "aws:rep:updatetime": { "N": "1550484579.249001" },
+          "ingestedAt": { "NULL": "******" },
+          "password": {
+            "S": "******"
+          },
+          "alias": { "S": "******" },
+          "id": { "S": "77cabef8-72d5-4d0a-aa5e-686306a3dbac" },
+          "pauseIsScheduled": { "BOOL": "******" },
+          "aws:rep:updateregion": { "S":  "eu-central-1" },
+          "email": { "S": "******" },
+          "updatedAt": { "N": "******"},
+          "timeZoneSidKey": { "S": "******"},
+          "communityNickName": { "S": "******" },
+          "ipAddress": { "S": "******" },
+          "languageLocaleKey": { "S": "******"},
+          "firstName": { "S": "******" },
+          "localeSidKey": { "S": "******"},
+          "cancelled": { "BOOL": "******" },
+          "myAccountStatus": { "N": "******" },
+          "status": { "S": "******"}
+        },
+        "OldImage": {
+          "country": { "S": "******" },
+          "lastName": { "S": "******" },
+          "hashedEmail": {
+            "S": "******"
+          },
+          "viewerId": { "S": "******" },
+          "emailEncodingKey": { "S": "******" },
+          "createdAt": { "N": "******" },
+          "ingestedAt": { "NULL": "******"},
+          "password": {
+            "S": "******"
+          },
+          "alias": { "S": "******" },
+          "id": { "S": "77cabef8-72d5-4d0a-aa5e-686306a3dbac" },
+          "email": { "S": "******" },
+          "updatedAt": { "N": "******" },
+          "timeZoneSidKey": { "S": "******" },
+          "communityNickName": { "S": "******"},
+          "ipAddress": { "S": "******" },
+          "languageLocaleKey": { "S": "******"},
+          "firstName": { "S": "******" },
+          "localeSidKey": { "S": "******" },
+          "cancelled": { "BOOL": "******"},
+          "myAccountStatus": { "N": "******"},
+          "status": { "S": "******" }
+        },
+        "SequenceNumber": "63727300000000005079250180",
+        "SizeBytes": 1508,
+        "StreamViewType": "NEW_AND_OLD_IMAGES"
+      },
+      "eventSourceARN": "FAKEARN"
+    }
+  ]
+}

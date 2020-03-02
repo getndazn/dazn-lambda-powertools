@@ -1,0 +1,264 @@
+service: lambda-powertools-demo
+
+plugins:
+  - serverless-iam-roles-per-function
+  - serverless-step-functions
+  - serverless-pseudo-parameters
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: eu-west-2
+  environment:
+    STAGE: dev
+    DATADOG_API_KEY: idunno
+    DATADOG_PREFIX: lambda-powertools-demo.
+
+custom:
+  pseudoParameters:
+    allowReferences: true
+
+package:
+  exclude:
+    - node_modules/aws-sdk/**
+    - node_modules/@dazn/**/node_modules/aws-sdk/**
+
+functions:
+  api-a:
+    handler: functions/api-a.handler
+    events:
+      - http:
+          path: /
+          method: get
+    environment:
+      KINESIS_STREAM: !Ref KinesisStream
+      FIREHOSE_STREAM: !Ref FirehoseStream
+    iamRoleStatements:
+      - Effect: Allow
+        Action: kinesis:PutRecord
+        Resource: !GetAtt KinesisStream.Arn
+      - Effect: Allow
+        Action: firehose:PutRecord
+        Resource: !GetAtt FirehoseStream.Arn
+  
+  api-b:
+    handler: functions/api-b.handler
+    events:
+      - http:
+          path: /
+          method: post
+
+  kinesis:
+    handler: functions/kinesis.handler
+    events:
+      - stream:
+          type: kinesis
+          arn: !GetAtt KinesisStream.Arn
+    environment:
+      TOPIC_ARN: !Ref SnsTopic
+      TABLE_NAME: !Ref DynamoDBTable
+    iamRoleStatements:
+      - Effect: Allow
+        Action: sns:Publish
+        Resource: !Ref SnsTopic
+      - Effect: Allow
+        Action: dynamodb:PutItem
+        Resource: !GetAtt DynamoDBTable.Arn
+
+  dynamodb:
+    handler: functions/dynamodb.handler    
+    events:
+      - stream:
+          type: dynamodb
+          arn: !GetAtt DynamoDBTable.StreamArn
+    environment:
+      TOPIC_ARN: !Ref SnsTopic
+    iamRoleStatements:
+      - Effect: Allow
+        Action: sns:Publish
+        Resource: !Ref SnsTopic
+  
+  sns:
+    handler: functions/sns.handler
+    events:
+      - sns: 
+          arn: !Ref SnsTopic
+          topicName: lambda-powertools-demo
+    environment:
+      STATE_MACHINE_ARN: !Ref LambdaPowertoolsDemo
+    iamRoleStatements:
+      - Effect: Allow
+        Action: states:StartExecution
+        Resource: !Ref LambdaPowertoolsDemo
+      - Effect: Allow
+        Action: lambda:InvokeFunction
+        Resource: !GetAtt StandDashaloneLambdaFunction.Arn
+
+  firehose:
+    handler: functions/firehose.handler
+    environment:
+      TOPIC_ARN: !Ref SnsTopic
+    iamRoleStatements:
+      - Effect: Allow
+        Action: sns:Publish
+        Resource: !Ref SnsTopic
+
+  eventbridge:
+    handler: functions/eventbridge.handler
+    events:
+      - eventBridge:
+          pattern:
+            source:
+              - dazn-lambda-powertools-example
+            detail-type:
+              - eventbridge
+    environment:
+      TOPIC_ARN: !Ref SnsTopic
+    iamRoleStatements:
+      - Effect: Allow
+        Action: sns:Publish
+        Resource: !Ref SnsTopic
+
+  cloudwatchevents:
+    handler: functions/cloudwatchevents.handler
+    events:
+      - cloudwatchEvent:
+          event:
+            source:
+              - dazn-lambda-powertools-example
+            detail-type:
+              - cloudwatchevents
+    environment:
+      TOPIC_ARN: !Ref SnsTopic
+    iamRoleStatements:
+      - Effect: Allow
+        Action: sns:Publish
+        Resource: !Ref SnsTopic
+
+  stand-alone:
+    handler: functions/stand-alone.handler
+
+  add:
+    handler: functions/add.handler
+
+  double:
+    handler: functions/double.handler
+    
+stepFunctions:
+  stateMachines:
+    lambda-powertools-demo:      
+      name: lambdaPowertoolsDemo
+      definition:
+        Comment: A demo to show off the Lambda powertools packages
+        StartAt: Add
+        States:
+          Add:
+            Type: Task
+            Resource:
+              Fn::GetAtt: [add, Arn]
+            ResultPath: $.z
+            Next: Double
+          Double:
+            Type: Task
+            Resource:
+              Fn::GetAtt: [double, Arn]
+            ResultPath: $.result
+            End: true
+
+resources:
+  Resources:
+    KinesisStream:
+      Type: AWS::Kinesis::Stream
+      Properties: 
+        ShardCount: 1
+
+    S3Bucket:
+      Type: AWS::S3::Bucket
+
+    FirehoseDeliveryIamRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service: firehose.amazonaws.com
+              Action: sts:AssumeRole
+        Path: "/"
+        Policies:
+          - PolicyName: root
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action: glue:GetTableVersions
+                  Resource: "*"
+                - Effect: Allow
+                  Action:
+                    - s3:AbortMultipartUpload
+                    - s3:GetBucketLocation
+                    - s3:GetObject
+                    - s3:ListBucket
+                    - s3:ListBucketMultipartUploads
+                    - s3:PutObject
+                  Resource:
+                    - "#{S3Bucket.Arn}"
+                    - "#{S3Bucket.Arn}/*"
+                - Effect: Allow
+                  Action:
+                    - kinesis:DescribeStream
+                    - kinesis:GetShardIterator
+                    - kinesis:GetRecords
+                  Resource: arn:aws:kinesis:#{AWS::Region}:#{AWS::AccountId}:stream/%FIREHOSE_STREAM_NAME%
+                - Effect: Allow
+                  Action:
+                    - lambda:InvokeFunction
+                    - lambda:GetFunctionConfiguration
+                  Resource:
+                    - arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:%FIREHOSE_DEFAULT_FUNCTION%:%FIREHOSE_DEFAULT_VERSION%
+                    - "#{FirehoseLambdaFunction.Arn}"
+
+    FirehoseStream:
+      Type: AWS::KinesisFirehose::DeliveryStream
+      Properties:
+        DeliveryStreamType: DirectPut
+        ExtendedS3DestinationConfiguration:
+          BucketARN:
+            Fn::GetAtt: [S3Bucket, Arn]
+          BufferingHints:
+            IntervalInSeconds: 60
+            SizeInMBs: 5
+          CloudWatchLoggingOptions:
+            Enabled: false
+          CompressionFormat: GZIP
+          Prefix: ""
+          RoleARN: 
+            Fn::GetAtt: [FirehoseDeliveryIamRole, Arn]
+          ProcessingConfiguration:
+            Enabled: true
+            Processors:
+              - Type: Lambda
+                Parameters:
+                  - ParameterName: LambdaArn
+                    ParameterValue: 
+                      Fn::GetAtt: [FirehoseLambdaFunction, Arn]
+
+    SnsTopic:
+      Type: AWS::SNS::Topic      
+      Properties: 
+        DisplayName: lambda-powertools-demo
+        TopicName: lambda-powertools-demo
+
+    DynamoDBTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: Id
+            KeyType: HASH
+        AttributeDefinitions:
+          - AttributeName: Id
+            AttributeType: S
+        StreamSpecification:
+          StreamViewType: NEW_IMAGE

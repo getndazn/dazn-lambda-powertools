@@ -1,0 +1,609 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# [1.21.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.20.0...v1.21.0) (2020-02-09)
+
+
+### Features
+
+* **logger:** added support for BigInt ([e745d02](https://github.com/getndazn/dazn-lambda-powertools/commit/e745d02))
+* made aws-sdk dev dep in correlation ids pkg ([989ae86](https://github.com/getndazn/dazn-lambda-powertools/commit/989ae86)), closes [#149](https://github.com/getndazn/dazn-lambda-powertools/issues/149)
+
+
+
+
+
+# [1.20.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.19.0...v1.20.0) (2020-02-08)
+
+
+### Features
+
+* **serverless-offline:** Added support for offline development ([f73b7e5](https://github.com/getndazn/dazn-lambda-powertools/commit/f73b7e5))
+
+
+
+
+
+# [1.19.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.18.1...v1.19.0) (2020-01-30)
+
+
+### Features
+
+* **sample logging middleware:** optional error catch ([89ce3ed](https://github.com/getndazn/dazn-lambda-powertools/commit/89ce3ed))
+
+
+
+
+
+## [1.18.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.18.0...v1.18.1) (2020-01-07)
+
+**Note:** Version bump only for package @dazn/lambda-powertools
+
+
+
+
+
+# [1.18.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.17.0...v1.18.0) (2020-01-05)
+
+
+### Features
+
+* added CloudWatchEvents client ([d573ce5](https://github.com/getndazn/dazn-lambda-powertools/commit/d573ce5)), closes [#135](https://github.com/getndazn/dazn-lambda-powertools/issues/135)
+* added eventbridge client package ([7d27134](https://github.com/getndazn/dazn-lambda-powertools/commit/7d27134)), closes [#135](https://github.com/getndazn/dazn-lambda-powertools/issues/135)
+* added the new clients to the Lambda layer ([7229d04](https://github.com/getndazn/dazn-lambda-powertools/commit/7229d04))
+* support eventbridge in correlation ids middleware ([936f3ee](https://github.com/getndazn/dazn-lambda-powertools/commit/936f3ee)), closes [#135](https://github.com/getndazn/dazn-lambda-powertools/issues/135)
+
+
+
+
+
+# [1.17.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.16.1...v1.17.0) (2020-01-02)
+
+
+### Features
+
+* **http-client:** add support for patch and url option ([6e70261](https://github.com/getndazn/dazn-lambda-powertools/commit/6e70261))
+
+
+
+
+
+## [1.16.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.16.0...v1.16.1) (2020-01-02)
+
+
+### Bug Fixes
+
+* **http-client:** honor custom metricName option when passed in ([48a275a](https://github.com/getndazn/dazn-lambda-powertools/commit/48a275a))
+
+
+
+
+
+# [1.16.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.15.6...v1.16.0) (2020-01-01)
+
+
+### Features
+
+* handle cases when context is undefined ([176810d](https://github.com/getndazn/dazn-lambda-powertools/commit/176810d)), closes [#133](https://github.com/getndazn/dazn-lambda-powertools/issues/133)
+
+
+
+
+
+## [1.15.6](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.15.5...v1.15.6) (2019-11-15)
+
+**Note:** Version bump only for package @dazn/lambda-powertools
+
+
+
+
+
+## [1.15.5](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.15.4...v1.15.5) (2019-11-15)
+
+**Note:** Version bump only for package @dazn/lambda-powertools
+
+
+
+
+
+## [1.15.4](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.15.3...v1.15.4) (2019-11-15)
+
+**Note:** Version bump only for package @dazn/lambda-powertools
+
+
+
+
+
+## [1.15.3](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.15.2...v1.15.3) (2019-11-15)
+
+**Note:** Version bump only for package @dazn/lambda-powertools
+
+
+
+
+
+## [1.15.2](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.15.1...v1.15.2) (2019-11-14)
+
+**Note:** Version bump only for package @dazn/lambda-powertools
+
+
+
+
+
+## [1.15.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.15.0...v1.15.1) (2019-11-14)
+
+**Note:** Version bump only for package @dazn/lambda-powertools
+
+
+
+
+
+# [1.15.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.14.0...v1.15.0) (2019-11-14)
+
+
+### Features
+
+* override DATADOG_PREFIX only if undefined ([f7b2bae](https://github.com/getndazn/dazn-lambda-powertools/commit/f7b2bae))
+
+
+
+
+
+# [1.14.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.13.0...v1.14.0) (2019-10-09)
+
+
+### Bug Fixes
+
+* add missing shebang to layer script ([7e2f01e](https://github.com/getndazn/dazn-lambda-powertools/commit/7e2f01e))
+
+
+### Features
+
+* **middleware-corr-ids:** support for dynamodb streams ([9cd167c](https://github.com/getndazn/dazn-lambda-powertools/commit/9cd167c))
+* add dynamodb client to layer ([3f6897b](https://github.com/getndazn/dazn-lambda-powertools/commit/3f6897b))
+* added dynamodb-client project ([f0e6de2](https://github.com/getndazn/dazn-lambda-powertools/commit/f0e6de2))
+
+
+
+
+
+# [1.13.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.12.1...v1.13.0) (2019-10-09)
+
+
+### Features
+
+* added build script for layer ([f8d4111](https://github.com/getndazn/dazn-lambda-powertools/commit/f8d4111))
+* deploy all the powertools as a single layer ([109c84c](https://github.com/getndazn/dazn-lambda-powertools/commit/109c84c)), closes [#90](https://github.com/getndazn/dazn-lambda-powertools/issues/90)
+
+
+
+
+
+## [1.12.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.12.0...v1.12.1) (2019-10-07)
+
+
+### Bug Fixes
+
+* **pattern-obfuscate:** keep original DATADOG_TAGS values ([c2a11b6](https://github.com/getndazn/dazn-lambda-powertools/commit/c2a11b6))
+
+
+
+
+
+# [1.12.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.11.0...v1.12.0) (2019-10-02)
+
+
+### Bug Fixes
+
+* removed HTTP keep-alive code ([7127044](https://github.com/getndazn/dazn-lambda-powertools/commit/7127044)), closes [#89](https://github.com/getndazn/dazn-lambda-powertools/issues/89)
+
+
+### Features
+
+* enable HTTP keepalive via env var instead ([bcf22f2](https://github.com/getndazn/dazn-lambda-powertools/commit/bcf22f2))
+
+
+
+
+
+# [1.11.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.10.0...v1.11.0) (2019-09-05)
+
+
+### Features
+
+* use API GW request ID as correlation ID ([00e5153](https://github.com/getndazn/dazn-lambda-powertools/commit/00e5153)), closes [#92](https://github.com/getndazn/dazn-lambda-powertools/issues/92)
+
+
+
+
+
+# [1.10.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.9.1...v1.10.0) (2019-08-29)
+
+
+### Bug Fixes
+
+* **firehose:** fixed mixmatched event structure (missing Record) ([f4b742e](https://github.com/getndazn/dazn-lambda-powertools/commit/f4b742e))
+
+
+### Features
+
+* added firehose client ([535e788](https://github.com/getndazn/dazn-lambda-powertools/commit/535e788)), closes [#27](https://github.com/getndazn/dazn-lambda-powertools/issues/27)
+* **firehose:** add middleware support for firehose ([4a8803c](https://github.com/getndazn/dazn-lambda-powertools/commit/4a8803c)), closes [#27](https://github.com/getndazn/dazn-lambda-powertools/issues/27)
+
+
+
+
+
+## [1.9.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.9.0...v1.9.1) (2019-08-24)
+
+
+### Bug Fixes
+
+* **log-timeout:** check timer is set before attempting to clear ([b2f3c21](https://github.com/getndazn/dazn-lambda-powertools/commit/b2f3c21)), closes [#82](https://github.com/getndazn/dazn-lambda-powertools/issues/82)
+
+
+
+
+
+# [1.9.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.8.3...v1.9.0) (2019-08-23)
+
+
+### Features
+
+* **logger:** make params optional when logging the error stack ([c095376](https://github.com/getndazn/dazn-lambda-powertools/commit/c095376))
+
+
+
+
+
+## [1.8.3](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.8.2...v1.8.3) (2019-07-25)
+
+**Note:** Version bump only for package @dazn/lambda-powertools
+
+
+
+
+
+## [1.8.2](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.8.1...v1.8.2) (2019-07-24)
+
+**Note:** Version bump only for package @dazn/lambda-powertools
+
+
+
+
+
+## [1.8.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.8.0...v1.8.1) (2019-07-23)
+
+
+### Bug Fixes
+
+* circleci yaml indent ([35b1365](https://github.com/getndazn/dazn-lambda-powertools/commit/35b1365))
+* **http-client:** update metrics package ([0fa03e0](https://github.com/getndazn/dazn-lambda-powertools/commit/0fa03e0))
+* publishing package step update ([e28749c](https://github.com/getndazn/dazn-lambda-powertools/commit/e28749c))
+
+
+
+
+
+# [1.8.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.7.0...v1.8.0) (2019-07-10)
+
+
+### Features
+
+* enable HTTP keep alive on AWS clients ([6a963ac](https://github.com/getndazn/dazn-lambda-powertools/commit/6a963ac)), closes [#66](https://github.com/getndazn/dazn-lambda-powertools/issues/66)
+* **logger:** add static level getter ([9f18c0d](https://github.com/getndazn/dazn-lambda-powertools/commit/9f18c0d))
+
+
+
+
+
+# [1.7.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.6.1...v1.7.0) (2019-06-25)
+
+
+### Bug Fixes
+
+* fixes datadog tags overwritten ([7312901](https://github.com/getndazn/dazn-lambda-powertools/commit/7312901))
+* supplements existing datadog tags with our own ([d78bd77](https://github.com/getndazn/dazn-lambda-powertools/commit/d78bd77))
+
+
+### Features
+
+* allows values with colon and values without keys in csv ([5689eab](https://github.com/getndazn/dazn-lambda-powertools/commit/5689eab))
+* reworked supplementing csv values for datadog metrics ([3ce679b](https://github.com/getndazn/dazn-lambda-powertools/commit/3ce679b))
+
+
+
+
+
+## [1.6.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.6.0...v1.6.1) (2019-06-25)
+
+
+### Bug Fixes
+
+* fixed overly aggressive null/undefined check ([f0e2047](https://github.com/getndazn/dazn-lambda-powertools/commit/f0e2047)), closes [#64](https://github.com/getndazn/dazn-lambda-powertools/issues/64)
+
+
+
+
+
+# [1.6.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.5.2...v1.6.0) (2019-06-24)
+
+
+### Features
+
+* **http_client:** add support for timeout ([b1c1019](https://github.com/getndazn/dazn-lambda-powertools/commit/b1c1019)), closes [#56](https://github.com/getndazn/dazn-lambda-powertools/issues/56)
+
+
+
+
+
+## [1.5.2](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.5.1...v1.5.2) (2019-06-21)
+
+
+### Bug Fixes
+
+* don't set null/undefined HTTP headers ([14c62ff](https://github.com/getndazn/dazn-lambda-powertools/commit/14c62ff)), closes [#52](https://github.com/getndazn/dazn-lambda-powertools/issues/52)
+
+
+
+
+
+## [1.5.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.5.0...v1.5.1) (2019-06-20)
+
+
+### Bug Fixes
+
+* stringify call-chain-length for SNS and SQS param ([ef810d6](https://github.com/getndazn/dazn-lambda-powertools/commit/ef810d6)), closes [#48](https://github.com/getndazn/dazn-lambda-powertools/issues/48)
+
+
+
+
+
+# [1.5.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.4.2...v1.5.0) (2019-06-20)
+
+
+### Features
+
+* support override for sample debug log rate ([cae31bf](https://github.com/getndazn/dazn-lambda-powertools/commit/cae31bf)), closes [#45](https://github.com/getndazn/dazn-lambda-powertools/issues/45)
+
+
+
+
+
+## [1.4.2](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.4.1...v1.4.2) (2019-06-20)
+
+
+### Bug Fixes
+
+* handle missing getRemainingTimeInMillis gracefully ([0aa9e35](https://github.com/getndazn/dazn-lambda-powertools/commit/0aa9e35)), closes [#44](https://github.com/getndazn/dazn-lambda-powertools/issues/44)
+
+
+
+
+
+## [1.4.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.4.0...v1.4.1) (2019-06-14)
+
+**Note:** Version bump only for package dazn-lambda-powertools
+
+
+
+
+
+# [1.4.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.3.0...v1.4.0) (2019-06-14)
+
+
+### Bug Fixes
+
+* direct invokes also init call-chain-length ([fd77446](https://github.com/getndazn/dazn-lambda-powertools/commit/fd77446))
+
+
+### Features
+
+* track call-chain length and stop infinite loops ([1658212](https://github.com/getndazn/dazn-lambda-powertools/commit/1658212))
+
+
+
+
+
+# [1.3.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.2.0...v1.3.0) (2019-06-10)
+
+
+### Bug Fixes
+
+* fixed bad commit by github ([a29f4fb](https://github.com/getndazn/dazn-lambda-powertools/commit/a29f4fb))
+
+
+### Features
+
+* add log-timeout middleware ([02c7710](https://github.com/getndazn/dazn-lambda-powertools/commit/02c7710))
+* added log-timeout to basic and obfuscate patterns ([dd47b86](https://github.com/getndazn/dazn-lambda-powertools/commit/dd47b86))
+
+
+
+
+
+# [1.2.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.1.7...v1.2.0) (2019-05-24)
+
+
+### Bug Fixes
+
+* **drone:** npm ci doesn't auto run install script ([7c4691d](https://github.com/getndazn/dazn-lambda-powertools/commit/7c4691d))
+* **drone:** use node 10 and npm ci for locked packages ([758d63e](https://github.com/getndazn/dazn-lambda-powertools/commit/758d63e))
+* **middleware-correlation-ids:** removed modification of message atts ([c09641c](https://github.com/getndazn/dazn-lambda-powertools/commit/c09641c))
+
+
+### Features
+
+* **middleware-correlation-ids:** support sns sqs without raw deliveries ([53bb70a](https://github.com/getndazn/dazn-lambda-powertools/commit/53bb70a))
+
+
+
+
+
+## [1.1.7](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.1.6...v1.1.7) (2019-05-22)
+
+**Note:** Version bump only for package dazn-lambda-power-tools
+
+
+
+
+
+## [1.1.6](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.1.5...v1.1.6) (2019-05-17)
+
+**Note:** Version bump only for package dazn-lambda-powertools
+
+
+
+
+
+## [1.1.5](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.1.4...v1.1.5) (2019-04-29)
+
+**Note:** Version bump only for package dazn-lambda-powertools
+
+
+
+
+
+## [1.1.4](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.1.2...v1.1.4) (2019-04-23)
+
+
+### Bug Fixes
+
+* **middleware-correlation-ids:** ignore kinesis payload if not json ([8347774](https://github.com/getndazn/dazn-lambda-powertools/commit/8347774))
+
+
+
+
+
+## [1.1.3](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.1.2...v1.1.3) (2019-04-23)
+
+
+### Bug Fixes
+
+* **middleware-correlation-ids:** ignore kinesis payload if not json ([8347774](https://github.com/getndazn/dazn-lambda-powertools/commit/8347774))
+
+
+
+
+
+## [1.1.2](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.1.1...v1.1.2) (2019-03-28)
+
+
+### Bug Fixes
+
+* **pattern-obfuscate:** Fix typo in module exports&named parameters. ([eb08a43](https://github.com/getndazn/dazn-lambda-powertools/commit/eb08a43))
+
+
+
+
+
+## [1.1.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.1.0...v1.1.1) (2019-03-26)
+
+**Note:** Version bump only for package dazn-lambda-powertools
+
+
+
+
+
+# [1.1.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.0.1...v1.1.0) (2019-03-26)
+
+
+### Features
+
+* **middleware-obfuscater:** add obfuscation by whitelisting capability. ([a90ed7f](https://github.com/getndazn/dazn-lambda-powertools/commit/a90ed7f))
+* **pattern-obfuscate:** add support for obfuscation by whitelisting. ([f0036c2](https://github.com/getndazn/dazn-lambda-powertools/commit/f0036c2))
+
+
+
+
+
+## [1.0.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.0.0...v1.0.1) (2019-03-04)
+
+**Note:** Version bump only for package dazn-lambda-powertools
+
+
+
+
+
+# [1.0.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v0.10.7...v1.0.0) (2019-02-26)
+
+
+### Features
+
+* add withCorrelationIds methods to clients ([4e28832](https://github.com/getndazn/dazn-lambda-powertools/commit/4e28832))
+* **correlation-ids:** store global in case of version mismatch ([bab7c72](https://github.com/getndazn/dazn-lambda-powertools/commit/bab7c72))
+* **correlation-ids:** use a class to allow children ([df8d4a6](https://github.com/getndazn/dazn-lambda-powertools/commit/df8d4a6))
+* **correlation-ids:** use child instances for SQS + Kinesis ([dd6fd77](https://github.com/getndazn/dazn-lambda-powertools/commit/dd6fd77))
+* **logger:** use a class to allow children ([f15d432](https://github.com/getndazn/dazn-lambda-powertools/commit/f15d432))
+* **middleware-correlation-ids:** correlationIds + logger non-enumerable ([2432885](https://github.com/getndazn/dazn-lambda-powertools/commit/2432885))
+
+
+### BREAKING CHANGES
+
+* **correlation-ids:** Kinesis + SQS clients no longer have scope related methods.
+
+
+
+
+
+## [0.10.7](https://github.com/getndazn/dazn-lambda-powertools/compare/v0.10.6...v0.10.7) (2019-02-25)
+
+**Note:** Version bump only for package dazn-lambda-powertools
+
+
+
+
+
+## [0.10.6](https://github.com/getndazn/dazn-lambda-powertools/compare/v0.10.5...v0.10.6) (2019-02-19)
+
+
+### Bug Fixes
+
+* new tests, fix undefined properties would get added to object ([dac4465](https://github.com/getndazn/dazn-lambda-powertools/commit/dac4465))
+
+
+
+
+
+## [0.10.5](https://github.com/getndazn/dazn-lambda-powertools/compare/v0.10.4...v0.10.5) (2019-02-19)
+
+**Note:** Version bump only for package dazn-lambda-powertools
+
+
+
+
+
+## [0.10.4](https://github.com/getndazn/dazn-lambda-powertools/compare/v0.10.3...v0.10.4) (2019-02-18)
+
+**Note:** Version bump only for package dazn-lambda-powertools
+
+
+
+
+
+## [0.10.3](https://github.com/getndazn/dazn-lambda-powertools/compare/v0.10.2...v0.10.3) (2019-02-18)
+
+**Note:** Version bump only for package dazn-lambda-powertools
+
+
+
+
+
+## [0.10.2](https://github.com/getndazn/dazn-lambda-powertools/compare/v0.10.1...v0.10.2) (2019-02-18)
+
+
+### Bug Fixes
+
+* **build:** folled back --force-publish ([d8d2372](https://github.com/getndazn/dazn-lambda-powertools/commit/d8d2372))
+* **build:** force publish all pkgs so they're all on same ver ([885a489](https://github.com/getndazn/dazn-lambda-powertools/commit/885a489))
+* test ([6324176](https://github.com/getndazn/dazn-lambda-powertools/commit/6324176))
+
+
+
+
+
+## [0.10.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v0.10.0...v0.10.1) (2019-02-18)
+
+**Note:** Version bump only for package dazn-lambda-power-tools

@@ -1,0 +1,647 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>middleware-correlation-ids · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="../lambda-powertools-middleware-log-timeout/" />
+    
+    
+    <link rel="prev" href="../lambda-powertools-step-functions-client/" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../">
+            
+                <a href="../../">
+            
+                    
+                    overview
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Clients</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../lambda-powertools-cloudwatchevents-client/">
+            
+                <a href="../lambda-powertools-cloudwatchevents-client/">
+            
+                    
+                    cloudwatchevents-client
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../lambda-powertools-dynamodb-client/">
+            
+                <a href="../lambda-powertools-dynamodb-client/">
+            
+                    
+                    dynamodb-client
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="../lambda-powertools-eventbridge-client/">
+            
+                <a href="../lambda-powertools-eventbridge-client/">
+            
+                    
+                    eventbridge-client
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="../lambda-powertools-firehose-client/">
+            
+                <a href="../lambda-powertools-firehose-client/">
+            
+                    
+                    firehose-client
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="../lambda-powertools-http-client/">
+            
+                <a href="../lambda-powertools-http-client/">
+            
+                    
+                    http-client
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.6" data-path="../lambda-powertools-kinesis-client/">
+            
+                <a href="../lambda-powertools-kinesis-client/">
+            
+                    
+                    kinesis-client
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.7" data-path="../lambda-powertools-lambda-client/">
+            
+                <a href="../lambda-powertools-lambda-client/">
+            
+                    
+                    lambda-client
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.8" data-path="../lambda-powertools-sns-client/">
+            
+                <a href="../lambda-powertools-sns-client/">
+            
+                    
+                    sns-client
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9" data-path="../lambda-powertools-sqs-client/">
+            
+                <a href="../lambda-powertools-sqs-client/">
+            
+                    
+                    sqs-client
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.10" data-path="../lambda-powertools-step-functions-client/">
+            
+                <a href="../lambda-powertools-step-functions-client/">
+            
+                    
+                    step-functions-client
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Middlewares</li>
+        
+        
+    
+        <li class="chapter active" data-level="3.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    middleware-correlation-ids
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="../lambda-powertools-middleware-log-timeout/">
+            
+                <a href="../lambda-powertools-middleware-log-timeout/">
+            
+                    
+                    middleware-log-timeout
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="../lambda-powertools-middleware-obfuscater/">
+            
+                <a href="../lambda-powertools-middleware-obfuscater/">
+            
+                    
+                    middleware-obfuscater
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.4" data-path="../lambda-powertools-middleware-sample-logging/">
+            
+                <a href="../lambda-powertools-middleware-sample-logging/">
+            
+                    
+                    middleware-sample-logging
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.5" data-path="../lambda-powertools-middleware-stop-infinite-loop/">
+            
+                <a href="../lambda-powertools-middleware-stop-infinite-loop/">
+            
+                    
+                    middleware-stop-infinite-loop
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Patterns</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="../lambda-powertools-pattern-basic/">
+            
+                <a href="../lambda-powertools-pattern-basic/">
+            
+                    
+                    pattern-basic
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" data-path="../lambda-powertools-pattern-obfuscate/">
+            
+                <a href="../lambda-powertools-pattern-obfuscate/">
+            
+                    
+                    pattern-obfuscate
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Utils</li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="../lambda-powertools-correlation-ids/">
+            
+                <a href="../lambda-powertools-correlation-ids/">
+            
+                    
+                    correlation-ids
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.2" data-path="../lambda-powertools-logger/">
+            
+                <a href="../lambda-powertools-logger/">
+            
+                    
+                    logger
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../.." >middleware-correlation-ids</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="lambda-powertools-middleware-correlation-ids">lambda-powertools-middleware-correlation-ids</h1>
+<p>A <a href="https://github.com/middyjs/middy" target="_blank">Middy</a> middleware that extracts correlation IDs from the invocation event and stores them with the <code>@dazn/lambda-powertools-correlation-ids</code> package.</p>
+<p>Main features:</p>
+<ul>
+<li><p>stores correlation IDs with the <code>@dazn/lambda-powertools-correlation-ids</code> package</p>
+</li>
+<li><p>supports API Gateway events (HTTP headers)</p>
+</li>
+<li><p>supports SNS events (message attributes)</p>
+</li>
+<li><p>supports SQS events (message attributes with and without raw message delivery when published from SNS)</p>
+</li>
+<li><p>supports Kinesis events (see below for more details)</p>
+</li>
+<li><p>supports direct invocations and Step Function tasks (the middleware looks for a <code>__context__</code> property in the JSON event)</p>
+</li>
+<li><p>initializes correlation IDs using the Lambda request ID</p>
+</li>
+<li><p>captures anything with prefix <code>x-correlation-</code></p>
+</li>
+<li><p>cpatures <code>User-Agent</code> from API Gateway events</p>
+</li>
+<li><p>captures or initializes the <code>debug-log-enabled</code> decision based on configuration (see below) to ensure invocation follows upstream decision to enable debug logging for a small % of invocations</p>
+</li>
+</ul>
+<h2 id="getting-started">Getting Started</h2>
+<p>Install from NPM: <code>npm install @dazn/lambda-powertools-middleware-correlation-ids</code></p>
+<p>Alternatively, if you use the template <code>@dazn/lambda-powertools-pattern-basic</code> then this would be configured for you.</p>
+<h2 id="api">API</h2>
+<p>Accepts a configuration object of the following shape:</p>
+<pre><code class="lang-js">{
+  sampleDebugLogRate: double [between <span class="hljs-number">0</span> and <span class="hljs-number">1</span>]
+}
+</code></pre>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> middy = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;middy&apos;</span>)
+<span class="hljs-keyword">const</span> correlationIds = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;@dazn/lambda-powertools-middleware-correlation-ids&apos;</span>)
+
+<span class="hljs-keyword">const</span> handler = <span class="hljs-keyword">async</span> (event, context) =&gt; {
+  <span class="hljs-keyword">return</span> <span class="hljs-number">42</span>
+}
+
+<span class="hljs-built_in">module</span>.exports = middy(handler)
+  .use(correlationIds({ sampleDebugLogRate: <span class="hljs-number">0.01</span> }))
+}
+</code></pre>
+<p>This middleware is often used alongside the <code>@dazn/lambda-powertools-middleware-sample-logging</code> middleware to implement sample logging. It&apos;s <strong>recommended</strong> that you use the <code>@dazn/lambda-powertools-pattern-basic</code> which configures both to enable debug logging at 1% of invocations.</p>
+<h2 id="logging-and-forwarding-correlation-ids">Logging and Forwarding correlation IDs</h2>
+<p><strong>Note</strong>: <em>this does not apply to <code>Kinesis</code> and <code>SQS</code> event sources, whose invocation events contain a batch of records and require different handling. Please see section below for more details.</em></p>
+<p>Once you have wrapped your handler code, the correlation IDs would be automatically included when:</p>
+<ul>
+<li>you log with the <code>@dazn/lambda-powertools-logger</code> logger</li>
+<li>when you make HTTP requests with the <code>@dazn/lambda-powertools-http-client</code> HTTP client</li>
+<li>when you interact with AWS with the various AWS SDK clients from this project</li>
+</ul>
+<p>If you&apos;re using these accompanying packages then correlation IDs would simply pass through your function. However, if you wish to augment existing correlation IDs then you can also add new correlation IDs to the mix with the <code>@dazn/lambda-powertools-correlation-ids</code> package.</p>
+<h2 id="logging-and-forwarding-correlation-ids-for-kinesis-and-sqs-events">Logging and Forwarding correlation IDs for Kinesis and SQS events</h2>
+<p>Because Kinesis and SQS both supports batching, it means that the invocation event can contain multiple records. Each of these records would have its own set of correlation IDs.</p>
+<p>To address this, this middleware would extract the correlation IDs for each record and make it available for you, as well as creating a dedicated logger instance for each record. How this happens depends on the event source.</p>
+<p>The HTTP client as well as AWS SDK clients from this project all have an override that lets you pass in these record-specific correlation IDs.</p>
+<h3 id="kinesis">Kinesis</h3>
+<p>For kinesis events, the middleware would do the following for each record:</p>
+<ol>
+<li><p>Unzip; base64 decode; parse as JSON; and extract correlation IDs from the record body (in the <code>__context__</code> property).</p>
+</li>
+<li><p>Create an instance of <code>CorrelationIds</code> (from the <code>@dazn/lambda-powertools-correlation-ids</code> package) to hold all the extracted correlation IDs.</p>
+</li>
+<li><p>Create an instance of <code>Log</code> (from the <code>@dazn/lambda-powertools-logger</code> package) with the extracted correlation IDs already baked in.</p>
+</li>
+<li><p>Attach the correlation IDs and logger to the parsed JSON object.</p>
+</li>
+<li><p>Include the parsed JSON objects from step 4. in <code>context.parsedKinesisEvents</code>.</p>
+</li>
+</ol>
+<p>When using the HTTP client and AWS SDK clients from the powertools packages, you will need to include them as options or using one of the overload methods. For example:</p>
+<p><img src="docs/images/kinesis_middleware_illustrated.png" alt=""></p>
+<p>Here&apos;s an example function.</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> Log = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;@dazn/lambda-powertools-logger&apos;</span>)
+<span class="hljs-keyword">const</span> SNS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;@dazn/lambda-powertools-sns-client&apos;</span>)
+<span class="hljs-keyword">const</span> wrap = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;@dazn/lambda-powertools-pattern-basic&apos;</span>)
+
+<span class="hljs-built_in">module</span>.exports.handler = wrap(<span class="hljs-keyword">async</span> (event, context) =&gt; {
+  <span class="hljs-keyword">const</span> events = context.parsedKinesisEvents
+
+  <span class="hljs-comment">// you can still use the global Log instance, it&apos;ll still have the request ID for</span>
+  <span class="hljs-comment">// the current invocation, but it won&apos;t have any of the correlation IDs for the</span>
+  <span class="hljs-comment">// individual records</span>
+  Log.debug(<span class="hljs-string">&apos;received Kinesis events&apos;</span>, { count: events.length })
+
+  <span class="hljs-keyword">await</span> <span class="hljs-built_in">Promise</span>.all(events.map(evt =&gt; {
+    <span class="hljs-comment">// each parsed kinesis event has a `logger` attached to it, with the correlation IDs</span>
+    <span class="hljs-comment">// specific for that record</span>
+    evt.logger.debug(<span class="hljs-string">&apos;publishing kinesis event as SNS message...&apos;</span>)
+
+    <span class="hljs-keyword">const</span> req = {
+      Message: <span class="hljs-built_in">JSON</span>.stringify(evt),
+      TopicArn: process.env.TOPIC_ARN
+    }
+
+    <span class="hljs-comment">// the SNS client has an overload method for publish, which lets you pass the</span>
+    <span class="hljs-comment">// correlation IDs specific to this parsed kinesis event</span>
+    <span class="hljs-keyword">return</span> SNS.publishWithCorrelationIds(evt.correlationIds, req).promise()
+  }))
+})
+</code></pre>
+<h3 id="sqs">SQS</h3>
+<p>For SQS events, the middleware would do the following for each record:</p>
+<ol>
+<li><p>Eextract correlation IDs from the message attribtues.</p>
+</li>
+<li><p>Create an instance of <code>CorrelationIds</code> (from the <code>@dazn/lambda-powertools-correlation-ids</code> package) to hold all the extracted correlation IDs.</p>
+</li>
+<li><p>Create an instance of <code>Log</code> (from the <code>@dazn/lambda-powertools-logger</code> package) with the extracted correlation IDs already baked in.</p>
+</li>
+<li><p>Attach the correlation IDs and logger to the original SQS record object.</p>
+</li>
+</ol>
+<p>When using the HTTP client and AWS SDK clients from the powertools packages, you will need to include them as options or using one of the overload methods. This is similar to the Kinesis example above. Here&apos;s an example function:</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> Log = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;@dazn/lambda-powertools-logger&apos;</span>)
+<span class="hljs-keyword">const</span> SNS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;@dazn/lambda-powertools-sns-client&apos;</span>)
+<span class="hljs-keyword">const</span> wrap = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;@dazn/lambda-powertools-pattern-basic&apos;</span>)
+
+<span class="hljs-built_in">module</span>.exports.handler = wrap(<span class="hljs-keyword">async</span> (event, context) =&gt; {
+  <span class="hljs-comment">// you can still use the global Log instance, it&apos;ll still have the request ID for</span>
+  <span class="hljs-comment">// the current invocation, but it won&apos;t have any of the correlation IDs for the</span>
+  <span class="hljs-comment">// individual records</span>
+  Log.debug(<span class="hljs-string">&apos;received SQS events&apos;</span>, { count: event.Records.length })
+
+  <span class="hljs-keyword">await</span> <span class="hljs-built_in">Promise</span>.all(event.Records.map(record =&gt; {
+    <span class="hljs-comment">// each SQS record has a `logger` attached to it, with the correlation IDs</span>
+    <span class="hljs-comment">// specific for that record</span>
+    record.logger.debug(<span class="hljs-string">&apos;publishing SQS record as SNS message...&apos;</span>)
+
+    <span class="hljs-keyword">const</span> req = {
+      Message: <span class="hljs-built_in">JSON</span>.stringify(record),
+      TopicArn: process.env.TOPIC_ARN
+    }
+
+    <span class="hljs-comment">// the SNS client has an overload method for publish, which lets you pass the</span>
+    <span class="hljs-comment">// correlation IDs specific to this SQS record</span>
+    <span class="hljs-keyword">return</span> SNS.publishWithCorrelationIds(record.correlationIds, req).promise()
+  }))
+})
+</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="../lambda-powertools-step-functions-client/" class="navigation navigation-prev " aria-label="Previous page: step-functions-client">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="../lambda-powertools-middleware-log-timeout/" class="navigation navigation-next " aria-label="Next page: middleware-log-timeout">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"middleware-correlation-ids","level":"3.1","depth":1,"next":{"title":"middleware-log-timeout","level":"3.2","depth":1,"path":"packages/lambda-powertools-middleware-log-timeout/README.MD","ref":"./packages/lambda-powertools-middleware-log-timeout/README.MD","articles":[]},"previous":{"title":"step-functions-client","level":"2.10","depth":1,"path":"packages/lambda-powertools-step-functions-client/README.MD","ref":"./packages/lambda-powertools-step-functions-client/README.MD","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"fontsettings":{"theme":"night","family":"sans","size":2},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"packages/lambda-powertools-middleware-correlation-ids/README.MD","mtime":"2020-03-02T12:34:00.043Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-03-02T13:45:21.029Z"},"basePath":"../..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

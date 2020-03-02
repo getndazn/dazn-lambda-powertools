@@ -1,0 +1,19 @@
+{
+  "name": "@dazn/lambda-powertools-lambda-client",
+  "version": "1.21.0",
+  "description": "Lambda client wrapper that knows how to forward correlation IDs (captured via @dazn/lambda-powertools-correlation-ids)",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "license": "MIT",
+  "author": "Yan Cui",
+  "dependencies": {
+    "@dazn/lambda-powertools-correlation-ids": "^1.8.2",
+    "@dazn/lambda-powertools-logger": "^1.21.0",
+    "aws-sdk": "^2.540.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

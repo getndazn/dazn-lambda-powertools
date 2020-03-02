@@ -1,0 +1,30 @@
+{
+  "name": "@dazn/lambda-powertools-demo",
+  "version": "1.21.0",
+  "description": "Example serverless app to demonstrate the powertools",
+  "scripts": {},
+  "author": "Yan Cui",
+  "dependencies": {
+    "@dazn/datadog-metrics": "^1.3.1",
+    "@dazn/lambda-powertools-cloudwatchevents-client": "^1.21.0",
+    "@dazn/lambda-powertools-correlation-ids": "^1.8.2",
+    "@dazn/lambda-powertools-dynamodb-client": "^1.18.0",
+    "@dazn/lambda-powertools-eventbridge-client": "^1.21.0",
+    "@dazn/lambda-powertools-firehose-client": "^1.21.0",
+    "@dazn/lambda-powertools-http-client": "^1.8.2",
+    "@dazn/lambda-powertools-kinesis-client": "^1.21.0",
+    "@dazn/lambda-powertools-lambda-client": "^1.21.0",
+    "@dazn/lambda-powertools-logger": "^1.21.0",
+    "@dazn/lambda-powertools-middleware-correlation-ids": "1.8.3",
+    "@dazn/lambda-powertools-middleware-sample-logging": "^1.21.0",
+    "@dazn/lambda-powertools-pattern-basic": "^1.21.0",
+    "@dazn/lambda-powertools-sns-client": "^1.8.2",
+    "@dazn/lambda-powertools-step-functions-client": "^1.21.0",
+    "uuid": "^3.3.3"
+  },
+  "devDependencies": {
+    "serverless-iam-roles-per-function": "^1.0.1",
+    "serverless-pseudo-parameters": "^1.6.0",
+    "serverless-step-functions": "^2.6.0"
+  }
+}
