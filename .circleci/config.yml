@@ -37,6 +37,7 @@ jobs:
     docker:
       - image: circleci/node:10.15
     steps:
+      - *ATTACH_WORKSPACE
       - run: npm run docs
       - run: git subtree push --prefix _book origin gh-pages
   new-version:
