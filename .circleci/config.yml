@@ -38,7 +38,7 @@ jobs:
       - image: circleci/node:10.15
     steps:
       - *ATTACH_WORKSPACE
-      - run: git branch -D gh-pages
+      - run: git branch -D gh-pages || true
       - run: npm run docs
       - run: git add .
       - run: "git commit -m 'chore: temp deploy docs commit'"
