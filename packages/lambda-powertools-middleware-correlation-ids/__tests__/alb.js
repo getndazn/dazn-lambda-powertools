@@ -37,7 +37,7 @@ describe('Correlation IDs middleware (ALB)', () => {
   })
 
   describe('when correlation ID is not provided in the event', () => {
-    it('sets it to the API Gateway Request ID', () => {
+    it('sets it to the ALB Request ID', () => {
       const requestId = uuid()
       const event = genAlbEvent()
       invokeHandler(event, requestId, 0, x => {

@@ -12,8 +12,7 @@ function captureCorrelationIds ({ requestContext, headers }, { awsRequestId }, s
     return
   }
 
-  const albRequestId = awsRequestId
-  const correlationIds = { awsRequestId, albRequestId }
+  const correlationIds = { awsRequestId }
   for (const header in headers) {
     if (header.toLowerCase().startsWith('x-correlation-')) {
       correlationIds[header] = headers[header]
@@ -21,7 +20,7 @@ function captureCorrelationIds ({ requestContext, headers }, { awsRequestId }, s
   }
 
   if (!correlationIds[consts.X_CORRELATION_ID]) {
-    correlationIds[consts.X_CORRELATION_ID] = albRequestId || awsRequestId
+    correlationIds[consts.X_CORRELATION_ID] = awsRequestId
   }
 
   // forward the original user-agent on as User-Agent
