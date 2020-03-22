@@ -37,8 +37,13 @@ jobs:
     docker:
       - image: circleci/node:10.15
     steps:
+      - *ATTACH_WORKSPACE
+      - run: git branch -D gh-pages || true
       - run: npm run docs
-      - run: git subtree push --prefix _book origin gh-pages
+      - run: git add .
+      - run: "git commit -m 'chore: temp deploy docs commit'"
+      - run: git subtree split --prefix docs -b gh-pages
+      - run: git push -f origin gh-pages:gh-pages
   new-version:
     docker:
       - image: circleci/node:10
