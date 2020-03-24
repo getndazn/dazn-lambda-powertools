@@ -33,17 +33,6 @@ jobs:
     steps:
       - *ATTACH_WORKSPACE
       - run_tests
-  build-docs:
-    docker:
-      - image: circleci/node:10.15
-    steps:
-      - *ATTACH_WORKSPACE
-      - run: git branch -D gh-pages || true
-      - run: npm run docs
-      - run: git add .
-      - run: "git commit -m 'chore: temp deploy docs commit'"
-      - run: git subtree split --prefix docs -b gh-pages
-      - run: git push -f origin gh-pages:gh-pages
   new-version:
     docker:
       - image: circleci/node:10
@@ -86,13 +75,6 @@ workflows:
       - test-node10:
           requires:
             - build
-      - build-docs:
-          requires:
-            - test-node12
-            - test-node10
-          filters:
-            branches:
-              only: master
       - new-version:
           requires:
             - test-node12
