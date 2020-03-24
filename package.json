@@ -3,7 +3,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "install": "lerna bootstrap --concurrency=2",
+    "install": "lerna bootstrap --ci --concurrency=2",
     "test:lint": "eslint .",
     "test": "lerna run --concurrency 1 test -- -- --config=../../jest.config.js",
     "diff": "lerna diff",
