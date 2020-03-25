@@ -8,7 +8,9 @@
   },
   "dependencies": {
     "@dazn/lambda-powertools-correlation-ids": "^1.8.2",
-    "@dazn/lambda-powertools-logger": "^1.21.0",
+    "@dazn/lambda-powertools-logger": "^1.21.0"
+  },
+  "devDependencies": {
     "aws-sdk": "^2.540.0"
   },
   "license": "MIT",

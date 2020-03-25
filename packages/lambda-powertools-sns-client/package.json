@@ -9,7 +9,9 @@
   "license": "MIT",
   "author": "Yan Cui",
   "dependencies": {
-    "@dazn/lambda-powertools-correlation-ids": "^1.8.2",
+    "@dazn/lambda-powertools-correlation-ids": "^1.8.2"
+  },
+  "devDependencies": {
     "aws-sdk": "^2.540.0"
   },
   "publishConfig": {

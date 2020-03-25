@@ -10,8 +10,10 @@
   "author": "Yan Cui",
   "dependencies": {
     "@dazn/lambda-powertools-correlation-ids": "^1.8.2",
-    "aws-sdk": "^2.538.0",
     "lodash.chunk": "^4.2.0"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.538.0"
   },
   "publishConfig": {
     "access": "public"
