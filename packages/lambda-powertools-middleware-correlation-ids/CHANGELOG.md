@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.22.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.21.1...v1.22.0) (2020-03-31)
+
+
+### Bug Fixes
+
+* **middleware:** remove unnecessary alb correlation id ([4b91e5a](https://github.com/getndazn/dazn-lambda-powertools/commit/4b91e5a))
+* update package-locks ([756131d](https://github.com/getndazn/dazn-lambda-powertools/commit/756131d))
+
+
+### Features
+
+* **middleware:** add alb as an event source ([4bbd429](https://github.com/getndazn/dazn-lambda-powertools/commit/4bbd429))
+* set alb user-agent correlationId as User-Agent ([b794dbf](https://github.com/getndazn/dazn-lambda-powertools/commit/b794dbf))
+
+
+
+
+
 ## [1.21.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.21.0...v1.21.1) (2020-03-31)
 
 
