@@ -3,6 +3,7 @@ const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
 const generic = require('./event-sources/generic')
 const eventSources = [
   require('./event-sources/api-gateway'),
+  require('./event-sources/alb'),
   require('./event-sources/sns'),
   require('./event-sources/sqs'),
   require('./event-sources/kinesis'),

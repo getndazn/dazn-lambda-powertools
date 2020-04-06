@@ -1,6 +1,6 @@
 {
   "name": "@dazn/lambda-powertools-dynamodb-client",
-  "version": "1.18.0",
+  "version": "1.22.1",
   "description": "Lambda client wrapper that knows how to forward correlation IDs (captured via @dazn/lambda-powertools-correlation-ids)",
   "main": "index.js",
   "scripts": {
@@ -10,8 +10,10 @@
   "author": "Yan Cui",
   "dependencies": {
     "@dazn/lambda-powertools-correlation-ids": "^1.8.2",
-    "aws-sdk": "^2.538.0",
     "lodash.chunk": "^4.2.0"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.538.0"
   },
   "publishConfig": {
     "access": "public"

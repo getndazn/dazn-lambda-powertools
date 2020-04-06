@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.22.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.22.0...v1.22.1) (2020-04-01)
+
+**Note:** Version bump only for package @dazn/lambda-powertools-dynamodb-client
+
+
+
+
+
+# [1.22.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.21.1...v1.22.0) (2020-03-31)
+
+
+### Bug Fixes
+
+* update package-locks ([756131d](https://github.com/getndazn/dazn-lambda-powertools/commit/756131d))
+
+
+
+
+
+## [1.21.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.21.0...v1.21.1) (2020-03-31)
+
+
+### Bug Fixes
+
+* **deps:** aws-sdk should not be a direct dependency ([27c04b2](https://github.com/getndazn/dazn-lambda-powertools/commit/27c04b2))
+
+
+
+
+
 # [1.18.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.17.0...v1.18.0) (2020-01-05)
 
 **Note:** Version bump only for package @dazn/lambda-powertools-dynamodb-client
