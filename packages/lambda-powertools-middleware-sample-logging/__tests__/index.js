@@ -1,5 +1,8 @@
 const consoleLog = jest.fn()
-global.console.log = consoleLog
+global.console.debug = consoleLog
+global.console.info = consoleLog
+global.console.warn = consoleLog
+global.console.error = consoleLog
 process.env.LOG_LEVEL = 'INFO'
 const Log = require('@dazn/lambda-powertools-logger')
 const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
