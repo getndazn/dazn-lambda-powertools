@@ -1,6 +1,6 @@
 {
   "name": "@dazn/lambda-powertools-middleware-correlation-ids",
-  "version": "1.22.1",
+  "version": "1.23.0",
   "description": "Middy middleware for capturing correlation IDs from inbound event",
   "main": "index.js",
   "scripts": {
@@ -9,8 +9,8 @@
   "license": "MIT",
   "author": "Yan Cui",
   "dependencies": {
-    "@dazn/lambda-powertools-correlation-ids": "^1.5.0",
-    "@dazn/lambda-powertools-logger": "^1.21.0"
+    "@dazn/lambda-powertools-correlation-ids": "^1.23.0",
+    "@dazn/lambda-powertools-logger": "^1.23.0"
   },
   "devDependencies": {
     "aws-sdk": "^2.496.0",
