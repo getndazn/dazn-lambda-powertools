@@ -1,5 +1,8 @@
 const consoleLog = jest.fn()
-global.console.log = consoleLog
+global.console.debug = consoleLog
+global.console.info = consoleLog
+global.console.warn = consoleLog
+global.console.error = consoleLog
 
 const middy = require('middy')
 const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
