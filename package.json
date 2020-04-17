@@ -15,7 +15,7 @@
   "devDependencies": {
     "@commitlint/cli": "^7.5.2",
     "@commitlint/config-conventional": "^7.5.0",
-    "coveralls": "^3.0.2",
+    "coveralls": "^3.0.11",
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.0.0",
     "eslint-plugin-import": "^2.20.0",
