@@ -18,8 +18,7 @@ jobs:
     steps:
       - checkout
       - run: npm ci
-      - run: npm run install
-
+      - run: npm run bootstrap:ci
       - *PERSIST_TO_WORKSPACE
   test-node12:
     docker:

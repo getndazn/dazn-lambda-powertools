@@ -3,7 +3,8 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "install": "lerna exec --concurrency 1 -- npm ci && lerna link",
+    "bootstrap": "lerna exec --concurrency 1 -- npm i && lerna link",
+    "bootstrap:ci": "lerna exec --concurrency 1 -- npm ci && lerna link",
     "test:lint": "eslint .",
     "test": "lerna run --concurrency 1 test -- -- --config=../../jest.config.js",
     "diff": "lerna diff",
