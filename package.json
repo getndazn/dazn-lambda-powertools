@@ -11,11 +11,13 @@
     "new-version": "lerna version --conventional-commits --create-release github --yes -m \"chore(release): %v [ci skip]\"",
     "publish": "lerna publish from-package --yes",
     "lerna": "lerna",
+    "dd-approve": "node dependabot-approve.js",
     "docs": "gitbook build . docs"
   },
   "devDependencies": {
     "@commitlint/cli": "^7.5.2",
     "@commitlint/config-conventional": "^7.5.0",
+    "@octokit/rest": "^17.3.0",
     "coveralls": "^3.0.11",
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.1",
