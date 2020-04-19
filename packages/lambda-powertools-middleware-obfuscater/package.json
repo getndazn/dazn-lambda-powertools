@@ -1,6 +1,6 @@
 {
   "name": "@dazn/lambda-powertools-middleware-obfuscater",
-  "version": "1.23.0",
+  "version": "1.23.1",
   "description": "Middy middleware to obfuscate the event for logging",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,7 @@
   "author": "Tom Rogers",
   "dependencies": {
     "@dazn/lambda-powertools-correlation-ids": "^1.23.0",
-    "@dazn/lambda-powertools-logger": "^1.23.0"
+    "@dazn/lambda-powertools-logger": "^1.23.1"
   },
   "devDependencies": {
     "jest": "^23.1.0",

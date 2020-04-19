@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.23.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.23.0...v1.23.1) (2020-04-19)
+
+
+### Reverts
+
+* Revert "build(deps-dev): [security] bump lodash from 4.17.11 to 4.17.13" ([713ae4e](https://github.com/getndazn/dazn-lambda-powertools/commit/713ae4e03a53273b68f183534340f39fd3163d28))
+
+
+
+
+
 # [1.23.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.22.1...v1.23.0) (2020-04-06)
 
 
