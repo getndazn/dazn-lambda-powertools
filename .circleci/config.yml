@@ -37,7 +37,7 @@ jobs:
       - image: circleci/node:10
     steps:
       - *ATTACH_WORKSPACE
-      - run: npm run dd-approve
+      - run: npm run dependabot-approve
   new-version:
     docker:
       - image: circleci/node:10
