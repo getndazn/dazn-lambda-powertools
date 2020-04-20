@@ -11,7 +11,7 @@
     "new-version": "lerna version --conventional-commits --create-release github --yes -m \"chore(release): %v [ci skip]\"",
     "publish": "lerna publish from-package --yes",
     "lerna": "lerna",
-    "dd-approve": "node dependabot-approve.js",
+    "dependabot-approve": "node dependabot-approve.js",
     "docs": "gitbook build . docs"
   },
   "devDependencies": {
