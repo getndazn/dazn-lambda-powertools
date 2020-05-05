@@ -13,7 +13,7 @@
     "@dazn/lambda-powertools-logger": "^1.23.1"
   },
   "devDependencies": {
-    "jest": "^23.1.0",
+    "jest": "^26.0.0",
     "middy": "^0.15.6"
   },
   "jest": {
