@@ -15,7 +15,7 @@
     "superagent-promise": "^1.1.0"
   },
   "devDependencies": {
-    "nock": "^9.3.0"
+    "nock": "^12.0.3"
   },
   "publishConfig": {
     "access": "public"
