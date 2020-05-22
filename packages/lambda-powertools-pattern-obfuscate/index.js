@@ -1,4 +1,4 @@
-const middy = require('middy')
+const middy = require('@middy/core')
 const sampleLogging = require('@dazn/lambda-powertools-middleware-sample-logging')
 const { obfuscaterMiddleware, FILTERING_MODE: obfuscaterFilteringMode } = require('@dazn/lambda-powertools-middleware-obfuscater')
 const captureCorrelationIds = require('@dazn/lambda-powertools-middleware-correlation-ids')

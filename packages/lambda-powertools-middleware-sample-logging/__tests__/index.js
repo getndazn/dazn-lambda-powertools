@@ -7,7 +7,7 @@ process.env.LOG_LEVEL = 'INFO'
 const Log = require('@dazn/lambda-powertools-logger')
 const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
 
-const middy = require('middy')
+const middy = require('@middy/core')
 const sampleLogMiddleware = require('../index')
 
 beforeEach(() => {

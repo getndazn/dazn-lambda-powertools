@@ -1,4 +1,4 @@
-const middy = require('middy')
+const middy = require('@middy/core')
 const sampleLogging = require('@dazn/lambda-powertools-middleware-sample-logging')
 const captureCorrelationIds = require('@dazn/lambda-powertools-middleware-correlation-ids')
 const logTimeout = require('@dazn/lambda-powertools-middleware-log-timeout')

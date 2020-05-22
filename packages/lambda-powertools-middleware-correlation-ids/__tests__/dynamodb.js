@@ -1,6 +1,6 @@
 const _ = require('lodash')
 const uuid = require('uuid/v4')
-const middy = require('middy')
+const middy = require('@middy/core')
 const dynamoDbClient = require('aws-sdk/clients/dynamodb')
 const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
 const captureCorrelationIds = require('../index')
