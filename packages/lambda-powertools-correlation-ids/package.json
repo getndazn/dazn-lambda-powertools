@@ -3,6 +3,7 @@
   "version": "1.23.0",
   "description": "Module for recording correlation IDs",
   "main": "index.js",
+  "types": "index.d.ts",
   "license": "MIT",
   "scripts": {
     "test": "jest"
