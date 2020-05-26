@@ -3,9 +3,6 @@
   "version": "1.24.0",
   "description": "Lambda client wrapper that knows how to forward correlation IDs (captured via @dazn/lambda-powertools-correlation-ids)",
   "main": "index.js",
-  "scripts": {
-    "test": "jest"
-  },
   "license": "MIT",
   "author": "Yan Cui",
   "dependencies": {

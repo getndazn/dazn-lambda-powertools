@@ -5,7 +5,8 @@
   "scripts": {
     "install": "lerna bootstrap",
     "test:lint": "eslint .",
-    "test": "lerna run --concurrency 1 test -- -- --config=../../jest.config.js",
+    "test": "jest",
+    "test-package": "jest --projects packages/lambda-powertools-$PKG",
     "diff": "lerna diff",
     "new-version": "lerna version --conventional-commits --create-release github --yes -m \"chore(release): %v [ci skip]\"",
     "publish": "lerna publish from-package --yes",

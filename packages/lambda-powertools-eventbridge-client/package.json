@@ -3,9 +3,6 @@
   "version": "1.24.0",
   "description": "EventBridge client wrapper that knows how to forward correlation IDs (captured via @dazn/lambda-powertools-correlation-ids)",
   "main": "index.js",
-  "scripts": {
-    "test": "jest"
-  },
   "dependencies": {
     "@dazn/lambda-powertools-correlation-ids": "^1.24.0",
     "@dazn/lambda-powertools-logger": "^1.24.0"

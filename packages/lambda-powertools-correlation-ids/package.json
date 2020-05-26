@@ -5,9 +5,6 @@
   "main": "index.js",
   "types": "index.d.ts",
   "license": "MIT",
-  "scripts": {
-    "test": "jest"
-  },
   "author": "Yan Cui",
   "publishConfig": {
     "access": "public"

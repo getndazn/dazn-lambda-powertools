@@ -10,9 +10,6 @@
     "type": "git",
     "url": "git+https://github.com/getndazn/dazn-lambda-powertools.git"
   },
-  "scripts": {
-    "test": "jest"
-  },
   "bugs": {
     "url": "https://github.com/getndazn/dazn-lambda-powertools/issues"
   },
