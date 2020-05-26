@@ -18,7 +18,6 @@ jobs:
     steps:
       - checkout
       - run: npm ci
-      - run: npm run install
       - *PERSIST_TO_WORKSPACE
   test-node12:
     docker:
