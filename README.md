@@ -151,7 +151,7 @@ We could apply the monkey patching when you apply the correlation IDs middleware
 
 We did entertain this idea, but I wanted to leave at least one decision for you to make. The rationale is that when things go wrong (e.g. unhandled error, or bug in our wrapper code) or when they don't work as expected (e.g. you're using an AWS SDK client that we don't support yet), at least you have that one decision to start debugging (change the `require` statement to use the official library instead of our own to see if things things still work).
 
-## Useful  commands
+## Useful commands
 
 ### bootstrapping locally
 
