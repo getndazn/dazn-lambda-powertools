@@ -15,32 +15,36 @@ declare class dazn__lambda_powertools_logger {
 
   appendError<T>(params: T, err: Error): T & Error;
 
-  debug(message: string, params?: any): void;
+  debug(message: string, params?: Record<string, any>): void;
 
   enableDebug(): () => void;
 
   error(message: string, err?: Error): void;
-  error(message: string, params?: any, err?: Error): void;
+  error(message: string, params?: Record<string, any>, err?: Error): void;
 
-  info(message: string, params?: any): void;
+  info(message: string, params?: Record<string, any>): void;
 
   isEnabled(level: number): Boolean;
 
-  log(levelName: string, message: string, params?: any): void;
+  log(levelName: string, message: string, params?: Record<string, any>): void;
 
   resetLevel(): void;
 
   warn(message: string, err?: Error): void;
-  warn(message: string, params?: any, err?: Error): void;
+  warn(message: string, params?: Record<string, any>, err?: Error): void;
 
-  static debug(message: string, params?: any): void;
+  static debug(message: string, params?: Record<string, any>): void;
 
   static enableDebug(): () => void;
 
   static error(message: string, err?: Error): void;
-  static error(message: string, params?: any, err?: Error): void;
+  static error(
+    message: string,
+    params?: Record<string, any>,
+    err?: Error
+  ): void;
 
-  static info(message: string, params?: any): void;
+  static info(message: string, params?: Record<string, any>): void;
 
   static level: string;
 
