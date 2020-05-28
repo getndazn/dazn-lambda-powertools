@@ -1,6 +1,6 @@
 {
   "name": "@dazn/lambda-powertools-middleware-obfuscater",
-  "version": "1.23.1",
+  "version": "1.23.2",
   "description": "Middy middleware to obfuscate the event for logging",
   "main": "index.js",
   "scripts": {
