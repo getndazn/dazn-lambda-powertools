@@ -9,7 +9,7 @@ declare class dazn__lambda_powertools_correlation_ids {
 
   clearAll(): void;
 
-  get(): void;
+  get(): IContext;
 
   replaceAllWith(ctx: IContext): void;
 
@@ -17,7 +17,7 @@ declare class dazn__lambda_powertools_correlation_ids {
 
   static clearAll(): void;
 
-  static get(): void;
+  static get(): IContext;
 
   static replaceAllWith(ctx: IContext): void;
 
