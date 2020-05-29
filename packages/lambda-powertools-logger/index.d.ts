@@ -24,7 +24,7 @@ declare class dazn__lambda_powertools_logger {
 
   info(message: string, params?: Record<string, any>): void;
 
-  isEnabled(level: number): Boolean;
+  isEnabled(level: 20 | 30 | 40 | 50): Boolean;
 
   log(levelName: string, message: string, params?: Record<string, any>): void;
 
