@@ -21,7 +21,7 @@
     "@dazn/lambda-powertools-logger": "^1.23.1"
   },
   "devDependencies": {
-    "middy": "^0.15.6"
+    "@middy/core": "^1.0.0"
   },
   "publishConfig": {
     "access": "public"
