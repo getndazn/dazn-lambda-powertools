@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.24.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.23.2...v1.24.0) (2020-05-29)
+
+
+### Features
+
+* move to middy 1.0 ([db95598](https://github.com/getndazn/dazn-lambda-powertools/commit/db95598075bb908438bd97ee5394f9ca9fe8c050))
+* **correlation + logger:** added typings ([#212](https://github.com/getndazn/dazn-lambda-powertools/issues/212)) ([75e2f33](https://github.com/getndazn/dazn-lambda-powertools/commit/75e2f332f01744ef351a24506e6026cabf29e33b))
+
+
+
+
+
 ## [1.23.2](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.23.1...v1.23.2) (2020-05-22)
 
 **Note:** Version bump only for package @dazn/lambda-powertools
