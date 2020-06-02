@@ -32,7 +32,6 @@ const verifyHeaders = async (userHeaders, f, correlationIds) => {
   // see https://nodejs.org/docs/latest-v8.x/api/http.html#http_class_http_clientrequest
 
   const result = mockRequest.mock.results[0]
-  expect(result.isThrow).toBe(false)
 
   const clientReq = result.value
   const headers = clientReq.headers
