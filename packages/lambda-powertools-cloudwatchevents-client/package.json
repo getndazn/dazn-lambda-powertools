@@ -1,11 +1,11 @@
 {
   "name": "@dazn/lambda-powertools-cloudwatchevents-client",
-  "version": "1.24.0",
+  "version": "1.24.1",
   "description": "CloudWatchEvents client wrapper that knows how to forward correlation IDs (captured via @dazn/lambda-powertools-correlation-ids)",
   "main": "index.js",
   "dependencies": {
-    "@dazn/lambda-powertools-correlation-ids": "^1.24.0",
-    "@dazn/lambda-powertools-logger": "^1.24.0",
+    "@dazn/lambda-powertools-correlation-ids": "^1.24.1",
+    "@dazn/lambda-powertools-logger": "^1.24.1",
     "aws-sdk": "^2.540.0"
   },
   "license": "MIT",

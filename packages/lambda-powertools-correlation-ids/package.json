@@ -1,6 +1,6 @@
 {
   "name": "@dazn/lambda-powertools-correlation-ids",
-  "version": "1.24.0",
+  "version": "1.24.1",
   "description": "Module for recording correlation IDs",
   "main": "index.js",
   "types": "index.d.ts",
