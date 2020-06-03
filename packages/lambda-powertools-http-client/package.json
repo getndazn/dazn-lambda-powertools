@@ -3,9 +3,6 @@
   "version": "1.24.0",
   "description": "HTTP client that supports forwarding correlation IDs (captured via @dazn/lambda-powertools-correlation-ids) and auto-records metrics",
   "main": "index.js",
-  "scripts": {
-    "test": "jest"
-  },
   "license": "MIT",
   "author": "Yan Cui",
   "dependencies": {

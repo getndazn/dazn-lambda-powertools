@@ -3,9 +3,6 @@
   "version": "1.24.0",
   "description": "Basic template that configures a 1% smaple rate for debug logs",
   "main": "index.js",
-  "scripts": {
-    "test": "jest"
-  },
   "license": "MIT",
   "author": "Yan Cui",
   "dependencies": {

@@ -7,14 +7,11 @@ references:
   attach_workspace: &ATTACH_WORKSPACE
     attach_workspace:
       at: ~/project
-commands:
-  run_tests:
-    steps:
-      - run: npm test
+
 jobs:
   build:
     docker:
-      - image: circleci/node:10.15
+      - image: circleci/node:12
     steps:
       - checkout
       - run: npm ci
@@ -24,16 +21,16 @@ jobs:
       - image: circleci/node:12
     steps:
       - *ATTACH_WORKSPACE
-      - run_tests
+      - run: npm test
   test-node10:
     docker:
       - image: circleci/node:10
     steps:
       - *ATTACH_WORKSPACE
-      - run_tests
+      - run: npm test
   new-version:
     docker:
-      - image: circleci/node:10
+      - image: circleci/node:12
     steps:
       - *ATTACH_WORKSPACE
       - add_ssh_keys
@@ -46,7 +43,7 @@ jobs:
       - *PERSIST_TO_WORKSPACE
   publish:
     docker:
-      - image: circleci/node:10
+      - image: circleci/node:12
     steps:
       - *ATTACH_WORKSPACE
       - run:
@@ -55,7 +52,7 @@ jobs:
       - run: npm run publish
   publish-layer:
     docker:
-      - image: nikolaik/python-nodejs:python3.7-nodejs10
+      - image: nikolaik/python-nodejs:python3.7-nodejs12
     working_directory: ~/project/layer
     steps:
       - *ATTACH_WORKSPACE

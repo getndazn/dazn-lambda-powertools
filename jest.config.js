@@ -5,5 +5,8 @@ module.exports = {
     'html',
     'lcov'
   ],
-  testEnvironment: 'node'
+  testEnvironment: 'node',
+  projects: [
+    'packages/*'
+  ]
 }

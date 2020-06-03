@@ -4,9 +4,6 @@
   "description": "Logger that is tightly integrated with the rest of the lambda-powertools",
   "main": "index.js",
   "types": "index.d.ts",
-  "scripts": {
-    "test": "jest"
-  },
   "license": "MIT",
   "author": "Yan Cui",
   "dependencies": {
