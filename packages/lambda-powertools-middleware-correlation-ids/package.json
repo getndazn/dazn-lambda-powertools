@@ -3,6 +3,7 @@
   "version": "1.24.1",
   "description": "Middy middleware for capturing correlation IDs from inbound event",
   "main": "index.js",
+  "types": "index.d.ts",
   "license": "MIT",
   "author": "Yan Cui",
   "dependencies": {
@@ -11,6 +12,7 @@
   },
   "devDependencies": {
     "@middy/core": "^1.0.0",
+    "@types/aws-lambda": "^8.10.3",
     "aws-sdk": "^2.496.0",
     "lodash": "^4.17.15",
     "uuid": "^3.2.1"

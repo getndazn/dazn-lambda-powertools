@@ -1,5 +1,4 @@
 const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
-
 const generic = require('./event-sources/generic')
 const eventSources = [
   require('./event-sources/api-gateway'),
@@ -30,3 +29,5 @@ module.exports = ({ sampleDebugLogRate }) => {
     }
   }
 }
+
+module.exports.Log = require('@dazn/lambda-powertools-logger')
