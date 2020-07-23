@@ -57,5 +57,3 @@ export type DynamoDBStreamHandler = (
   context: DynamoStreamsContext,
   callback: Callback<void>
 ) => void | Promise<void>;
-
-export { Log };

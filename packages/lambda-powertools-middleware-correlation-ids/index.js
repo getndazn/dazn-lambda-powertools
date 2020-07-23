@@ -29,5 +29,3 @@ module.exports = ({ sampleDebugLogRate }) => {
     }
   }
 }
-
-module.exports.Log = require('@dazn/lambda-powertools-logger')
