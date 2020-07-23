@@ -1,6 +1,6 @@
 {
   "name": "@dazn/lambda-powertools-middleware-correlation-ids",
-  "version": "1.24.1",
+  "version": "1.24.2",
   "description": "Middy middleware for capturing correlation IDs from inbound event",
   "main": "index.js",
   "license": "MIT",
