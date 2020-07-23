@@ -17,43 +17,46 @@ export default function <T, R, C extends Context = Context>(params: {
   sampleDebugLogRate: number;
 }): middy.MiddlewareObject<T, R, C>;
 
-export type ExtractedCorrelationIdAndLogger = {
-  logger: Log;
+export type ExtractedCorrelationIdAndLogger<L> = {
+  logger: L;
   correlationIds: CorrelationIds;
 };
 
-export type SQSEvent = {
-  Records: (SQSRecord & ExtractedCorrelationIdAndLogger)[];
+export type SQSEvent<L = Log> = {
+  Records: (SQSRecord & ExtractedCorrelationIdAndLogger<L>)[];
 };
 
-export type SQSHandler = Handler<SQSEvent, void>;
+export type SQSHandler<L = Log> = Handler<SQSEvent<L>, void>;
 
-export type KinesisContext<T> = Context & {
-  parsedKinesisEvents: ((T & ExtractedCorrelationIdAndLogger) | undefined)[];
+export type KinesisContext<T, L = Log> = Context & {
+  parsedKinesisEvents: ((T & ExtractedCorrelationIdAndLogger<L>) | undefined)[];
 };
 
-export type KinesisStreamHandler = <T>(
+export type KinesisStreamHandler<T, L = Log> = (
   event: KinesisStreamEvent,
-  context: KinesisContext<T>,
+  context: KinesisContext<T, L>,
   callback: Callback<void>
 ) => void | Promise<void>;
 
-export type FirehoseContext<T> = Context & {
-  parsedFirehoseEvents: ((T & ExtractedCorrelationIdAndLogger) | undefined)[];
+export type FirehoseContext<T, L = Log> = Context & {
+  parsedFirehoseEvents: (
+    | (T & ExtractedCorrelationIdAndLogger<L>)
+    | undefined
+  )[];
 };
 
-export type FirehoseTransformationHandler = <T>(
+export type FirehoseTransformationHandler<T, L = Log> = (
   event: FirehoseTransformationEvent,
-  context: FirehoseContext<T>,
+  context: FirehoseContext<T, L>,
   callback: Callback<FirehoseTransformationResult>
 ) => void | Promise<FirehoseTransformationResult>;
 
-export type DynamoStreamsContext = Context & {
-  parsedDynamoDbEvents: (DynamoDBRecord & ExtractedCorrelationIdAndLogger)[];
+export type DynamoStreamsContext<L = Log> = Context & {
+  parsedDynamoDbEvents: (DynamoDBRecord & ExtractedCorrelationIdAndLogger<L>)[];
 };
 
-export type DynamoDBStreamHandler = (
+export type DynamoDBStreamHandler<L = Log> = (
   event: DynamoDBStreamEvent,
-  context: DynamoStreamsContext,
+  context: DynamoStreamsContext<L>,
   callback: Callback<void>
 ) => void | Promise<void>;
