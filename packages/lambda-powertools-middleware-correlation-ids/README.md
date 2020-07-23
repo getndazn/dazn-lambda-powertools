@@ -20,7 +20,7 @@ Main features:
 
 * captures anything with prefix `x-correlation-`
 
-* cpatures `User-Agent` from API Gateway events
+* captures `User-Agent` from API Gateway events
 
 * captures or initializes the `debug-log-enabled` decision based on configuration (see below) to ensure invocation follows upstream decision to enable debug logging for a small % of invocations
 
