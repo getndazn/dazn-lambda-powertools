@@ -17,7 +17,7 @@ export default function <T, R, C extends Context = Context>(params: {
   sampleDebugLogRate: number;
 }): middy.MiddlewareObject<T, R, C>;
 
-export type ExtractedCorrelationIdAndLogger<L> = {
+export type ExtractedCorrelationIdAndLogger<L = Log> = {
   logger: L;
   correlationIds: CorrelationIds;
 };
