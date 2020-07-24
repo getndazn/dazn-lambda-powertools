@@ -14,7 +14,7 @@ function isMatch (event) {
   return event.Records[0].eventSource === 'aws:sqs'
 }
 
-function captureCorrelationIds (event, context, sampleDebugLogRate) {
+function captureCorrelationIds (event, context, sampleDebugLogRate, constructLoggerFn = (correlationIds) => new Log({ correlationIds })) {
   const awsRequestId = context.awsRequestId
   event.Records.forEach(record => {
     // the wrapped sqs client would put the correlation IDs in the MessageAttributes
@@ -73,7 +73,7 @@ function captureCorrelationIds (event, context, sampleDebugLogRate) {
         enumerable: false
       },
       logger: {
-        value: new Log({ correlationIds: correlationIdsInstance }),
+        value: constructLoggerFn(correlationIdsInstance),
         enumerable: false
       }
     })

@@ -15,6 +15,7 @@ import CorrelationIds from "@dazn/lambda-powertools-correlation-ids";
 
 export default function <T, R, C extends Context = Context>(params: {
   sampleDebugLogRate: number;
+  constructLoggerFn?: <L>(correlationIds: CorrelationIds) => L;
 }): middy.MiddlewareObject<T, R, C>;
 
 export type ExtractedCorrelationIdAndLogger<L> = {

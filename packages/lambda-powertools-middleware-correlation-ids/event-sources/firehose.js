@@ -8,7 +8,7 @@ function isMatch (event) {
     Array.isArray(event.records)
 }
 
-function captureCorrelationIds ({ records }, context, sampleDebugLogRate) {
+function captureCorrelationIds ({ records }, context, sampleDebugLogRate, constructLoggerFn = (correlationIds) => new Log({ correlationIds })) {
   const awsRequestId = context.awsRequestId
   const events = records
     .map(record => {
@@ -41,7 +41,7 @@ function captureCorrelationIds ({ records }, context, sampleDebugLogRate) {
             enumerable: false
           },
           logger: {
-            value: new Log({ correlationIds: correlationIdsInstance }),
+            value: constructLoggerFn(correlationIdsInstance),
             enumerable: false
           }
         })

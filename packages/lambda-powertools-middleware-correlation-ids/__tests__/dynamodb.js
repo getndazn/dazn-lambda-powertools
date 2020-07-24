@@ -7,7 +7,7 @@ const captureCorrelationIds = require('../index')
 
 global.console.log = jest.fn()
 
-const invokeDynamoHandler = (event, awsRequestId, sampleDebugLogRate, handlerF, recordF, done) => {
+const invokeDynamoHandler = (event, awsRequestId, captureArg, handlerF, recordF, done) => {
   const handler = middy((event, context, cb) => {
     // check the correlation IDs outside the context of a record are correct
     handlerF(CorrelationIds.get())
@@ -21,7 +21,7 @@ const invokeDynamoHandler = (event, awsRequestId, sampleDebugLogRate, handlerF, 
 
     cb(null)
   })
-  handler.use(captureCorrelationIds({ sampleDebugLogRate }))
+  handler.use(captureCorrelationIds(captureArg))
 
   handler(event, { awsRequestId }, (err, result) => {
     if (err) {
@@ -61,7 +61,7 @@ const dynamoTests = () => {
   describe('when sampleDebugLogRate = 0', () => {
     it('always sets debug-log-enabled to false', () => {
       const requestId = uuid()
-      invokeDynamoHandler(genDynamoEvent(), requestId, 0,
+      invokeDynamoHandler(genDynamoEvent(), requestId, { sampleDebugLogRate: 0 },
         x => {
           expect(x['awsRequestId']).toBe(requestId)
           expect(x['debug-log-enabled']).toBe('false')
@@ -77,7 +77,7 @@ const dynamoTests = () => {
   describe('when event lacks NewImage', () => {
     it('should set default correlation id', () => {
       const requestId = uuid()
-      invokeDynamoHandler(genDynamoEventWithoutNewImage(), requestId, 0,
+      invokeDynamoHandler(genDynamoEventWithoutNewImage(), requestId, { sampleDebugLogRate: 0 },
         x => {
           expect(x['awsRequestId']).toBe(requestId)
           expect(x['debug-log-enabled']).toBe('false')
@@ -94,7 +94,7 @@ const dynamoTests = () => {
   describe('when sampleDebugLogRate = 1', () => {
     it('always sets debug-log-enabled to true', () => {
       const requestId = uuid()
-      invokeDynamoHandler(genDynamoEvent(), requestId, 1,
+      invokeDynamoHandler(genDynamoEvent(), requestId, { sampleDebugLogRate: 1 },
         x => {
           expect(x['awsRequestId']).toBe(requestId)
           expect(x['debug-log-enabled']).toBe('true')
@@ -110,7 +110,7 @@ const dynamoTests = () => {
   describe('when correlation ID is not provided in the event', () => {
     it('sets it to the AWS Request ID', () => {
       const requestId = uuid()
-      invokeDynamoHandler(genDynamoEvent(), requestId, 0,
+      invokeDynamoHandler(genDynamoEvent(), requestId, { sampleDebugLogRate: 0 },
         x => {
           // correlation IDs at the handler level
           expect(x['x-correlation-id']).toBe(requestId)
@@ -128,7 +128,7 @@ const dynamoTests = () => {
   describe('when call-chain-length is not provided in the event', () => {
     it('sets it to 1', () => {
       const requestId = uuid()
-      invokeDynamoHandler(genDynamoEvent(), requestId, 0,
+      invokeDynamoHandler(genDynamoEvent(), requestId, { sampleDebugLogRate: 0 },
         x => {}, // n/a
         record => {
           const x = record.correlationIds.get()
@@ -157,7 +157,7 @@ const dynamoTests = () => {
 
       const event = genDynamoEvent(correlationIds)
       requestId = uuid()
-      invokeDynamoHandler(event, requestId, 0, x => {
+      invokeDynamoHandler(event, requestId, { sampleDebugLogRate: 0 }, x => {
         handlerCorrelationIds = x
       }, aRecord => {
         record = aRecord
@@ -204,7 +204,7 @@ const dynamoTests = () => {
       }
 
       const event = genDynamoEvent(correlationIds)
-      invokeDynamoHandler(event, uuid(), 0,
+      invokeDynamoHandler(event, uuid(), { sampleDebugLogRate: 0 },
         () => {},
         aRecord => { record = aRecord },
         done)
@@ -213,6 +213,36 @@ const dynamoTests = () => {
     it('increments it by 1', () => {
       const x = record.correlationIds.get()
       expect(x['call-chain-length']).toBe(2)
+    })
+  })
+
+  describe('when constructLoggerFn provided in the args', () => {
+    let record
+    let id
+    let logger
+    let constructLoggerFn
+
+    beforeEach((done) => {
+      id = uuid()
+      logger = { name: 'newLogger' }
+      constructLoggerFn = jest.fn(id => logger)
+      const correlationIds = {
+        'x-correlation-id': id,
+        'call-chain-length': 1
+      }
+
+      const event = genDynamoEvent(correlationIds)
+      invokeDynamoHandler(event, uuid(), { sampleDebugLogRate: 0, constructLoggerFn },
+        () => {},
+        aRecord => { record = aRecord },
+        done)
+    })
+
+    it('sets logger as a non-enumerable property', () => {
+      expect(record).toHaveProperty('logger')
+      expect(record.propertyIsEnumerable('logger')).toBe(false)
+      expect(record.logger).toBe(logger)
+      expect(constructLoggerFn.mock.calls.length).toBe(1)
     })
   })
 }

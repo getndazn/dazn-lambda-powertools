@@ -12,7 +12,7 @@ const eventSources = [
   require('./event-sources/direct-invoke')
 ]
 
-module.exports = ({ sampleDebugLogRate }) => {
+module.exports = ({ sampleDebugLogRate, constructLoggerFn }) => {
   return {
     before: (handler, next) => {
       CorrelationIds.clearAll()
@@ -20,7 +20,7 @@ module.exports = ({ sampleDebugLogRate }) => {
       const { event, context } = handler
       const eventSource = eventSources.find(evtSrc => evtSrc.isMatch(event))
       if (eventSource) {
-        eventSource.captureCorrelationIds(event, context, sampleDebugLogRate)
+        eventSource.captureCorrelationIds(event, context, sampleDebugLogRate, constructLoggerFn)
       } else {
         generic.captureCorrelationIds(event, context, sampleDebugLogRate)
       }

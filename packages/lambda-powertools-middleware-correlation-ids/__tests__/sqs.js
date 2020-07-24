@@ -39,7 +39,7 @@ const sqsTests = (wrappedSns = false) => {
   describe('when sampleDebugLogRate = 0', () => {
     it('always sets debug-log-enabled to false', () => {
       const requestId = uuid()
-      invokeSqsHandler(genSqsEvent(wrappedSns), requestId, 0,
+      invokeSqsHandler(genSqsEvent(wrappedSns), requestId, { sampleDebugLogRate: 0 },
         x => {
           expect(x['awsRequestId']).toBe(requestId)
           expect(x['debug-log-enabled']).toBe('false')
@@ -71,7 +71,7 @@ const sqsTests = (wrappedSns = false) => {
   describe('when correlation ID is not provided in the event', () => {
     it('sets it to the AWS Request ID', () => {
       const requestId = uuid()
-      invokeSqsHandler(genSqsEvent(wrappedSns), requestId, 0,
+      invokeSqsHandler(genSqsEvent(wrappedSns), requestId, { sampleDebugLogRate: 0 },
         x => {
           // correlation IDs at the handler level
           expect(x['x-correlation-id']).toBe(requestId)
@@ -89,7 +89,7 @@ const sqsTests = (wrappedSns = false) => {
   describe('when call-chain-length is not provided in the event', () => {
     it('sets it to 1', () => {
       const requestId = uuid()
-      invokeSqsHandler(genSqsEvent(wrappedSns), requestId, 0,
+      invokeSqsHandler(genSqsEvent(wrappedSns), requestId, { sampleDebugLogRate: 0 },
         x => { // n/a
         },
         record => {
@@ -119,7 +119,7 @@ const sqsTests = (wrappedSns = false) => {
 
       const event = genSqsEvent(wrappedSns, correlationIds)
       requestId = uuid()
-      invokeSqsHandler(event, requestId, 0, x => {
+      invokeSqsHandler(event, requestId, { sampleDebugLogRate: 0 }, x => {
         handlerCorrelationIds = x
       }, aRecord => {
         record = aRecord
@@ -166,7 +166,7 @@ const sqsTests = (wrappedSns = false) => {
       }
 
       const event = genSqsEvent(wrappedSns, correlationIds)
-      invokeSqsHandler(event, uuid(), 0,
+      invokeSqsHandler(event, uuid(), { sampleDebugLogRate: 0 },
         () => {},
         aRecord => { record = aRecord },
         done)
@@ -177,6 +177,36 @@ const sqsTests = (wrappedSns = false) => {
       // correlation IDs at the record level should match what was passed in
       expect(x['x-correlation-id']).toBe(id)
       expect(x['call-chain-length']).toBe(2)
+    })
+  })
+
+  describe('when constructLoggerFn provided in the args', () => {
+    let record
+    let id
+    let logger
+    let constructLoggerFn
+
+    beforeEach((done) => {
+      id = uuid()
+      logger = { name: 'newLogger' }
+      constructLoggerFn = jest.fn(id => logger)
+      const correlationIds = {
+        'x-correlation-id': id,
+        'call-chain-length': 1
+      }
+
+      const event = genSqsEvent(wrappedSns, correlationIds)
+      invokeSqsHandler(event, uuid(), { sampleDebugLogRate: 0, constructLoggerFn },
+        () => {},
+        aRecord => { record = aRecord },
+        done)
+    })
+
+    it('sets logger as a non-enumerable property', () => {
+      expect(record).toHaveProperty('logger')
+      expect(record.propertyIsEnumerable('logger')).toBe(false)
+      expect(record.logger).toBe(logger)
+      expect(constructLoggerFn.mock.calls.length).toBe(1)
     })
   })
 }
@@ -200,7 +230,7 @@ const sqsWrappedSnsTests = () => {
       }))
       event.Records[0].body = JSON.stringify(body)
 
-      invokeSqsHandler(event, uuid(), 0,
+      invokeSqsHandler(event, uuid(), { sampleDebugLogRate: 0 },
         () => ({}),
         record => {
           expect(record.messageAttributes).toEqual({})
@@ -209,7 +239,7 @@ const sqsWrappedSnsTests = () => {
   })
 }
 
-const invokeSqsHandler = (event, awsRequestId, sampleDebugLogRate, handlerF, recordF, done) => {
+const invokeSqsHandler = (event, awsRequestId, captureArg, handlerF, recordF, done) => {
   const handler = middy((event, context, cb) => {
     // check the correlation IDs outside the context of a record are correct
     handlerF(CorrelationIds.get())
@@ -223,7 +253,7 @@ const invokeSqsHandler = (event, awsRequestId, sampleDebugLogRate, handlerF, rec
 
     cb(null)
   })
-  handler.use(captureCorrelationIds({ sampleDebugLogRate }))
+  handler.use(captureCorrelationIds(captureArg))
 
   handler(event, { awsRequestId }, (err, result) => {
     if (err) {

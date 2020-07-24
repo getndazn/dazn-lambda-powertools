@@ -15,7 +15,7 @@ function isMatch (event) {
   return event.Records[0].eventSource === 'aws:dynamodb'
 }
 
-function captureCorrelationIds ({ Records }, context, sampleDebugLogRate) {
+function captureCorrelationIds ({ Records }, context, sampleDebugLogRate, constructLoggerFn = (correlationIds) => new Log({ correlationIds })) {
   const awsRequestId = context.awsRequestId
   const events = Records
     .map(record => {
@@ -62,7 +62,7 @@ function captureCorrelationIds ({ Records }, context, sampleDebugLogRate) {
           enumerable: false
         },
         logger: {
-          value: new Log({ correlationIds: correlationIdsInstance }),
+          value: constructLoggerFn(correlationIdsInstance),
           enumerable: false
         }
       })

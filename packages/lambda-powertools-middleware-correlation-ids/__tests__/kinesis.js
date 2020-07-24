@@ -6,7 +6,7 @@ const captureCorrelationIds = require('../index')
 
 global.console.log = jest.fn()
 
-const invokeKinesisHandler = (event, awsRequestId, sampleDebugLogRate, handlerF, recordF, done) => {
+const invokeKinesisHandler = (event, awsRequestId, captureArg, handlerF, recordF, done) => {
   const handler = middy((event, context, cb) => {
     // check the correlation IDs outside the context of a record are correct
     handlerF(CorrelationIds.get())
@@ -20,7 +20,7 @@ const invokeKinesisHandler = (event, awsRequestId, sampleDebugLogRate, handlerF,
 
     cb(null)
   })
-  handler.use(captureCorrelationIds({ sampleDebugLogRate }))
+  handler.use(captureCorrelationIds(captureArg))
 
   handler(event, { awsRequestId }, (err, result) => {
     if (err) {
@@ -54,7 +54,7 @@ const kinesisTests = () => {
   describe('when sampleDebugLogRate = 0', () => {
     it('always sets debug-log-enabled to false', () => {
       const requestId = uuid()
-      invokeKinesisHandler(genKinesisEvent(), requestId, 0,
+      invokeKinesisHandler(genKinesisEvent(), requestId, { sampleDebugLogRate: 0 },
         x => {
           expect(x['awsRequestId']).toBe(requestId)
           expect(x['debug-log-enabled']).toBe('false')
@@ -70,7 +70,7 @@ const kinesisTests = () => {
   describe('when event lacks JSON payload', () => {
     it('should ignore the event', () => {
       const requestId = uuid()
-      invokeKinesisHandler(genKinesisEventWithoutJSON(), requestId, 0,
+      invokeKinesisHandler(genKinesisEventWithoutJSON(), requestId, { sampleDebugLogRate: 0 },
         x => {
           expect(x['awsRequestId']).toBe(requestId)
           expect(x['debug-log-enabled']).toBe('false')
@@ -85,7 +85,7 @@ const kinesisTests = () => {
   describe('when sampleDebugLogRate = 1', () => {
     it('always sets debug-log-enabled to true', () => {
       const requestId = uuid()
-      invokeKinesisHandler(genKinesisEvent(), requestId, 1,
+      invokeKinesisHandler(genKinesisEvent(), requestId, { sampleDebugLogRate: 1 },
         x => {
           expect(x['awsRequestId']).toBe(requestId)
           expect(x['debug-log-enabled']).toBe('true')
@@ -101,7 +101,7 @@ const kinesisTests = () => {
   describe('when correlation ID is not provided in the event', () => {
     it('sets it to the AWS Request ID', () => {
       const requestId = uuid()
-      invokeKinesisHandler(genKinesisEvent(), requestId, 0,
+      invokeKinesisHandler(genKinesisEvent(), requestId, { sampleDebugLogRate: 0 },
         x => {
           // correlation IDs at the handler level
           expect(x['x-correlation-id']).toBe(requestId)
@@ -119,7 +119,7 @@ const kinesisTests = () => {
   describe('when call-chain-length is not provided in the event', () => {
     it('sets it to 1', () => {
       const requestId = uuid()
-      invokeKinesisHandler(genKinesisEvent(), requestId, 0,
+      invokeKinesisHandler(genKinesisEvent(), requestId, { sampleDebugLogRate: 0 },
         x => {}, // n/a
         record => {
           const x = record.correlationIds.get()
@@ -148,7 +148,7 @@ const kinesisTests = () => {
 
       const event = genKinesisEvent(correlationIds)
       requestId = uuid()
-      invokeKinesisHandler(event, requestId, 0, x => {
+      invokeKinesisHandler(event, requestId, { sampleDebugLogRate: 0 }, x => {
         handlerCorrelationIds = x
       }, aRecord => {
         record = aRecord
@@ -195,7 +195,7 @@ const kinesisTests = () => {
       }
 
       const event = genKinesisEvent(correlationIds)
-      invokeKinesisHandler(event, uuid(), 0,
+      invokeKinesisHandler(event, uuid(), { sampleDebugLogRate: 0 },
         () => {},
         aRecord => { record = aRecord },
         done)
@@ -204,6 +204,36 @@ const kinesisTests = () => {
     it('increments it by 1', () => {
       const x = record.correlationIds.get()
       expect(x['call-chain-length']).toBe(2)
+    })
+  })
+
+  describe('when constructLoggerFn provided in the args', () => {
+    let record
+    let id
+    let logger
+    let constructLoggerFn
+
+    beforeEach((done) => {
+      id = uuid()
+      logger = { name: 'newLogger' }
+      constructLoggerFn = jest.fn(id => logger)
+      const correlationIds = {
+        'x-correlation-id': id,
+        'call-chain-length': 1
+      }
+
+      const event = genKinesisEvent(correlationIds)
+      invokeKinesisHandler(event, uuid(), { sampleDebugLogRate: 0, constructLoggerFn },
+        () => {},
+        aRecord => { record = aRecord },
+        done)
+    })
+
+    it('sets logger as a non-enumerable property', () => {
+      expect(record).toHaveProperty('logger')
+      expect(record.propertyIsEnumerable('logger')).toBe(false)
+      expect(record.logger).toBe(logger)
+      expect(constructLoggerFn.mock.calls.length).toBe(1)
     })
   })
 }
