@@ -67,7 +67,7 @@ const handler = async (event, context) => {
 }
 
 module.exports = middy(handler)
-  .use(obfuscatedLogging({ sampleRate: 0.01, obfuscationFilters: ["example.example"] }))
+  .use(obfuscatedLogging.obfuscaterMiddleware({ sampleRate: 0.01, obfuscationFilters: ["example.example"] }))
 }
 ```
 
