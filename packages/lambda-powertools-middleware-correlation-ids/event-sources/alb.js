@@ -3,7 +3,7 @@ const Log = require('@dazn/lambda-powertools-logger')
 const consts = require('../consts')
 
 function isMatch (event) {
-  return event.hasOwnProperty('httpMethod') && event.requestContext.hasOwnProperty('elb')
+  return event.hasOwnProperty('httpMethod') && event.requestContext && event.requestContext.hasOwnProperty('elb')
 }
 
 function captureCorrelationIds ({ requestContext, headers }, { awsRequestId }, sampleDebugLogRate) {
