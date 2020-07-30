@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.25.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.24.3...v1.25.0) (2020-07-30)
+
+
+### Features
+
+* **middleware-correlation-ids:** fixing error thrown by isMatch ([6f35266](https://github.com/getndazn/dazn-lambda-powertools/commit/6f352662aec3f9f2a0d718a91fc015b861efbc0d))
+
+
+
+
+
 ## [1.24.3](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.24.2...v1.24.3) (2020-07-24)
 
 **Note:** Version bump only for package @dazn/lambda-powertools-middleware-correlation-ids
