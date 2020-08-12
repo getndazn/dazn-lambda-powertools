@@ -1,6 +1,6 @@
 {
   "name": "@dazn/lambda-powertools-pattern-obfuscate",
-  "version": "1.25.0",
+  "version": "1.27.0",
   "description": "Basic template that configures a 1% smaple rate for debug logs and obfuscation",
   "main": "index.js",
   "types": "index.d.ts",
@@ -8,15 +8,15 @@
   "license": "MIT",
   "author": "Yan Cui",
   "dependencies": {
-    "@dazn/lambda-powertools-middleware-correlation-ids": "^1.25.0",
+    "@dazn/lambda-powertools-middleware-correlation-ids": "^1.27.0",
     "@dazn/lambda-powertools-middleware-log-timeout": "^1.24.1",
-    "@dazn/lambda-powertools-middleware-obfuscater": "^1.24.3",
+    "@dazn/lambda-powertools-middleware-obfuscater": "^1.27.0",
     "@dazn/lambda-powertools-middleware-sample-logging": "^1.24.1",
     "@middy/core": "^1.0.0"
   },
   "devDependencies": {
-    "jest": "^23.1.0",
-    "@types/aws-lambda": "^8.10.57"
+    "@types/aws-lambda": "^8.10.57",
+    "jest": "^23.1.0"
   },
   "jest": {
     "testEnvironment": "node"

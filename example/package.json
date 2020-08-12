@@ -1,6 +1,6 @@
 {
   "name": "@dazn/lambda-powertools-demo",
-  "version": "1.26.0",
+  "version": "1.27.0",
   "description": "Example serverless app to demonstrate the powertools",
   "scripts": {},
   "author": "Yan Cui",
@@ -17,7 +17,7 @@
     "@dazn/lambda-powertools-logger": "^1.24.1",
     "@dazn/lambda-powertools-middleware-correlation-ids": "1.8.3",
     "@dazn/lambda-powertools-middleware-sample-logging": "^1.24.1",
-    "@dazn/lambda-powertools-pattern-basic": "^1.25.0",
+    "@dazn/lambda-powertools-pattern-basic": "^1.27.0",
     "@dazn/lambda-powertools-sns-client": "^1.26.0",
     "@dazn/lambda-powertools-step-functions-client": "^1.26.0",
     "uuid": "^3.3.3"

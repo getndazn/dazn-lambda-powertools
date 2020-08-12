@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.27.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.26.0...v1.27.0) (2020-08-12)
+
+
+### Features
+
+* added typing for patterns and exposed logger ([a4ceca1](https://github.com/getndazn/dazn-lambda-powertools/commit/a4ceca1fb0450309f878db7583091b95b5c19ce8))
+* removed exposed logger ([5a5628c](https://github.com/getndazn/dazn-lambda-powertools/commit/5a5628cf76e7ae0e2d0a606ef00248eca816deb9))
+
+
+
+
+
 # [1.25.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.24.3...v1.25.0) (2020-07-30)
 
 **Note:** Version bump only for package @dazn/lambda-powertools-pattern-obfuscate
