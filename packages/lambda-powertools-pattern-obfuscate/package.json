@@ -3,6 +3,7 @@
   "version": "1.25.0",
   "description": "Basic template that configures a 1% smaple rate for debug logs and obfuscation",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {},
   "license": "MIT",
   "author": "Yan Cui",
@@ -14,7 +15,8 @@
     "@middy/core": "^1.0.0"
   },
   "devDependencies": {
-    "jest": "^23.1.0"
+    "jest": "^23.1.0",
+    "@types/aws-lambda": "^8.10.57"
   },
   "jest": {
     "testEnvironment": "node"

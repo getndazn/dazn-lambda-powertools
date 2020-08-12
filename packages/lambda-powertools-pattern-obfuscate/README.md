@@ -27,7 +27,7 @@ Install from NPM: `npm install @dazn/lambda-powertools-pattern-obfuscate`
 ```js
 const obfuscatedWrap = require('@dazn/lambda-powertools-pattern-obfuscated')
 
-module.exports.handler = obfuscatedWrap(['Records.*.firstName', 'Records.*.lastName'], async (event, context) => {
+module.exports.handler = obfuscatedWrap.obfuscaterPattern(['Records.*.firstName', 'Records.*.lastName'], async (event, context) => {
   return 42
 })
 ```

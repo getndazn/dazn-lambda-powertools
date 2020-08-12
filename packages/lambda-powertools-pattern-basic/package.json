@@ -3,6 +3,7 @@
   "version": "1.25.0",
   "description": "Basic template that configures a 1% smaple rate for debug logs",
   "main": "index.js",
+  "types": "index.d.ts",
   "license": "MIT",
   "author": "Yan Cui",
   "dependencies": {
@@ -13,5 +14,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.57"
   }
 }
