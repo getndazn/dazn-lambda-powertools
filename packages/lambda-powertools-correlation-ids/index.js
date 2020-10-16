@@ -25,8 +25,12 @@ class CorrelationIds {
     return this.context
   }
 
-  get debugEnabled () {
+  get debugLoggingEnabled () {
     return this.context[DEBUG_LOG_ENABLED] === 'true'
+  }
+
+  set debugLoggingEnabled (enabled) {
+    this.context[DEBUG_LOG_ENABLED] = enabled ? 'true' : 'false'
   }
 
   static clearAll () {
@@ -44,7 +48,15 @@ class CorrelationIds {
   static get () {
     return globalCorrelationIds.get()
   }
-};
+
+  static get debugLoggingEnabled () {
+    return globalCorrelationIds.debugLoggingEnabled
+  }
+
+  static set debugLoggingEnabled (enabled) {
+    globalCorrelationIds.debugLoggingEnabled = enabled
+  }
+}
 
 if (!global.CORRELATION_IDS) {
   global.CORRELATION_IDS = new CorrelationIds()

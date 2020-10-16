@@ -8,6 +8,8 @@ Main features:
 
 * respects convention for correlation IDs - i.e. `x-correlation-`
 
+* Manually enable/disable debug logging (`debug-log-enabled`) to be picked up by other/downstream middleware
+
 * allows you to store more than one correlation IDs, which allows you to *correlate* logs on multiple dimensions (e.g. by `x-correlation-user-id`, or `x-correlation-order-id`, etc.)
 
 ## Getting Started
@@ -23,17 +25,24 @@ const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
 CorrelationIds.set('id', '12345678') // records id as x-correlation-id
 CorrelationIds.set('x-correlation-username', 'theburningmonk') // records as x-correlation-username
 
+// Manully enable debug logging (debug-log-enabled)
+CorrelationIds.debugLoggingEnabled = true
+
 const myCorrelationIds = CorrelationIds.get()
 // {
 //   'x-correlation-id': '12345678',
-//   'x-correlation-username': 'theburningmonk'
+//   'x-correlation-username': 'theburningmonk',
+//   'debug-log-enabled': 'true'
 // }
 
 CorrelationIds.clearAll() // removes all recorded correlation IDs
 CorrelationIds.replaceAllWith({  // bypasses the 'x-correlation-' convention
-  'DEBUG-LOG-ENABLED': 'true',
+  'debug-log-enabled': 'true',
   'User-Agent': 'jest test'
 })
+
+// Disable debug logging
+CorrelationIds.debugLoggingEnabled = false
 ```
 
 In practice, you're likely to only need `set` when you want to record correlation IDs from your function.
