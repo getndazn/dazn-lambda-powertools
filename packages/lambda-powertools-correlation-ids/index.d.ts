@@ -22,4 +22,10 @@ declare class dazn__lambda_powertools_correlation_ids {
   static replaceAllWith(ctx: IContext): void;
 
   static set(key: string, value: any): void;
+
+  get debugLoggingEnabled(): boolean;
+  set debugLoggingEnabled(enabled: boolean);
+
+  static get debugLoggingEnabled(): boolean;
+  static set debugLoggingEnabled(enabled: boolean);
 }
