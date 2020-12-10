@@ -1,13 +1,13 @@
 {
   "name": "@dazn/lambda-powertools-logger",
-  "version": "1.24.1",
+  "version": "1.28.0",
   "description": "Logger that is tightly integrated with the rest of the lambda-powertools",
   "main": "index.js",
   "types": "index.d.ts",
   "license": "MIT",
   "author": "Yan Cui",
   "dependencies": {
-    "@dazn/lambda-powertools-correlation-ids": "^1.24.1"
+    "@dazn/lambda-powertools-correlation-ids": "^1.28.0"
   },
   "publishConfig": {
     "access": "public"
