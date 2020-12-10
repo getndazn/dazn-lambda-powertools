@@ -43,6 +43,18 @@ const suite = (correlationIds) => () => {
     })
   })
 
+  describe('get/set debug logging', () => {
+    it('GETS and SETS state of debug logging', () => {
+      correlationIds.clearAll()
+      expect(correlationIds.debugLoggingEnabled).toBe(false)
+      correlationIds.debugLoggingEnabled = true
+      expect(correlationIds.debugLoggingEnabled).toBe(true)
+      expect(correlationIds.get()).toEqual({
+        'debug-log-enabled': 'true'
+      })
+    })
+  })
+
   describe('.replaceAllWith', () => {
     beforeEach(() => {
       correlationIds.set('x-correlation-id', 'this should be replaced')
