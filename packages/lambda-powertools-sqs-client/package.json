@@ -1,13 +1,13 @@
 {
   "name": "@dazn/lambda-powertools-sqs-client",
-  "version": "1.28.0",
+  "version": "1.28.1",
   "description": "SQS client wrapper that knows how to forward correlation IDs (captured via @dazn/lambda-powertools-correlation-ids)",
   "main": "index.js",
   "types": "index.d.ts",
   "license": "MIT",
   "author": "Yan Cui",
   "dependencies": {
-    "@dazn/lambda-powertools-correlation-ids": "^1.28.0"
+    "@dazn/lambda-powertools-correlation-ids": "^1.28.1"
   },
   "devDependencies": {
     "aws-sdk": "^2.540.0"
