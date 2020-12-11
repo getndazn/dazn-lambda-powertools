@@ -36,20 +36,22 @@ Accepts a configuration object of the following shape:
 
 ```js
 {
-  sampleDebugLogRate: double [between 0 and 1]
+  sampleDebugLogRate: double [between 0 and 1],
+  constructLoggerFn: (correlationIds) => Logger [optional]
 }
 ```
 
 ```js
 const middy = require('middy')
 const correlationIds = require('@dazn/lambda-powertools-middleware-correlation-ids')
+const Log = require('@dazn/lambda-powertools-middleware-correlation-ids')
 
 const handler = async (event, context) => {
   return 42
 }
 
 module.exports = middy(handler)
-  .use(correlationIds({ sampleDebugLogRate: 0.01 }))
+  .use(correlationIds({ sampleDebugLogRate: 0.01, constructLoggerFn: (correlationIds) => new Log({ correlationIds }) }))
 }
 ```
 
