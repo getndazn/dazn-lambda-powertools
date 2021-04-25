@@ -6,8 +6,8 @@ const captureCorrelationIds = require('../index')
 
 global.console.log = jest.fn()
 
-const invokeKinesisHandler = (event, awsRequestId, sampleDebugLogRate, handlerF, recordF, done) => {
-  const handler = middy((event, context, cb) => {
+const invokeKinesisHandler = async (event, awsRequestId, sampleDebugLogRate, handlerF, recordF) => {
+  const handler = middy(async (event, context) => {
     // check the correlation IDs outside the context of a record are correct
     handlerF(CorrelationIds.get())
 
@@ -17,18 +17,10 @@ const invokeKinesisHandler = (event, awsRequestId, sampleDebugLogRate, handlerF,
 
     // check the correlation IDs outside the context of a record are correct
     handlerF(CorrelationIds.get())
-
-    cb(null)
   })
   handler.use(captureCorrelationIds({ sampleDebugLogRate }))
 
-  handler(event, { awsRequestId }, (err, result) => {
-    if (err) {
-      throw err
-    }
-
-    if (done) done()
-  })
+  await handler(event, { awsRequestId })
 }
 
 const kinesis = require('./event-templates/kinesis.json')
@@ -52,9 +44,9 @@ const genKinesisEventWithoutJSON = (correlationIDs = {}) => {
 
 const kinesisTests = () => {
   describe('when sampleDebugLogRate = 0', () => {
-    it('always sets debug-log-enabled to false', () => {
+    it('always sets debug-log-enabled to false', async () => {
       const requestId = uuid()
-      invokeKinesisHandler(genKinesisEvent(), requestId, 0,
+      await invokeKinesisHandler(genKinesisEvent(), requestId, 0,
         x => {
           expect(x['awsRequestId']).toBe(requestId)
           expect(x['debug-log-enabled']).toBe('false')
@@ -68,9 +60,9 @@ const kinesisTests = () => {
   })
 
   describe('when event lacks JSON payload', () => {
-    it('should ignore the event', () => {
+    it('should ignore the event', async () => {
       const requestId = uuid()
-      invokeKinesisHandler(genKinesisEventWithoutJSON(), requestId, 0,
+      await invokeKinesisHandler(genKinesisEventWithoutJSON(), requestId, 0,
         x => {
           expect(x['awsRequestId']).toBe(requestId)
           expect(x['debug-log-enabled']).toBe('false')
@@ -83,9 +75,9 @@ const kinesisTests = () => {
   })
 
   describe('when sampleDebugLogRate = 1', () => {
-    it('always sets debug-log-enabled to true', () => {
+    it('always sets debug-log-enabled to true', async () => {
       const requestId = uuid()
-      invokeKinesisHandler(genKinesisEvent(), requestId, 1,
+      await invokeKinesisHandler(genKinesisEvent(), requestId, 1,
         x => {
           expect(x['awsRequestId']).toBe(requestId)
           expect(x['debug-log-enabled']).toBe('true')
@@ -99,9 +91,9 @@ const kinesisTests = () => {
   })
 
   describe('when correlation ID is not provided in the event', () => {
-    it('sets it to the AWS Request ID', () => {
+    it('sets it to the AWS Request ID', async () => {
       const requestId = uuid()
-      invokeKinesisHandler(genKinesisEvent(), requestId, 0,
+      await invokeKinesisHandler(genKinesisEvent(), requestId, 0,
         x => {
           // correlation IDs at the handler level
           expect(x['x-correlation-id']).toBe(requestId)
@@ -117,9 +109,9 @@ const kinesisTests = () => {
   })
 
   describe('when call-chain-length is not provided in the event', () => {
-    it('sets it to 1', () => {
+    it('sets it to 1', async () => {
       const requestId = uuid()
-      invokeKinesisHandler(genKinesisEvent(), requestId, 0,
+      await invokeKinesisHandler(genKinesisEvent(), requestId, 0,
         x => {}, // n/a
         record => {
           const x = record.correlationIds.get()
@@ -135,7 +127,7 @@ const kinesisTests = () => {
     let userId
     let requestId
 
-    beforeEach((done) => {
+    beforeEach(async () => {
       id = uuid()
       userId = uuid()
 
@@ -148,11 +140,11 @@ const kinesisTests = () => {
 
       const event = genKinesisEvent(correlationIds)
       requestId = uuid()
-      invokeKinesisHandler(event, requestId, 0, x => {
+      await invokeKinesisHandler(event, requestId, 0, x => {
         handlerCorrelationIds = x
       }, aRecord => {
         record = aRecord
-      }, done)
+      })
     })
 
     it('still has the correct handler correlation IDs', () => {
@@ -186,7 +178,7 @@ const kinesisTests = () => {
     let record
     let id
 
-    beforeEach((done) => {
+    beforeEach(async () => {
       id = uuid()
 
       const correlationIds = {
@@ -195,10 +187,9 @@ const kinesisTests = () => {
       }
 
       const event = genKinesisEvent(correlationIds)
-      invokeKinesisHandler(event, uuid(), 0,
+      await invokeKinesisHandler(event, uuid(), 0,
         () => {},
-        aRecord => { record = aRecord },
-        done)
+        aRecord => { record = aRecord })
     })
 
     it('increments it by 1', () => {

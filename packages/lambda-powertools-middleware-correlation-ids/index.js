@@ -14,18 +14,16 @@ const eventSources = [
 
 module.exports = ({ sampleDebugLogRate }) => {
   return {
-    before: (handler, next) => {
+    before: async (request) => {
       CorrelationIds.clearAll()
 
-      const { event, context } = handler
+      const { event, context } = request
       const eventSource = eventSources.find(evtSrc => evtSrc.isMatch(event))
       if (eventSource) {
         eventSource.captureCorrelationIds(event, context, sampleDebugLogRate)
       } else {
         generic.captureCorrelationIds(event, context, sampleDebugLogRate)
       }
-
-      next()
     }
   }
 }

@@ -7,8 +7,8 @@ const captureCorrelationIds = require('../index')
 
 global.console.log = jest.fn()
 
-const invokeDynamoHandler = (event, awsRequestId, sampleDebugLogRate, handlerF, recordF, done) => {
-  const handler = middy((event, context, cb) => {
+const invokeDynamoHandler = async (event, awsRequestId, sampleDebugLogRate, handlerF, recordF) => {
+  const handler = middy(async (event, context) => {
     // check the correlation IDs outside the context of a record are correct
     handlerF(CorrelationIds.get())
 
@@ -18,18 +18,10 @@ const invokeDynamoHandler = (event, awsRequestId, sampleDebugLogRate, handlerF, 
 
     // check the correlation IDs outside the context of a record are correct
     handlerF(CorrelationIds.get())
-
-    cb(null)
   })
   handler.use(captureCorrelationIds({ sampleDebugLogRate }))
 
-  handler(event, { awsRequestId }, (err, result) => {
-    if (err) {
-      throw err
-    }
-
-    if (done) done()
-  })
+  await handler(event, { awsRequestId })
 }
 
 const dynamo = require('./event-templates/dynamo-new-old.json')
@@ -59,9 +51,9 @@ const genDynamoEventWithoutNewImage = () => {
 
 const dynamoTests = () => {
   describe('when sampleDebugLogRate = 0', () => {
-    it('always sets debug-log-enabled to false', () => {
+    it('always sets debug-log-enabled to false', async () => {
       const requestId = uuid()
-      invokeDynamoHandler(genDynamoEvent(), requestId, 0,
+      await invokeDynamoHandler(genDynamoEvent(), requestId, 0,
         x => {
           expect(x['awsRequestId']).toBe(requestId)
           expect(x['debug-log-enabled']).toBe('false')
@@ -75,9 +67,9 @@ const dynamoTests = () => {
   })
 
   describe('when event lacks NewImage', () => {
-    it('should set default correlation id', () => {
+    it('should set default correlation id', async () => {
       const requestId = uuid()
-      invokeDynamoHandler(genDynamoEventWithoutNewImage(), requestId, 0,
+      await invokeDynamoHandler(genDynamoEventWithoutNewImage(), requestId, 0,
         x => {
           expect(x['awsRequestId']).toBe(requestId)
           expect(x['debug-log-enabled']).toBe('false')
@@ -92,9 +84,9 @@ const dynamoTests = () => {
   })
 
   describe('when sampleDebugLogRate = 1', () => {
-    it('always sets debug-log-enabled to true', () => {
+    it('always sets debug-log-enabled to true', async () => {
       const requestId = uuid()
-      invokeDynamoHandler(genDynamoEvent(), requestId, 1,
+      await invokeDynamoHandler(genDynamoEvent(), requestId, 1,
         x => {
           expect(x['awsRequestId']).toBe(requestId)
           expect(x['debug-log-enabled']).toBe('true')
@@ -108,9 +100,9 @@ const dynamoTests = () => {
   })
 
   describe('when correlation ID is not provided in the event', () => {
-    it('sets it to the AWS Request ID', () => {
+    it('sets it to the AWS Request ID', async () => {
       const requestId = uuid()
-      invokeDynamoHandler(genDynamoEvent(), requestId, 0,
+      await invokeDynamoHandler(genDynamoEvent(), requestId, 0,
         x => {
           // correlation IDs at the handler level
           expect(x['x-correlation-id']).toBe(requestId)
@@ -126,9 +118,9 @@ const dynamoTests = () => {
   })
 
   describe('when call-chain-length is not provided in the event', () => {
-    it('sets it to 1', () => {
+    it('sets it to 1', async () => {
       const requestId = uuid()
-      invokeDynamoHandler(genDynamoEvent(), requestId, 0,
+      await invokeDynamoHandler(genDynamoEvent(), requestId, 0,
         x => {}, // n/a
         record => {
           const x = record.correlationIds.get()
@@ -144,7 +136,7 @@ const dynamoTests = () => {
     let userId
     let requestId
 
-    beforeEach((done) => {
+    beforeEach(async () => {
       id = uuid()
       userId = uuid()
 
@@ -157,11 +149,11 @@ const dynamoTests = () => {
 
       const event = genDynamoEvent(correlationIds)
       requestId = uuid()
-      invokeDynamoHandler(event, requestId, 0, x => {
+      await invokeDynamoHandler(event, requestId, 0, x => {
         handlerCorrelationIds = x
       }, aRecord => {
         record = aRecord
-      }, done)
+      })
     })
 
     it('still has the correct handler correlation IDs', () => {
@@ -195,7 +187,7 @@ const dynamoTests = () => {
     let record
     let id
 
-    beforeEach((done) => {
+    beforeEach(async () => {
       id = uuid()
 
       const correlationIds = {
@@ -204,10 +196,9 @@ const dynamoTests = () => {
       }
 
       const event = genDynamoEvent(correlationIds)
-      invokeDynamoHandler(event, uuid(), 0,
+      await invokeDynamoHandler(event, uuid(), 0,
         () => {},
-        aRecord => { record = aRecord },
-        done)
+        aRecord => { record = aRecord })
     })
 
     it('increments it by 1', () => {

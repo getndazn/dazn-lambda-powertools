@@ -15,26 +15,22 @@ module.exports = ({ sampleRate }) => {
   }
 
   return {
-    before: (handler, next) => {
+    before: async (request) => {
       if (isDebugEnabled()) {
         Log.enableDebug()
       }
-
-      next()
     },
-    after: (handler, next) => {
+    after: async (request) => {
       Log.resetLevel()
-
-      next()
     },
-    onError: (handler, next) => {
+    onError: async (request) => {
       if (process.env.POWERTOOLS_IGNORE_ERRORS !== 'true') {
-        const awsRequestId = handler.context ? handler.context.awsRequestId : ''
-        const invocationEvent = JSON.stringify(handler.event)
-        Log.error('invocation failed', { awsRequestId, invocationEvent }, handler.error)
+        const awsRequestId = request.context
+          ? request.context.awsRequestId || ''
+          : ''
+        const invocationEvent = JSON.stringify(request.event)
+        Log.error('invocation failed', { awsRequestId, invocationEvent }, request.error)
       }
-
-      next(handler.error)
     }
   }
 }

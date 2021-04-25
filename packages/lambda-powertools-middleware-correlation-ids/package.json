@@ -11,7 +11,7 @@
     "@dazn/lambda-powertools-logger": "^1.28.1"
   },
   "devDependencies": {
-    "@middy/core": "^1.0.0",
+    "@middy/core": "^2.1.0",
     "@types/aws-lambda": "^8.10.3",
     "aws-sdk": "^2.496.0",
     "lodash": "^4.17.15",

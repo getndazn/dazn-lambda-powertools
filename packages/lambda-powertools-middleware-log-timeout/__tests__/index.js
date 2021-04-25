@@ -6,7 +6,6 @@ global.console.error = consoleLog
 
 const middy = require('@middy/core')
 const logTimeoutMiddleware = require('../index')
-const util = require('util')
 
 jest.useFakeTimers()
 
@@ -24,9 +23,7 @@ const invokeSuccessHandler = async (threshold) => {
     ? logTimeoutMiddleware(threshold)
     : logTimeoutMiddleware()
 
-  const handler = util.promisify(
-    middy(async () => {}).use(middleware)
-  )
+  const handler = middy(async () => {}).use(middleware)
 
   await handler({}, context)
 }
@@ -45,19 +42,16 @@ const invokeTimedOutHandler = async (event, awsRequestId, threshold) => {
     ? 1000 - threshold
     : 990 // default threshold is 10ms
 
-  const handler = util.promisify(
+  const handler =
     middy(async () => {
       jest.advanceTimersByTime(elapsedTime)
     }).use(middleware)
-  )
 
   await handler(event, context)
 }
 
 const invokeEmptyContextHandler = async () => {
-  const handler = util.promisify(
-    middy(async () => {}).use(logTimeoutMiddleware())
-  )
+  const handler = middy(async () => {}).use(logTimeoutMiddleware())
 
   await handler({}, {})
 }
@@ -131,25 +125,26 @@ describe('Log timeout middleware', () => {
   describe('if another middle errors in the before step', () => {
     it('should not error (issue #82)', async () => {
       const throwOnBefore = {
-        before: (handler, next) => {
+        before: async (request) => {
           throw new Error('boom')
-        },
-        onError: (handler, next) => {
-          expect(handler.error.message).toBe('boom')
-          next()
         }
       }
 
-      // when executing on the before stage, it goes throwOnBefore => logTimeoutMiddleware
-      // but then on the onError, it flows logTimeoutMiddleware => throwOnBefore
-      // so the `expect` in throwOnBefore.onError would verify that we're still dealing
-      // with the original error it threw
-      const handler = util.promisify(
+      const handler =
         middy(async () => {})
           .use(throwOnBefore)
-          .use(logTimeoutMiddleware()))
+          .use(logTimeoutMiddleware())
 
       await handler({}, {})
+        .then(() => {
+          // expect there to be an error
+          expect(true).toBe(false)
+        })
+        .catch(e => {
+          // verify that the error is the one thrown in the 'throwOnBefore' middleware
+          // and not because the logTimeoutMiddleware blew up
+          expect(e.message).toBe('boom')
+        })
     })
   })
 })

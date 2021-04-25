@@ -15,23 +15,22 @@ beforeEach(() => {
   consoleLog.mockClear()
 })
 
-const invokeSuccessHandler = (sampleRate) => {
-  const handler = middy((event, context, cb) => {
+const invokeSuccessHandler = async (sampleRate) => {
+  const handler = middy(async () => {
     Log.debug('test')
-    cb(null)
   })
   handler.use(sampleLogMiddleware({ sampleRate }))
 
-  handler({}, { awsRequestId: 'test-id' }, () => {})
+  await handler({}, { awsRequestId: 'test-id' })
 }
 
-const invokeFailureHandler = (event, awsRequestId, sampleRate) => {
-  const handler = middy((event, context, cb) => {
+const invokeFailureHandler = async (event, awsRequestId, sampleRate) => {
+  const handler = middy(async () => {
     throw new Error('boom')
   })
   handler.use(sampleLogMiddleware({ sampleRate }))
 
-  handler(event, { awsRequestId }, () => {})
+  await handler(event, { awsRequestId }).catch(e => {})
 }
 
 const debugLogWasEnabled = () => {
@@ -54,34 +53,34 @@ const errorLogWasWritten = (f) => {
 
 describe('Sample logging middleware', () => {
   describe("when 'debug-log-enabled' is 'true'", () => {
-    it('enables debug logging', () => {
+    it('enables debug logging', async () => {
       CorrelationIds.replaceAllWith({ 'debug-log-enabled': 'true' })
 
-      invokeSuccessHandler(0)
+      await invokeSuccessHandler(0)
       debugLogWasEnabled()
     })
   })
 
   describe('when sample rate is 0%', () => {
-    it('does not enable debug logging', () => {
-      invokeSuccessHandler(0)
+    it('does not enable debug logging', async () => {
+      await invokeSuccessHandler(0)
       expect(consoleLog).not.toBeCalled()
     })
   })
 
   describe('when sample rate is 100%', () => {
-    it('enables debug logging', () => {
-      invokeSuccessHandler(1)
+    it('enables debug logging', async () => {
+      await invokeSuccessHandler(1)
       debugLogWasEnabled()
     })
   })
 
   describe('when an invocation fails', () => {
-    it('writes an error log', () => {
+    it('writes an error log', async () => {
       const event = { test: 'wat' }
       const awsRequestId = 'test-id'
 
-      invokeFailureHandler(event, awsRequestId)
+      await invokeFailureHandler(event, awsRequestId)
       errorLogWasWritten(x => {
         expect(x.errorName).toBe('Error')
         expect(x.errorMessage).toBe('boom')
@@ -96,11 +95,11 @@ describe('Sample logging middleware', () => {
   // it's common for test code to omit context, see #133
   describe('when context is missing', () => {
     it('should not error in the onError handler', async () => {
-      const handler = middy((event, context, cb) => {
+      const handler = middy(async () => {
         throw new Error('boom')
       })
       handler.use(sampleLogMiddleware({ sampleRate: 1 }))
-      handler({}, undefined, () => {})
+      await handler({}, undefined).catch(e => {})
       errorLogWasWritten(x => {
         expect(x.errorName).toBe('Error')
         expect(x.errorMessage).toBe('boom')
