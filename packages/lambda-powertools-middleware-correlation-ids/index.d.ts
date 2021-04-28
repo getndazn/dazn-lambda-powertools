@@ -2,7 +2,6 @@ import middy from "@middy/core";
 import {
   Context,
   SQSRecord,
-  Handler,
   DynamoDBRecord,
   DynamoDBStreamEvent,
   Callback,
@@ -15,28 +14,38 @@ import CorrelationIds from "@dazn/lambda-powertools-correlation-ids";
 
 export default function <T, R, C extends Context = Context>(params: {
   sampleDebugLogRate: number;
-}): middy.MiddlewareObject<T, R, C>;
+}): middy.MiddlewareObj<T, R, C>;
 
 export type ExtractedCorrelationIdAndLogger<L = Log> = {
   logger: L;
   correlationIds: CorrelationIds;
 };
 
+export type Handler<
+  TEvent = any,
+  TResult = any,
+  TContext extends Context = Context
+> = (
+  event: TEvent,
+  context: TContext,
+  callback: Callback<TResult>
+) => void | Promise<TResult>;
+
 export type SQSEvent<L = Log> = {
   Records: (SQSRecord & ExtractedCorrelationIdAndLogger<L>)[];
 };
 
-export type SQSHandler<L = Log> = Handler<SQSEvent<L>, void>;
+export type SQSHandler = Handler<SQSEvent, void>;
 
 export type KinesisContext<T, L = Log> = Context & {
   parsedKinesisEvents: ((T & ExtractedCorrelationIdAndLogger<L>) | undefined)[];
 };
 
-export type KinesisStreamHandler<T, L = Log> = (
-  event: KinesisStreamEvent,
-  context: KinesisContext<T, L>,
-  callback: Callback<void>
-) => void | Promise<void>;
+export type KinesisStreamHandler<T> = Handler<
+  KinesisStreamEvent,
+  void,
+  KinesisContext<T>
+>;
 
 export type FirehoseContext<T, L = Log> = Context & {
   parsedFirehoseEvents: (
@@ -45,18 +54,18 @@ export type FirehoseContext<T, L = Log> = Context & {
   )[];
 };
 
-export type FirehoseTransformationHandler<T, L = Log> = (
-  event: FirehoseTransformationEvent,
-  context: FirehoseContext<T, L>,
-  callback: Callback<FirehoseTransformationResult>
-) => void | Promise<FirehoseTransformationResult>;
+export type FirehoseTransformationHandler<T> = Handler<
+  FirehoseTransformationEvent,
+  FirehoseTransformationResult,
+  FirehoseContext<T>
+>;
 
-export type DynamoStreamsContext<L = Log> = Context & {
-  parsedDynamoDbEvents: (DynamoDBRecord & ExtractedCorrelationIdAndLogger<L>)[];
+export type DynamoStreamsContext = Context & {
+  parsedDynamoDbEvents: (DynamoDBRecord & ExtractedCorrelationIdAndLogger)[];
 };
 
-export type DynamoDBStreamHandler<L = Log> = (
-  event: DynamoDBStreamEvent,
-  context: DynamoStreamsContext<L>,
-  callback: Callback<void>
-) => void | Promise<void>;
+export type DynamoDBStreamHandler = Handler<
+  DynamoDBStreamEvent,
+  void,
+  DynamoStreamsContext
+>;
