@@ -12,9 +12,9 @@ import {
 import Log from "@dazn/lambda-powertools-logger";
 import CorrelationIds from "@dazn/lambda-powertools-correlation-ids";
 
-export default function <T, R, C extends Context = Context>(params: {
+export default function <TEvent = any, TResult = any, TErr = Error>(params: {
   sampleDebugLogRate: number;
-}): middy.MiddlewareObj<T, R, C>;
+}): middy.MiddlewareObj<TEvent, TResult, TErr>;
 
 export type ExtractedCorrelationIdAndLogger<L = Log> = {
   logger: L;
