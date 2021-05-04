@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.29.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.28.1...v1.29.0) (2021-05-04)
+
+
+### Features
+
+* upgrade to middy v2.x ([ad0410f](https://github.com/getndazn/dazn-lambda-powertools/commit/ad0410f2b78a38afd927067c9e17e65ebfda669d))
+* upgrade types to reflect middy v2.x usage ([cc3002b](https://github.com/getndazn/dazn-lambda-powertools/commit/cc3002b9b9177e07d918260ee1b600d403dbc29c))
+
+
+
+
+
 ## [1.28.1](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.28.0...v1.28.1) (2020-12-10)
 
 **Note:** Version bump only for package @dazn/lambda-powertools-pattern-basic
