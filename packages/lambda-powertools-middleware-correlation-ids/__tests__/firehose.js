@@ -6,8 +6,8 @@ const captureCorrelationIds = require('../index')
 
 global.console.log = jest.fn()
 
-const invokeFirehoseHandler = (event, awsRequestId, sampleDebugLogRate, handlerF, recordF, done) => {
-  const handler = middy((event, context, cb) => {
+const invokeFirehoseHandler = async (event, awsRequestId, sampleDebugLogRate, handlerF, recordF) => {
+  const handler = middy(async (event, context) => {
     // check the correlation IDs outside the context of a record are correct
     handlerF(CorrelationIds.get())
 
@@ -17,18 +17,10 @@ const invokeFirehoseHandler = (event, awsRequestId, sampleDebugLogRate, handlerF
 
     // check the correlation IDs outside the context of a record are correct
     handlerF(CorrelationIds.get())
-
-    cb(null)
   })
   handler.use(captureCorrelationIds({ sampleDebugLogRate }))
 
-  handler(event, { awsRequestId }, (err, result) => {
-    if (err) {
-      throw err
-    }
-
-    if (done) done()
-  })
+  await handler(event, { awsRequestId })
 }
 
 const firehose = require('./event-templates/firehose.json')
@@ -52,9 +44,9 @@ const genFirehoseEventWithoutJSON = (correlationIDs = {}) => {
 
 const firehoseTests = () => {
   describe('when sampleDebugLogRate = 0', () => {
-    it('always sets debug-log-enabled to false', () => {
+    it('always sets debug-log-enabled to false', async () => {
       const requestId = uuid()
-      invokeFirehoseHandler(genFirehoseEvent(), requestId, 0,
+      await invokeFirehoseHandler(genFirehoseEvent(), requestId, 0,
         x => {
           expect(x['awsRequestId']).toBe(requestId)
           expect(x['debug-log-enabled']).toBe('false')
@@ -68,9 +60,9 @@ const firehoseTests = () => {
   })
 
   describe('when event lacks JSON payload', () => {
-    it('should ignore the event', () => {
+    it('should ignore the event', async () => {
       const requestId = uuid()
-      invokeFirehoseHandler(genFirehoseEventWithoutJSON(), requestId, 0,
+      await invokeFirehoseHandler(genFirehoseEventWithoutJSON(), requestId, 0,
         x => {
           expect(x['awsRequestId']).toBe(requestId)
           expect(x['debug-log-enabled']).toBe('false')
@@ -83,9 +75,9 @@ const firehoseTests = () => {
   })
 
   describe('when sampleDebugLogRate = 1', () => {
-    it('always sets debug-log-enabled to true', () => {
+    it('always sets debug-log-enabled to true', async () => {
       const requestId = uuid()
-      invokeFirehoseHandler(genFirehoseEvent(), requestId, 1,
+      await invokeFirehoseHandler(genFirehoseEvent(), requestId, 1,
         x => {
           expect(x['awsRequestId']).toBe(requestId)
           expect(x['debug-log-enabled']).toBe('true')
@@ -99,9 +91,9 @@ const firehoseTests = () => {
   })
 
   describe('when correlation ID is not provided in the event', () => {
-    it('sets it to the AWS Request ID', () => {
+    it('sets it to the AWS Request ID', async () => {
       const requestId = uuid()
-      invokeFirehoseHandler(genFirehoseEvent(), requestId, 0,
+      await invokeFirehoseHandler(genFirehoseEvent(), requestId, 0,
         x => {
           // correlation IDs at the handler level
           expect(x['x-correlation-id']).toBe(requestId)
@@ -117,9 +109,9 @@ const firehoseTests = () => {
   })
 
   describe('when call-chain-length is not provided in the event', () => {
-    it('sets it to 1', () => {
+    it('sets it to 1', async () => {
       const requestId = uuid()
-      invokeFirehoseHandler(genFirehoseEvent(), requestId, 0,
+      await invokeFirehoseHandler(genFirehoseEvent(), requestId, 0,
         x => {}, // n/a
         record => {
           const x = record.correlationIds.get()
@@ -135,7 +127,7 @@ const firehoseTests = () => {
     let userId
     let requestId
 
-    beforeEach((done) => {
+    beforeEach(async () => {
       id = uuid()
       userId = uuid()
 
@@ -148,11 +140,11 @@ const firehoseTests = () => {
 
       const event = genFirehoseEvent(correlationIds)
       requestId = uuid()
-      invokeFirehoseHandler(event, requestId, 0, x => {
+      await invokeFirehoseHandler(event, requestId, 0, x => {
         handlerCorrelationIds = x
       }, aRecord => {
         record = aRecord
-      }, done)
+      })
     })
 
     it('still has the correct handler correlation IDs', () => {
@@ -186,7 +178,7 @@ const firehoseTests = () => {
     let record
     let id
 
-    beforeEach((done) => {
+    beforeEach(async () => {
       id = uuid()
 
       const correlationIds = {
@@ -195,10 +187,9 @@ const firehoseTests = () => {
       }
 
       const event = genFirehoseEvent(correlationIds)
-      invokeFirehoseHandler(event, uuid(), 0,
+      await invokeFirehoseHandler(event, uuid(), 0,
         () => {},
-        aRecord => { record = aRecord },
-        done)
+        aRecord => { record = aRecord })
     })
 
     it('increments it by 1', () => {

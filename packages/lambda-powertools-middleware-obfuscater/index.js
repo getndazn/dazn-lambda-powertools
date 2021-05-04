@@ -2,23 +2,20 @@ const { obfuscate, FILTERING_MODE } = require('./obfuscater')
 
 const obfuscaterMiddleware = ({ obfuscationFilters, filterOnAfter = false, filterOnBefore = false, filterOnError = true, filteringMode = FILTERING_MODE.BLACKLIST }) => {
   return ({
-    before: (handler, next) => {
+    before: async (request) => {
       if (filterOnBefore) {
-        handler.event = obfuscate(handler.event, obfuscationFilters, filteringMode)
+        request.event = obfuscate(request.event, obfuscationFilters, filteringMode)
       }
-      next()
     },
-    after: (handler, next) => {
+    after: async (request) => {
       if (filterOnAfter) {
-        handler.event = obfuscate(handler.event, obfuscationFilters, filteringMode)
+        request.event = obfuscate(request.event, obfuscationFilters, filteringMode)
       }
-      next()
     },
-    onError: (handler, next) => {
+    onError: async (request) => {
       if (filterOnError) {
-        handler.event = obfuscate(handler.event, obfuscationFilters, filteringMode)
+        request.event = obfuscate(request.event, obfuscationFilters, filteringMode)
       }
-      next(handler.error)
     }
   })
 }

@@ -37,9 +37,9 @@ const genSqsEvent = (wrappedSns, correlationIDs = {}) => {
 
 const sqsTests = (wrappedSns = false) => {
   describe('when sampleDebugLogRate = 0', () => {
-    it('always sets debug-log-enabled to false', () => {
+    it('always sets debug-log-enabled to false', async () => {
       const requestId = uuid()
-      invokeSqsHandler(genSqsEvent(wrappedSns), requestId, 0,
+      await invokeSqsHandler(genSqsEvent(wrappedSns), requestId, 0,
         x => {
           expect(x['awsRequestId']).toBe(requestId)
           expect(x['debug-log-enabled']).toBe('false')
@@ -53,9 +53,9 @@ const sqsTests = (wrappedSns = false) => {
   })
 
   describe('when sampleDebugLogRate = 1', () => {
-    it('always sets debug-log-enabled to true', () => {
+    it('always sets debug-log-enabled to true', async () => {
       const requestId = uuid()
-      invokeSqsHandler(genSqsEvent(wrappedSns), requestId, 1,
+      await invokeSqsHandler(genSqsEvent(wrappedSns), requestId, 1,
         x => {
           expect(x['awsRequestId']).toBe(requestId)
           expect(x['debug-log-enabled']).toBe('true')
@@ -69,9 +69,9 @@ const sqsTests = (wrappedSns = false) => {
   })
 
   describe('when correlation ID is not provided in the event', () => {
-    it('sets it to the AWS Request ID', () => {
+    it('sets it to the AWS Request ID', async () => {
       const requestId = uuid()
-      invokeSqsHandler(genSqsEvent(wrappedSns), requestId, 0,
+      await invokeSqsHandler(genSqsEvent(wrappedSns), requestId, 0,
         x => {
           // correlation IDs at the handler level
           expect(x['x-correlation-id']).toBe(requestId)
@@ -87,9 +87,9 @@ const sqsTests = (wrappedSns = false) => {
   })
 
   describe('when call-chain-length is not provided in the event', () => {
-    it('sets it to 1', () => {
+    it('sets it to 1', async () => {
       const requestId = uuid()
-      invokeSqsHandler(genSqsEvent(wrappedSns), requestId, 0,
+      await invokeSqsHandler(genSqsEvent(wrappedSns), requestId, 0,
         x => { // n/a
         },
         record => {
@@ -106,7 +106,7 @@ const sqsTests = (wrappedSns = false) => {
     let userId
     let requestId
 
-    beforeEach((done) => {
+    beforeEach(async () => {
       id = uuid()
       userId = uuid()
 
@@ -119,11 +119,11 @@ const sqsTests = (wrappedSns = false) => {
 
       const event = genSqsEvent(wrappedSns, correlationIds)
       requestId = uuid()
-      invokeSqsHandler(event, requestId, 0, x => {
+      await invokeSqsHandler(event, requestId, 0, x => {
         handlerCorrelationIds = x
       }, aRecord => {
         record = aRecord
-      }, done)
+      })
     })
 
     it('still has the correct handler correlation IDs', () => {
@@ -157,7 +157,7 @@ const sqsTests = (wrappedSns = false) => {
     let record
     let id
 
-    beforeEach((done) => {
+    beforeEach(async () => {
       id = uuid()
 
       const correlationIds = {
@@ -166,10 +166,9 @@ const sqsTests = (wrappedSns = false) => {
       }
 
       const event = genSqsEvent(wrappedSns, correlationIds)
-      invokeSqsHandler(event, uuid(), 0,
+      await invokeSqsHandler(event, uuid(), 0,
         () => {},
-        aRecord => { record = aRecord },
-        done)
+        aRecord => { record = aRecord })
     })
 
     it('increments it by 1', () => {
@@ -185,7 +184,7 @@ const sqsWrappedSnsTests = () => {
   sqsTests(true)
 
   describe('when correlation ID is not provided in the event and message attributes are set in the event body', () => {
-    it('does not modify sqs record message attributes', () => {
+    it('does not modify sqs record message attributes', async () => {
       const messageAttributes = {
         'att1': 'value1',
         'att2': 'value2',
@@ -200,7 +199,7 @@ const sqsWrappedSnsTests = () => {
       }))
       event.Records[0].body = JSON.stringify(body)
 
-      invokeSqsHandler(event, uuid(), 0,
+      await invokeSqsHandler(event, uuid(), 0,
         () => ({}),
         record => {
           expect(record.messageAttributes).toEqual({})
@@ -209,8 +208,8 @@ const sqsWrappedSnsTests = () => {
   })
 }
 
-const invokeSqsHandler = (event, awsRequestId, sampleDebugLogRate, handlerF, recordF, done) => {
-  const handler = middy((event, context, cb) => {
+const invokeSqsHandler = async (event, awsRequestId, sampleDebugLogRate, handlerF, recordF) => {
+  const handler = middy(async (event, context) => {
     // check the correlation IDs outside the context of a record are correct
     handlerF(CorrelationIds.get())
 
@@ -220,18 +219,10 @@ const invokeSqsHandler = (event, awsRequestId, sampleDebugLogRate, handlerF, rec
 
     // check the correlation IDs outside the context of a record are correct
     handlerF(CorrelationIds.get())
-
-    cb(null)
   })
   handler.use(captureCorrelationIds({ sampleDebugLogRate }))
 
-  handler(event, { awsRequestId }, (err, result) => {
-    if (err) {
-      throw err
-    }
-
-    if (done) done()
-  })
+  await handler(event, { awsRequestId })
 }
 
 describe('Correlation IDs middleware (SQS)', () => {

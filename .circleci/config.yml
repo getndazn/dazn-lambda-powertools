@@ -22,12 +22,6 @@ jobs:
     steps:
       - *ATTACH_WORKSPACE
       - run: npm test
-  test-node10:
-    docker:
-      - image: circleci/node:10
-    steps:
-      - *ATTACH_WORKSPACE
-      - run: npm test
   new-version:
     docker:
       - image: circleci/node:12
@@ -67,13 +61,9 @@ workflows:
       - test-node12:
           requires:
             - build
-      - test-node10:
-          requires:
-            - build
       - new-version:
           requires:
             - test-node12
-            - test-node10
           filters:
             branches:
               only: master

@@ -10,15 +10,7 @@ const stopInfiniteLoop = require('../index')
 
 const invokeHandler = async (event, awsRequestId) => {
   const handler = middy(async () => {}).use(stopInfiniteLoop(3))
-  await new Promise((resolve, reject) => {
-    handler(event, { awsRequestId }, (err, resp) => {
-      if (err) {
-        reject(err)
-      } else {
-        resolve(resp)
-      }
-    })
-  })
+  await handler(event, { awsRequestId })
 }
 
 const errorLogWasWritten = (f) => {

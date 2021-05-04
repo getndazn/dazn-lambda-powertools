@@ -23,28 +23,22 @@ const hasTimer = (context) => {
 
 module.exports = (thresholdMillis = 10) => {
   return {
-    before: (handler, next) => {
-      const timer = createTimer(handler.event, handler.context, thresholdMillis)
-      Object.defineProperty(handler.context, 'lambdaPowertoolsLogTimeoutMiddleware', {
+    before: async (request) => {
+      const timer = createTimer(request.event, request.context, thresholdMillis)
+      Object.defineProperty(request.context, 'lambdaPowertoolsLogTimeoutMiddleware', {
         enumerable: false,
         value: { timer }
       })
-
-      next()
     },
-    after: (handler, next) => {
-      if (hasTimer(handler.context)) {
-        clearTimeout(handler.context.lambdaPowertoolsLogTimeoutMiddleware.timer)
+    after: async (request) => {
+      if (hasTimer(request.context)) {
+        clearTimeout(request.context.lambdaPowertoolsLogTimeoutMiddleware.timer)
       }
-
-      next()
     },
-    onError: (handler, next) => {
-      if (hasTimer(handler.context)) {
-        clearTimeout(handler.context.lambdaPowertoolsLogTimeoutMiddleware.timer)
+    onError: async (request) => {
+      if (hasTimer(request.context)) {
+        clearTimeout(request.context.lambdaPowertoolsLogTimeoutMiddleware.timer)
       }
-
-      next(handler.error)
     }
   }
 }

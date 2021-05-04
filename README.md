@@ -28,7 +28,7 @@ For more control, you can pick and choose from the [individual packages](/packag
 
 ## Powertools and Middy
 
-All of the powertool middlewares use the [middy](https://github.com/middyjs/middy) library, and therefore adhere to the middy API.
+All of the powertool middlewares use the [middy](https://github.com/middyjs/middy) library (**v2.x**), and therefore adhere to the middy API.
 
 However, the other tools such as the clients are generic.
 

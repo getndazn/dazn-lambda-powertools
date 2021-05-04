@@ -4,11 +4,9 @@ const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
 const captureCorrelationIds = require('../index')
 
 const invokeHandler = (event, awsRequestId, sampleDebugLogRate, f) => {
-  const handler = middy((event, context, cb) => {
+  const handler = middy(async (event, context) => {
     const correlationIds = CorrelationIds.get()
     f(correlationIds)
-
-    cb(null)
   })
   handler.use(captureCorrelationIds({ sampleDebugLogRate }))
 
