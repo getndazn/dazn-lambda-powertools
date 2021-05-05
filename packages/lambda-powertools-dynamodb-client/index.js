@@ -23,7 +23,7 @@ const addCorrelationIdsToUpdate = (correlationIds, params) => {
 
   // e.g. [ 'Add', '#count :value', 'REMOVE', 'Age' ]
   const exprSegments = updateExpr
-    .split(/(SET|REMOVE|ADD|REMOVE)/i)
+    .split(/\b(SET|REMOVE|ADD|REMOVE)\b/i)
     .filter(x => x)
     .map(x => x.trim())
 
