@@ -1,14 +1,14 @@
 {
-  "name": "@dazn/lambda-powertools-firehose-client",
+  "name": "@buyerassist/dazn-lambda-powertools-firehose-client",
   "version": "1.28.1",
-  "description": "Firehose client wrapper that knows how to forward correlation IDs (captured via @dazn/lambda-powertools-correlation-ids)",
+  "description": "Firehose client wrapper that knows how to forward correlation IDs (captured via @buyerassist/dazn-lambda-powertools-correlation-ids)",
   "main": "index.js",
   "types": "index.d.ts",
   "license": "MIT",
   "author": "Yan Cui",
   "dependencies": {
-    "@dazn/lambda-powertools-correlation-ids": "^1.28.1",
-    "@dazn/lambda-powertools-logger": "^1.28.1"
+    "@buyerassist/dazn-lambda-powertools-correlation-ids": "^1.28.1",
+    "@buyerassist/dazn-lambda-powertools-logger": "^1.28.1"
   },
   "devDependencies": {
     "aws-sdk": "^2.540.0"

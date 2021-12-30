@@ -1,5 +1,5 @@
 {
-  "name": "@dazn/lambda-powertools-logger",
+  "name": "@buyerassist/dazn-lambda-powertools-logger",
   "version": "1.28.1",
   "description": "Logger that is tightly integrated with the rest of the lambda-powertools",
   "main": "index.js",
@@ -7,7 +7,7 @@
   "license": "MIT",
   "author": "Yan Cui",
   "dependencies": {
-    "@dazn/lambda-powertools-correlation-ids": "^1.28.1"
+    "@buyerassist/dazn-lambda-powertools-correlation-ids": "^1.28.1"
   },
   "publishConfig": {
     "access": "public"

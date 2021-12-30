@@ -1,13 +1,13 @@
 {
-  "name": "@dazn/lambda-powertools-middleware-sample-logging",
+  "name": "@buyerassist/dazn-lambda-powertools-middleware-sample-logging",
   "version": "1.29.0",
   "description": "Middy middleware to sample debug logs for a configurable % of invocations",
   "main": "index.js",
   "license": "MIT",
   "author": "Yan Cui",
   "dependencies": {
-    "@dazn/lambda-powertools-correlation-ids": "^1.28.1",
-    "@dazn/lambda-powertools-logger": "^1.28.1"
+    "@buyerassist/dazn-lambda-powertools-correlation-ids": "^1.28.1",
+    "@buyerassist/dazn-lambda-powertools-logger": "^1.28.1"
   },
   "devDependencies": {
     "@middy/core": "^2.1.0"

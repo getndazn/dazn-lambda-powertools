@@ -1,5 +1,5 @@
 {
-  "name": "@dazn/lambda-powertools-middleware-stop-infinite-loop",
+  "name": "@buyerassist/dazn-lambda-powertools-middleware-stop-infinite-loop",
   "version": "1.29.0",
   "description": "Middy middleware that detects and stops infinite loops",
   "author": "Yan Cui <theburningmonk@gmail.com>",
@@ -14,8 +14,8 @@
     "url": "https://github.com/getndazn/dazn-lambda-powertools/issues"
   },
   "dependencies": {
-    "@dazn/lambda-powertools-correlation-ids": "^1.28.1",
-    "@dazn/lambda-powertools-logger": "^1.28.1"
+    "@buyerassist/dazn-lambda-powertools-correlation-ids": "^1.28.1",
+    "@buyerassist/dazn-lambda-powertools-logger": "^1.28.1"
   },
   "devDependencies": {
     "@middy/core": "^2.1.0"
