@@ -1,6 +1,6 @@
 import middy from "@middy/core";
 import { Callback, Context } from "aws-lambda";
-export * from "@dazn/lambda-powertools-middleware-correlation-ids";
+export * from "@buyerassist/dazn-lambda-powertools-middleware-correlation-ids";
 
 export default function <
   TEvent = any,

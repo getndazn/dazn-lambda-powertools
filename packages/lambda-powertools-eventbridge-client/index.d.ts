@@ -1,7 +1,7 @@
 import awsEventBridge from "aws-sdk/clients/eventbridge";
 import { AWSError } from "aws-sdk/lib/error";
 import { Request } from "aws-sdk/lib/request";
-import CorrelationIds from "@dazn/lambda-powertools-correlation-ids";
+import CorrelationIds from "@buyerassist/dazn-lambda-powertools-correlation-ids";
 
 declare const EventBridge: awsEventBridge & {
   putEventsWithCorrelationIds(

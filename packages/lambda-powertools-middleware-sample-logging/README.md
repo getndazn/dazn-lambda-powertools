@@ -4,19 +4,19 @@ A [Middy](https://github.com/middyjs/middy) middleware that will enable debug lo
 
 Main features:
 
-* integrates with the `@dazn/lambda-powertools-logger` package to enable debug logging
+- integrates with the `@buyerassist/dazn-lambda-powertools-logger` package to enable debug logging
 
-* integrates with the `@dazn/lambda-powertools-correlation-ids` package to allow sampling decision to flow through correlation IDs - i.e. enable debug logging at the edge, and the entire call chain will respect that decision
+- integrates with the `@buyerassist/dazn-lambda-powertools-correlation-ids` package to allow sampling decision to flow through correlation IDs - i.e. enable debug logging at the edge, and the entire call chain will respect that decision
 
-* enables debug logging for some % (defaults to 1%) of invocations
+- enables debug logging for some % (defaults to 1%) of invocations
 
-* records an error log message with the invocation event as attribute when an invocation errors
+- records an error log message with the invocation event as attribute when an invocation errors
 
 ## Getting Started
 
-Install from NPM: `npm install @dazn/lambda-powertools-middleware-sample-logging`
+Install from NPM: `npm install @buyerassist/dazn-lambda-powertools-middleware-sample-logging`
 
-Alternatively, if you use the template `@dazn/lambda-powertools-pattern-basic` then this would be configured for you.
+Alternatively, if you use the template `@buyerassist/dazn-lambda-powertools-pattern-basic` then this would be configured for you.
 
 ## API
 
@@ -30,7 +30,7 @@ Accepts a configuration object of the following shape:
 
 ```js
 const middy = require('middy')
-const sampleLogging = require('@dazn/lambda-powertools-middleware-sample-logging')
+const sampleLogging = require('@buyerassist/dazn-lambda-powertools-middleware-sample-logging')
 
 const handler = async (event, context) => {
   return 42
@@ -41,4 +41,4 @@ module.exports = middy(handler)
 }
 ```
 
-This middleware is often used alongside the `@dazn/lambda-powertools-middleware-correlation-ids` middleware to implement sample logging. It's **recommended** that you use the `@dazn/lambda-powertools-pattern-basic` which configures both to enable debug logging at 1% of invocations.
+This middleware is often used alongside the `@buyerassist/dazn-lambda-powertools-middleware-correlation-ids` middleware to implement sample logging. It's **recommended** that you use the `@buyerassist/dazn-lambda-powertools-pattern-basic` which configures both to enable debug logging at 1% of invocations.

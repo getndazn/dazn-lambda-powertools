@@ -9,8 +9,8 @@ import {
   FirehoseTransformationResult,
   KinesisStreamEvent,
 } from "aws-lambda";
-import Log from "@dazn/lambda-powertools-logger";
-import CorrelationIds from "@dazn/lambda-powertools-correlation-ids";
+import Log from "@buyerassist/dazn-lambda-powertools-logger";
+import CorrelationIds from "@buyerassist/dazn-lambda-powertools-correlation-ids";
 
 export default function <TEvent = any, TResult = any, TErr = Error>(params: {
   sampleDebugLogRate: number;

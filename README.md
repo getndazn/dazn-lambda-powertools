@@ -14,14 +14,14 @@ Re-writing and maintaining this bootstrapping logic into every individual lambda
 
 The quickest way to get setup is to use the opinionated [pattern basic](/packages/lambda-powertools-pattern-basic) package.
 
-`npm install @dazn/lambda-powertools-pattern-basic`
+`npm install @buyerassist/dazn-lambda-powertools-pattern-basic`
 
 ```javascript
-const wrap = require('@dazn/lambda-powertools-pattern-basic')
+const wrap = require("@buyerassist/dazn-lambda-powertools-pattern-basic");
 
 module.exports.handler = wrap(async (event, context) => {
-  return 42
-})
+  return 42;
+});
 ```
 
 For more control, you can pick and choose from the [individual packages](/packages).
@@ -36,83 +36,83 @@ However, the other tools such as the clients are generic.
 
 An integrated suite of powertools for Lambda functions that reduces the effort to implement common lamdba tasks, such as dealing with correlation-ids.
 
-* support correlation IDs
+- support correlation IDs
 
-* debug logs are turned off in production, and are instead sampled for 1% of invocations
+- debug logs are turned off in production, and are instead sampled for 1% of invocations
 
-* debug logging decisions are respected by all the functions on a call chain
+- debug logging decisions are respected by all the functions on a call chain
 
-* HTTP requests always report both latency as well as response count metrics
+- HTTP requests always report both latency as well as response count metrics
 
 ## Overview of available tools
 
-* [logger](/packages/lambda-powertools-logger): structured logging with JSON, configurable log levels, and integrates with other tools to support correlation IDs and sampling (only enable debug logs on 1% of invocations)
+- [logger](/packages/lambda-powertools-logger): structured logging with JSON, configurable log levels, and integrates with other tools to support correlation IDs and sampling (only enable debug logs on 1% of invocations)
 
-* [correlation IDs](/packages/lambda-powertools-correlation-ids): create and store correlation IDs that follow the DAZN naming convention
+- [correlation IDs](/packages/lambda-powertools-correlation-ids): create and store correlation IDs that follow the DAZN naming convention
 
-* [correlation IDs middleware](/packages/lambda-powertools-middleware-correlation-ids): automatically extract correlation IDs from the invocation event
+- [correlation IDs middleware](/packages/lambda-powertools-middleware-correlation-ids): automatically extract correlation IDs from the invocation event
 
-* [sample logging middleware](/packages/lambda-powertools-middleware-sample-logging): enable debug logging for 1% of invocations, or when upstream caller has made the decision to enable debug logging
+- [sample logging middleware](/packages/lambda-powertools-middleware-sample-logging): enable debug logging for 1% of invocations, or when upstream caller has made the decision to enable debug logging
 
-* [obfuscater middleware](/packages/lambda-powertools-middleware-obfuscater): allows you to obfuscate the invocation event so that sensitive data (e.g. PII) is not logged accidentally
+- [obfuscater middleware](/packages/lambda-powertools-middleware-obfuscater): allows you to obfuscate the invocation event so that sensitive data (e.g. PII) is not logged accidentally
 
-* [log timeout middleware](/packages/lambda-powertools-middleware-log-timeout): logs an error message when a function invocation times out
+- [log timeout middleware](/packages/lambda-powertools-middleware-log-timeout): logs an error message when a function invocation times out
 
-* [stop infinite loop middleware](/packages/lambda-powertools-middleware-stop-infinite-loop): stops infinite loops
+- [stop infinite loop middleware](/packages/lambda-powertools-middleware-stop-infinite-loop): stops infinite loops
 
 ### Client libraries
 
-* [http client](/packages/lambda-powertools-http-client): HTTP client that automatically forwards any correlation IDs you have captured or created, and records both latency as well as response count metrics
+- [http client](/packages/lambda-powertools-http-client): HTTP client that automatically forwards any correlation IDs you have captured or created, and records both latency as well as response count metrics
 
-* [CloudWatchEvents client](/packages/lambda-powertools-cloudwatchevents-client): CloudWatchEvents client that automatically forwards any correlation IDs you have captured or created when you put events to an event bus
+- [CloudWatchEvents client](/packages/lambda-powertools-cloudwatchevents-client): CloudWatchEvents client that automatically forwards any correlation IDs you have captured or created when you put events to an event bus
 
-* [EventBridge client](/packages/lambda-powertools-eventbridge-client): EventBridge client that automatically forwards any correlation IDs you have captured or created when you put events to an event bus
+- [EventBridge client](/packages/lambda-powertools-eventbridge-client): EventBridge client that automatically forwards any correlation IDs you have captured or created when you put events to an event bus
 
-* [SNS client](/packages/lambda-powertools-sns-client): SNS client that automatically forwards any correlation IDs you have captured or created when you publish a message to SNS
+- [SNS client](/packages/lambda-powertools-sns-client): SNS client that automatically forwards any correlation IDs you have captured or created when you publish a message to SNS
 
-* [SQS client](/packages/lambda-powertools-sqs-client): SQS client that automatically forwards any correlation IDs you have captured or created when you publish a message to SQS
+- [SQS client](/packages/lambda-powertools-sqs-client): SQS client that automatically forwards any correlation IDs you have captured or created when you publish a message to SQS
 
-* [Kinesis client](/packages/lambda-powertools-kinesis-client): Kinesis client that automatically forwards any correlation IDs you have captured or created when you publish record(s) to a Kinesis stream
+- [Kinesis client](/packages/lambda-powertools-kinesis-client): Kinesis client that automatically forwards any correlation IDs you have captured or created when you publish record(s) to a Kinesis stream
 
-* [Firehose client](/packages/lambda-powertools-firehose-client): Firehose client that automatically forwards any correlation IDs you have captured or created when you publish record(s) to a Firehose delivery stream
+- [Firehose client](/packages/lambda-powertools-firehose-client): Firehose client that automatically forwards any correlation IDs you have captured or created when you publish record(s) to a Firehose delivery stream
 
-* [Step Functions client](/packages/lambda-powertools-step-functions-client): Step Functions client that automatically forwards any correlation IDs you have captured or created when you start an execution
+- [Step Functions client](/packages/lambda-powertools-step-functions-client): Step Functions client that automatically forwards any correlation IDs you have captured or created when you start an execution
 
-* [Lambda client](/packages/lambda-powertools-lambda-client): Lambda client that automatically forwards any correlation IDs you have captured or created when you invokes a Lambda function directly
+- [Lambda client](/packages/lambda-powertools-lambda-client): Lambda client that automatically forwards any correlation IDs you have captured or created when you invokes a Lambda function directly
 
-* [DynamoDB client](/packages/lambda-powertools-dynamodb-client): DynamoDB client that automatically forwards any correlation IDs you have captured or created when you perform put or update operations against DynamoDB. These correlation IDs are then available to functions processing these events from the table's DynamoDB Stream.
+- [DynamoDB client](/packages/lambda-powertools-dynamodb-client): DynamoDB client that automatically forwards any correlation IDs you have captured or created when you perform put or update operations against DynamoDB. These correlation IDs are then available to functions processing these events from the table's DynamoDB Stream.
 
 ### Patterns
 
-* [basic template for a function](/packages/lambda-powertools-pattern-basic): wrapper for your function that applies and configures the function to work well with datadog metrics and sample logging
+- [basic template for a function](/packages/lambda-powertools-pattern-basic): wrapper for your function that applies and configures the function to work well with datadog metrics and sample logging
 
-* [obfuscate template](/packages/lambda-powertools-pattern-obfuscate): basic template (above) + obfuscate the invocation event so sensitive data is obfuscated in the `after` and `onError` handlers.
+- [obfuscate template](/packages/lambda-powertools-pattern-obfuscate): basic template (above) + obfuscate the invocation event so sensitive data is obfuscated in the `after` and `onError` handlers.
 
 ## Installing the powertools
 
 ### via NPM
 
-| Package | Install command |
-| --- | --- |
-| cloudwatchevents-client | npm install @dazn/lambda-powertools-cloudwatchevents-client |
-| correlation-ids | npm install @dazn/lambda-powertools-correlation-ids |
-| dynamodb-client | npm install @dazn/lambda-powertools-dynamodb-client |
-| eventbridge-client | npm install @dazn/lambda-powertools-eventbridge-client |
-| firehose-client | npm install @dazn/lambda-powertools-firehose-client |
-| http-client | npm install @dazn/lambda-powertools-http-client |
-| kinesis-client | npm install @dazn/lambda-powertools-kinesis-client |
-| lambda-client | npm install @dazn/lambda-powertools-lambda-client |
-| logger | npm install @dazn/lambda-powertools-logger |
-| middleware-correlation-ids | npm install @dazn/lambda-powertools-middleware-correlation-ids |
-| middleware-log-timeout | npm install @dazn/lambda-powertools-middleware-log-timeout |
-| middleware-obfuscater | npm install @dazn/lambda-powertools-middleware-obfuscater |
-| middleware-sample-logging | npm install @dazn/lambda-powertools-middleware-sample-logging |
-| middleware-stop-infinite-loop | npm install @dazn/lambda-powertools-middleware-stop-infinite-loop |
-| pattern-basic | npm install @dazn/lambda-powertools-pattern-basic |
-| pattern-obfuscate | npm install @dazn/lambda-powertools-pattern-obfuscate |
-| sns-client | npm install @dazn/lambda-powertools-sns-client |
-| sqs-client | npm install @dazn/lambda-powertools-sqs-client |
-| step-functions-client | npm install @dazn/lambda-powertools-step-functions-client |
+| Package                       | Install command                                                               |
+| ----------------------------- | ----------------------------------------------------------------------------- |
+| cloudwatchevents-client       | npm install @buyerassist/dazn-lambda-powertools-cloudwatchevents-client       |
+| correlation-ids               | npm install @buyerassist/dazn-lambda-powertools-correlation-ids               |
+| dynamodb-client               | npm install @buyerassist/dazn-lambda-powertools-dynamodb-client               |
+| eventbridge-client            | npm install @buyerassist/dazn-lambda-powertools-eventbridge-client            |
+| firehose-client               | npm install @buyerassist/dazn-lambda-powertools-firehose-client               |
+| http-client                   | npm install @buyerassist/dazn-lambda-powertools-http-client                   |
+| kinesis-client                | npm install @buyerassist/dazn-lambda-powertools-kinesis-client                |
+| lambda-client                 | npm install @buyerassist/dazn-lambda-powertools-lambda-client                 |
+| logger                        | npm install @buyerassist/dazn-lambda-powertools-logger                        |
+| middleware-correlation-ids    | npm install @buyerassist/dazn-lambda-powertools-middleware-correlation-ids    |
+| middleware-log-timeout        | npm install @buyerassist/dazn-lambda-powertools-middleware-log-timeout        |
+| middleware-obfuscater         | npm install @buyerassist/dazn-lambda-powertools-middleware-obfuscater         |
+| middleware-sample-logging     | npm install @buyerassist/dazn-lambda-powertools-middleware-sample-logging     |
+| middleware-stop-infinite-loop | npm install @buyerassist/dazn-lambda-powertools-middleware-stop-infinite-loop |
+| pattern-basic                 | npm install @buyerassist/dazn-lambda-powertools-pattern-basic                 |
+| pattern-obfuscate             | npm install @buyerassist/dazn-lambda-powertools-pattern-obfuscate             |
+| sns-client                    | npm install @buyerassist/dazn-lambda-powertools-sns-client                    |
+| sqs-client                    | npm install @buyerassist/dazn-lambda-powertools-sqs-client                    |
+| step-functions-client         | npm install @buyerassist/dazn-lambda-powertools-step-functions-client         |
 
 ### via Lambda layer
 

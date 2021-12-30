@@ -1,74 +1,78 @@
-process.env.AWS_NODEJS_CONNECTION_REUSE_ENABLED = '1'
-const Kinesis = require('aws-sdk/clients/kinesis')
-const client = new Kinesis()
-const Log = require('@dazn/lambda-powertools-logger')
-const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
+process.env.AWS_NODEJS_CONNECTION_REUSE_ENABLED = "1";
+const Kinesis = require("aws-sdk/clients/kinesis");
+const client = new Kinesis();
+const Log = require("@buyerassist/dazn-lambda-powertools-logger");
+const CorrelationIds = require("@buyerassist/dazn-lambda-powertools-correlation-ids");
 
-function tryJsonParse (data) {
-  if (typeof data !== 'string') {
-    return null
+function tryJsonParse(data) {
+  if (typeof data !== "string") {
+    return null;
   }
 
   try {
-    return JSON.parse(data)
+    return JSON.parse(data);
   } catch (err) {
-    Log.warn('only JSON string data can be modified to insert correlation IDs', null, err)
-    return null
+    Log.warn(
+      "only JSON string data can be modified to insert correlation IDs",
+      null,
+      err
+    );
+    return null;
   }
 }
 
-function addCorrelationIds (correlationIds, data) {
+function addCorrelationIds(correlationIds, data) {
   // only do this with JSON string data
-  const payload = tryJsonParse(data)
+  const payload = tryJsonParse(data);
   if (!payload) {
-    return data
+    return data;
   }
 
-  const ids = correlationIds.get()
+  const ids = correlationIds.get();
   const newData = {
     __context__: ids,
-    ...payload
-  }
-  return JSON.stringify(newData)
+    ...payload,
+  };
+  return JSON.stringify(newData);
 }
 
-client._putRecord = client.putRecord
+client._putRecord = client.putRecord;
 
 client.putRecord = (...args) => {
-  return client.putRecordWithCorrelationIds(CorrelationIds, ...args)
-}
+  return client.putRecordWithCorrelationIds(CorrelationIds, ...args);
+};
 
 client.putRecordWithCorrelationIds = (correlationIds, params, ...args) => {
-  const newData = addCorrelationIds(correlationIds, params.Data)
+  const newData = addCorrelationIds(correlationIds, params.Data);
   const extendedParams = {
     ...params,
-    Data: newData
-  }
+    Data: newData,
+  };
 
-  return client._putRecord(extendedParams, ...args)
-}
+  return client._putRecord(extendedParams, ...args);
+};
 
-client._putRecords = client.putRecords
+client._putRecords = client.putRecords;
 
 client.putRecords = (...args) => {
-  return client.putRecordsWithCorrelationIds(CorrelationIds, ...args)
-}
+  return client.putRecordsWithCorrelationIds(CorrelationIds, ...args);
+};
 
 client.putRecordsWithCorrelationIds = (correlationIds, params, ...args) => {
-  const newRecords = params.Records.map(record => {
-    const newData = addCorrelationIds(correlationIds, record.Data)
+  const newRecords = params.Records.map((record) => {
+    const newData = addCorrelationIds(correlationIds, record.Data);
     return {
       ...record,
-      Data: newData
-    }
-  })
+      Data: newData,
+    };
+  });
 
   const extendedParams = {
     ...params,
-    Records: newRecords
-  }
+    Records: newRecords,
+  };
 
-  return client._putRecords(extendedParams, ...args)
-}
+  return client._putRecords(extendedParams, ...args);
+};
 
-module.exports = client
+module.exports = client;

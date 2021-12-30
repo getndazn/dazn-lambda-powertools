@@ -1,10 +1,10 @@
-const Log = require('@dazn/lambda-powertools-logger')
-const apiGateway = require('@dazn/lambda-powertools-pattern-basic')
+const Log = require("@buyerassist/dazn-lambda-powertools-logger");
+const apiGateway = require("@buyerassist/dazn-lambda-powertools-pattern-basic");
 
 module.exports.handler = apiGateway(async (event, context) => {
-  const host = event.headers.Host
+  const host = event.headers.Host;
 
-  Log.debug(`the current host is: ${host}`)
+  Log.debug(`the current host is: ${host}`);
 
-  return { statusCode: 202 }
-})
+  return { statusCode: 202 };
+});

@@ -1,4 +1,4 @@
-import CorrelationIds from "@dazn/lambda-powertools-correlation-ids";
+import CorrelationIds from "@buyerassist/dazn-lambda-powertools-correlation-ids";
 export = dazn__lambda_powertools_logger;
 declare enum LogLevels {
   DEBUG = 20,

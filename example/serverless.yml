@@ -21,7 +21,7 @@ custom:
 package:
   exclude:
     - node_modules/aws-sdk/**
-    - node_modules/@dazn/**/node_modules/aws-sdk/**
+    - node_modules/@buyerassist/dazn-**/node_modules/aws-sdk/**
 
 functions:
   api-a:
@@ -40,7 +40,7 @@ functions:
       - Effect: Allow
         Action: firehose:PutRecord
         Resource: !GetAtt FirehoseStream.Arn
-  
+
   api-b:
     handler: functions/api-b.handler
     events:
@@ -66,7 +66,7 @@ functions:
         Resource: !GetAtt DynamoDBTable.Arn
 
   dynamodb:
-    handler: functions/dynamodb.handler    
+    handler: functions/dynamodb.handler
     events:
       - stream:
           type: dynamodb
@@ -77,11 +77,11 @@ functions:
       - Effect: Allow
         Action: sns:Publish
         Resource: !Ref SnsTopic
-  
+
   sns:
     handler: functions/sns.handler
     events:
-      - sns: 
+      - sns:
           arn: !Ref SnsTopic
           topicName: lambda-powertools-demo
     environment:
@@ -143,10 +143,10 @@ functions:
 
   double:
     handler: functions/double.handler
-    
+
 stepFunctions:
   stateMachines:
-    lambda-powertools-demo:      
+    lambda-powertools-demo:
       name: lambdaPowertoolsDemo
       definition:
         Comment: A demo to show off the Lambda powertools packages
@@ -169,7 +169,7 @@ resources:
   Resources:
     KinesisStream:
       Type: AWS::Kinesis::Stream
-      Properties: 
+      Properties:
         ShardCount: 1
 
     S3Bucket:
@@ -233,7 +233,7 @@ resources:
             Enabled: false
           CompressionFormat: GZIP
           Prefix: ""
-          RoleARN: 
+          RoleARN:
             Fn::GetAtt: [FirehoseDeliveryIamRole, Arn]
           ProcessingConfiguration:
             Enabled: true
@@ -241,12 +241,12 @@ resources:
               - Type: Lambda
                 Parameters:
                   - ParameterName: LambdaArn
-                    ParameterValue: 
+                    ParameterValue:
                       Fn::GetAtt: [FirehoseLambdaFunction, Arn]
 
     SnsTopic:
-      Type: AWS::SNS::Topic      
-      Properties: 
+      Type: AWS::SNS::Topic
+      Properties:
         DisplayName: lambda-powertools-demo
         TopicName: lambda-powertools-demo
 

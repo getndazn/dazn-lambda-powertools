@@ -4,13 +4,13 @@ A [Middy](https://github.com/middyjs/middy) middleware that will enable debug lo
 
 Main features:
 
-* records an error log message with the invocation event as attribute when an invocation errors. These invocation errors may be obfuscated to avoid the leaking of Personal Identifiable Information.
+- records an error log message with the invocation event as attribute when an invocation errors. These invocation errors may be obfuscated to avoid the leaking of Personal Identifiable Information.
 
 ## Getting Started
 
-Install from NPM: `npm install @dazn/lambda-powertools-middleware-obfuscater`
+Install from NPM: `npm install @buyerassist/dazn-lambda-powertools-middleware-obfuscater`
 
-Alternatively, if you use the template `@dazn/lambda-powertools-pattern-obfuscate` then this would be configured for you.
+Alternatively, if you use the template `@buyerassist/dazn-lambda-powertools-pattern-obfuscate` then this would be configured for you.
 
 ## API
 
@@ -46,6 +46,7 @@ The output would be...
 ```
 
 similarly, you can filter entire objects, for instance.
+
 ```js
   const obfuscationFilter = ["Records.*.personal"]
   {
@@ -60,7 +61,7 @@ This will recursively filter every object and subobjects
 
 ```js
 const middy = require('middy')
-const obfuscatedLogging = require('@dazn/lambda-powertools-middleware-obfuscater')
+const obfuscatedLogging = require('@buyerassist/dazn-lambda-powertools-middleware-obfuscater')
 
 const handler = async (event, context) => {
   return 42
@@ -71,4 +72,4 @@ module.exports = middy(handler)
 }
 ```
 
-This middleware is often used alongside the `@dazn/lambda-powertools-middleware-correlation-ids` middleware to implement sample logging. It's **recommended** that you use the `@dazn/lambda-powertools-pattern-obfuscate` which configures both to enable debug logging at 1% of invocations.
+This middleware is often used alongside the `@buyerassist/dazn-lambda-powertools-middleware-correlation-ids` middleware to implement sample logging. It's **recommended** that you use the `@buyerassist/dazn-lambda-powertools-pattern-obfuscate` which configures both to enable debug logging at 1% of invocations.
