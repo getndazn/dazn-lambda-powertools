@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.29.1](https://github.com/buyerassist-io/dazn-lambda-powertools/compare/v1.29.0...v1.29.1) (2021-12-30)
+
+**Note:** Version bump only for package @buyerassist/dazn-lambda-powertools-middleware-obfuscater
+
+
+
+
+
 # [1.29.0](https://github.com/getndazn/dazn-lambda-powertools/compare/v1.28.1...v1.29.0) (2021-05-04)
 
 ### Features
