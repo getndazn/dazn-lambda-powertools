@@ -1,6 +1,6 @@
 const CorrelationIds = require("@buyerassist/dazn-lambda-powertools-correlation-ids");
 const HTTP = require("superagent-promise")(require("superagent"), Promise);
-const Metrics = require("@buyerassist/dazn-datadog-metrics");
+const Metrics = require("@dazn/datadog-metrics");
 const URL = require("url");
 
 const AWS_REGION = process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION;

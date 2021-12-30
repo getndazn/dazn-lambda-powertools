@@ -1,6 +1,6 @@
 const Log = require("@buyerassist/dazn-lambda-powertools-logger");
 const CorrelationIds = require("@buyerassist/dazn-lambda-powertools-correlation-ids");
-const Datadog = require("@buyerassist/dazn-datadog-metrics");
+const Datadog = require("@dazn/datadog-metrics");
 const HTTP = require("@buyerassist/dazn-lambda-powertools-http-client");
 const Kinesis = require("@buyerassist/dazn-lambda-powertools-kinesis-client");
 const Firehose = require("@buyerassist/dazn-lambda-powertools-firehose-client");

@@ -5,7 +5,7 @@ const http = require("https");
 const mockRequest = jest.spyOn(http, "request");
 
 // mock the metrics module to check if they're invoked
-const Metrics = require("@buyerassist/dazn-datadog-metrics");
+const Metrics = require("@dazn/datadog-metrics");
 
 global.console.log = jest.fn();
 
