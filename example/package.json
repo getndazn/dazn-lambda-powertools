@@ -26,5 +26,6 @@
     "serverless-iam-roles-per-function": "^1.0.1",
     "serverless-pseudo-parameters": "^1.6.0",
     "serverless-step-functions": "^2.6.0"
-  }
+  },
+  "gitHead": "9ef1b1c3ae96ca0f87c377210c52b57d679d3c04"
 }
