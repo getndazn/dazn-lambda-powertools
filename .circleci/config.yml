@@ -11,33 +11,32 @@ references:
 jobs:
   build:
     docker:
-      - image: circleci/node:12
+      - image: circleci/node:14
     steps:
       - checkout
       - run: npm ci
       - *PERSIST_TO_WORKSPACE
-  test-node12:
+  test-node14:
     docker:
-      - image: circleci/node:12
+      - image: circleci/node:14
     steps:
       - *ATTACH_WORKSPACE
       - run: npm test
   new-version:
     docker:
-      - image: circleci/node:12
+      - image: circleci/node:14
     steps:
       - *ATTACH_WORKSPACE
       - add_ssh_keys
       - run: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
       - run: git status
-      # git complains if you don't set an email for some reason
-      - run: git config --global user.email "dazn-bot@dazn.com"
-      - run: git config --global user.name "DAZN Bot"
+      - run: git config --global user.email "admin@buyerassist.io"
+      - run: git config --global user.name "Admin BuyerAssist"
       - run: npm run new-version
       - *PERSIST_TO_WORKSPACE
   publish:
     docker:
-      - image: circleci/node:12
+      - image: circleci/node:14
     steps:
       - *ATTACH_WORKSPACE
       - run:
@@ -46,7 +45,7 @@ jobs:
       - run: npm run publish
   publish-layer:
     docker:
-      - image: nikolaik/python-nodejs:python3.7-nodejs12
+      - image: nikolaik/python-nodejs:python3.7-nodejs14
     working_directory: ~/project/layer
     steps:
       - *ATTACH_WORKSPACE
@@ -58,12 +57,12 @@ workflows:
   main:
     jobs:
       - build
-      - test-node12:
+      - test-node14:
           requires:
             - build
       - new-version:
           requires:
-            - test-node12
+            - test-node14
           filters:
             branches:
               only: master
