@@ -1,5 +1,6 @@
 const CorrelationIds = require("@buyerassist/dazn-lambda-powertools-correlation-ids");
 const Log = require("@buyerassist/dazn-lambda-powertools-logger");
+const ba = require("../ba");
 const consts = require("../consts");
 
 function isMatch(event) {
@@ -34,6 +35,7 @@ function captureCorrelationIds(
     correlationIds[consts.X_CORRELATION_ID] =
       apiGatewayRequestId || awsRequestId;
   }
+  ba.updateBARelatedCorrelationIds(correlationIds);
 
   // forward the original User-Agent on
   if (headers[consts.USER_AGENT]) {

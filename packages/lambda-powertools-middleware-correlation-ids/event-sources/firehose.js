@@ -28,6 +28,7 @@ function captureCorrelationIds({ records }, context, sampleDebugLogRate) {
         correlationIds[consts.X_CORRELATION_ID] = awsRequestId;
       }
 
+      ba.updateBARelatedCorrelationIds(correlationIds);
       if (!correlationIds[consts.DEBUG_LOG_ENABLED]) {
         correlationIds[consts.DEBUG_LOG_ENABLED] =
           Math.random() < sampleDebugLogRate ? "true" : "false";

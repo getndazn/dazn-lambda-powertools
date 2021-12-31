@@ -1,6 +1,7 @@
 const CorrelationIds = require("@buyerassist/dazn-lambda-powertools-correlation-ids");
 const Log = require("@buyerassist/dazn-lambda-powertools-logger");
 const consts = require("../consts");
+const ba = require("../ba");
 
 function isMatch(event) {
   if (!event.hasOwnProperty("Records")) {
@@ -60,6 +61,7 @@ function captureCorrelationIds(event, context, sampleDebugLogRate) {
       correlationIds[consts.X_CORRELATION_ID] = awsRequestId;
     }
 
+    ba.updateBARelatedCorrelationIds(correlationIds);
     if (!correlationIds[consts.DEBUG_LOG_ENABLED]) {
       correlationIds[consts.DEBUG_LOG_ENABLED] =
         Math.random() < sampleDebugLogRate ? "true" : "false";
