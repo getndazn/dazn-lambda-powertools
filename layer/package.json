@@ -5,8 +5,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "package": "sam package --template-file template.yml --output-template-file packaged.yml --s3-bucket oss-sar-dazn-lambda-powertools",
-    "publish": "sam publish --template packaged.yml --region us-east-1"
+    "package.disabled": "sam package --template-file template.yml --output-template-file packaged.yml --s3-bucket ",
+    "publish.disabled": "sam publish --template packaged.yml --region us-east-2"
   },
   "keywords": [],
   "author": "Yan Cui",

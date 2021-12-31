@@ -37,6 +37,5 @@ sed "s/${PATTERN}/${VERSION}/g" template.txt >> template.yml
 
 zip -rq layer.zip nodejs
 
-# No layer building required right now
-# npm run package
+npm run package
 npm run publish
