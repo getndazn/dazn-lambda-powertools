@@ -16,12 +16,12 @@ jobs:
       - checkout
       - run: npm ci
       - *PERSIST_TO_WORKSPACE
-  test-node14:
-    docker:
-      - image: circleci/node:14
-    steps:
-      - *ATTACH_WORKSPACE
-      - run: npm test
+  #test-node14:
+  #  docker:
+  #    - image: circleci/node:14
+  #  steps:
+  #    - *ATTACH_WORKSPACE
+  #    - run: npm test
   new-version:
     docker:
       - image: circleci/node:14
@@ -57,12 +57,12 @@ workflows:
   main:
     jobs:
       - build
-      - test-node14:
-          requires:
-            - build
+      #- test-node14:
+      #    requires:
+      #      - build
       - new-version:
-          requires:
-            - test-node14
+          #    requires:
+          #      - test-node14
           filters:
             branches:
               only: master
