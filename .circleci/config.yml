@@ -61,8 +61,8 @@ workflows:
       #    requires:
       #      - build
       - new-version:
-          #    requires:
-          #      - test-node14
+          requires:
+            - build
           filters:
             branches:
               only: master
