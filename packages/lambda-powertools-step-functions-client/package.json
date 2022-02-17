@@ -1,14 +1,14 @@
 {
   "name": "@buyerassist/dazn-lambda-powertools-step-functions-client",
-  "version": "1.29.3",
+  "version": "1.29.4",
   "description": "SFN client wrapper that knows how to forward correlation IDs (captured via @buyerassist/dazn-lambda-powertools-correlation-ids)",
   "main": "index.js",
   "types": "index.d.ts",
   "license": "MIT",
   "author": "Yan Cui",
   "dependencies": {
-    "@buyerassist/dazn-lambda-powertools-correlation-ids": "^1.29.1",
-    "@buyerassist/dazn-lambda-powertools-logger": "^1.29.1"
+    "@buyerassist/dazn-lambda-powertools-correlation-ids": "^1.29.4",
+    "@buyerassist/dazn-lambda-powertools-logger": "^1.29.4"
   },
   "devDependencies": {
     "aws-sdk": "^2.540.0"

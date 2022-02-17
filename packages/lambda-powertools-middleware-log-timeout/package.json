@@ -1,6 +1,6 @@
 {
   "name": "@buyerassist/dazn-lambda-powertools-middleware-log-timeout",
-  "version": "1.29.3",
+  "version": "1.29.4",
   "description": "Middy middleware to log an error message when a function times out.",
   "author": "Yan Cui <theburningmonk@gmail.com>",
   "homepage": "https://github.com/getndazn/dazn-lambda-powertools#readme",
@@ -14,7 +14,7 @@
     "url": "https://github.com/getndazn/dazn-lambda-powertools/issues"
   },
   "dependencies": {
-    "@buyerassist/dazn-lambda-powertools-logger": "^1.29.1"
+    "@buyerassist/dazn-lambda-powertools-logger": "^1.29.4"
   },
   "devDependencies": {
     "@middy/core": "^2.1.0"
