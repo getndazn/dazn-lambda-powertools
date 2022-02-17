@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.29.5](https://github.com/buyerassist-io/dazn-lambda-powertools/compare/v1.29.3...v1.29.5) (2022-02-17)
+
+
+### Bug Fixes
+
+* added git token in build step ([661f684](https://github.com/buyerassist-io/dazn-lambda-powertools/commit/661f684918ce7c558f71483e7656f3ce2e6ace0d))
+
+
+### Features
+
+* deployment script added ([#1](https://github.com/buyerassist-io/dazn-lambda-powertools/issues/1)) ([8fbc079](https://github.com/buyerassist-io/dazn-lambda-powertools/commit/8fbc079ff861ad74ab958ffd146a5e3f12358be8))
+
+
+
+
+
 ## 1.29.4 (2022-02-17)
 
 **Note:** Version bump only for package @buyerassist/dazn-lambda-powertools
