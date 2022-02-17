@@ -1,0 +1,25 @@
+name: 'deployments'
+on:
+  workflow_dispatch:
+
+jobs:
+  publish: 
+    name: publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          registry-url: 'https://registry.npmjs.org'
+      - name: npm install
+        run: npm install
+      
+      - name: Build
+        run: npm run new-version
+
+      - name: Publish
+        run: npm run publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
