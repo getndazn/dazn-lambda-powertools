@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.29.7](https://github.com/buyerassist-io/dazn-lambda-powertools/compare/v1.29.5...v1.29.7) (2022-03-08)
+
+**Note:** Version bump only for package @buyerassist/dazn-lambda-powertools
+
+
+
+
+
 ## [1.29.5](https://github.com/buyerassist-io/dazn-lambda-powertools/compare/v1.29.3...v1.29.5) (2022-02-17)
 
 

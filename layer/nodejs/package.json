@@ -1,7 +1,7 @@
 {
   "name": "dazn-lambda-powertools-layer",
   "private": true,
-  "version": "1.29.5",
+  "version": "1.29.7",
   "description": "",
   "main": "handler.js",
   "scripts": {},
@@ -23,7 +23,7 @@
     "@buyerassist/dazn-lambda-powertools-middleware-stop-infinite-loop": "^1.29.5",
     "@buyerassist/dazn-lambda-powertools-pattern-basic": "^1.29.5",
     "@buyerassist/dazn-lambda-powertools-pattern-obfuscate": "^1.29.5",
-    "@buyerassist/dazn-lambda-powertools-sns-client": "^1.29.5",
+    "@buyerassist/dazn-lambda-powertools-sns-client": "^1.29.7",
     "@buyerassist/dazn-lambda-powertools-sqs-client": "^1.29.5",
     "@buyerassist/dazn-lambda-powertools-step-functions-client": "^1.29.5"
   }
