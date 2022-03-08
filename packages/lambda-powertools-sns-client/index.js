@@ -37,4 +37,28 @@ client.publishWithCorrelationIds = (correlationIds, params, ...args) => {
   return client._publish(extendedParams, ...args);
 };
 
+client._publishBatch = client.publishBatch;
+
+client.publishBatch = (...args) => {
+  return client.publishBatchWithCorrelationIds(CorrelationIds, ...args);
+};
+
+client.publishBatchWithCorrelationIds = (correlationIds, params, ...args) => {
+  const extendedBatchEntries = params.PublishBatchRequestEntries.map(entry => {
+    const newMessageAttributes = addCorrelationIds(
+      correlationIds,
+      entry.MessageAttributes
+    );
+    return {
+      ...entry,
+      MessageAttributes: newMessageAttributes
+    }
+  });
+  const extendedParams = {
+    ...params,
+    PublishBatchRequestEntries: extendedBatchEntries
+  }
+  return client._publishBatch(extendedParams, ...args);
+};
+
 module.exports = client;
