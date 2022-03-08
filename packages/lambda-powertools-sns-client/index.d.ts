@@ -9,5 +9,10 @@ declare const SNS: awsSNS & {
     params: awsSNS.Types.PublishInput,
     callback?: (err: AWSError, data: awsSNS.Types.PublishResponse) => void
   ): Request<awsSNS.Types.PublishResponse, AWSError>;
-};
+  publishBatchWithCorrelationIds(
+    correlationId: CorrelationIds,
+    params: awsSNS.Types.PublishBatchInput,
+    callback?: (err: AWSError, data: awsSNS.Types.PublishBatchResponse) => void
+  ): Request<awsSNS.Types.PublishBatchResponse, AWSError>;
+}
 export default SNS;
