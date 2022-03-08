@@ -1,7 +1,7 @@
 process.env.AWS_NODEJS_CONNECTION_REUSE_ENABLED = "1";
 const SNS = require("aws-sdk/clients/sns");
 const client = new SNS();
-const CorrelationIds = require("@buyerassist/dazn-lambda-powertools-correlation-ids");
+const CorrelationIds = require("dazn-lambda-powertools-correlation-ids");
 
 function addCorrelationIds(correlationIds, messageAttributes) {
   const attributes = {};
