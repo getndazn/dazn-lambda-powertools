@@ -1,7 +1,7 @@
 import awsSNS from "aws-sdk/clients/sns";
 import { AWSError } from "aws-sdk/lib/error";
 import { Request } from "aws-sdk/lib/request";
-import CorrelationIds from "dazn-lambda-powertools-correlation-ids";
+import CorrelationIds from "@dazn/lambda-powertools-correlation-ids";
 
 declare const SNS: awsSNS & {
   publishWithCorrelationIds(

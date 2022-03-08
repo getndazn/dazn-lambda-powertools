@@ -8,7 +8,7 @@ AWS.SNS.prototype.publish = mockPublish;
 AWS.SNS.prototype.publishBatch = mockPublishBatch;
 
 const SNS = require("../index");
-const CorrelationIds = require("dazn-lambda-powertools-correlation-ids");
+const CorrelationIds = require("@dazn/lambda-powertools-correlation-ids");
 
 beforeEach(() => {
   mockPublish.mockReturnValueOnce({
