@@ -1,4 +1,3 @@
-[![CircleCI](https://circleci.com/gh/getndazn/dazn-lambda-powertools.svg?style=svg)](https://circleci.com/gh/getndazn/dazn-lambda-powertools)
 
 # DAZN Lambda Powertools
 
