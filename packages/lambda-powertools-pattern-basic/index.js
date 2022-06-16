@@ -23,6 +23,8 @@ process.env.DATADOG_TAGS = supplementCsv({
   },
 });
 
+process.removeAllListeners('warning');
+
 module.exports = (f) => {
   return middy(f)
     .use(
