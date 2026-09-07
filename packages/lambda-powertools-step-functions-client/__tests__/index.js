@@ -32,7 +32,9 @@ describe('Step functions client', () => {
           input: JSON.stringify(input),
           name: 'no-context'
         }
-        await SFN.startExecution(params).promise()
+        await // The `.promise()` call might be on an JS SDK v2 client API.
+        // If yes, please remove .promise(). If not, remove this comment.
+        SFN.startExecution(params)
 
         const expectedInput = Object.assign({}, input, { __context__: {} })
 
@@ -60,7 +62,11 @@ describe('Step functions client', () => {
           input: JSON.stringify(input),
           name: 'has-context'
         }
-        await SFN.startExecution(params).promise()
+        await // The `.promise()` call might be on an JS SDK v2 client API.
+        // If yes, please remove .promise(). If not, remove this comment.
+        // The `.promise()` call might be on an JS SDK v2 client API.
+        // If yes, please remove .promise(). If not, remove this comment.
+        SFN.startExecution(params)
 
         const expectedInput = Object.assign(
           {},
@@ -87,7 +93,11 @@ describe('Step functions client', () => {
           input: 'dGhpcyBpcyBub3QgSlNPTg==',
           name: 'not-json'
         }
-        await SFN.startExecution(params).promise()
+        await // The `.promise()` call might be on an JS SDK v2 client API.
+        // If yes, please remove .promise(). If not, remove this comment.
+        // The `.promise()` call might be on an JS SDK v2 client API.
+        // If yes, please remove .promise(). If not, remove this comment.
+        SFN.startExecution(params).promise()
 
         expect(mockStartExecution).toBeCalledWith(params)
       })
@@ -110,7 +120,11 @@ describe('Step functions client', () => {
         input: JSON.stringify(input),
         name: 'has-context-child'
       }
-      await SFN.startExecutionWithCorrelationIds(correlationIds, params).promise()
+      await // The `.promise()` call might be on an JS SDK v2 client API.
+      // If yes, please remove .promise(). If not, remove this comment.
+      // The `.promise()` call might be on an JS SDK v2 client API.
+      // If yes, please remove .promise(). If not, remove this comment.
+      SFN.startExecutionWithCorrelationIds(correlationIds, params).promise()
 
       const expectedInput = Object.assign(
         {},

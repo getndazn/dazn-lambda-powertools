@@ -8,10 +8,9 @@
   "author": "Yan Cui",
   "dependencies": {
     "@dazn/lambda-powertools-correlation-ids": "^1.28.1",
-    "@dazn/lambda-powertools-logger": "^1.28.1"
-  },
-  "devDependencies": {
-    "aws-sdk": "^2.540.0"
+    "@dazn/lambda-powertools-logger": "^1.28.1",
+    "@aws-sdk/client-sfn": "3.670.0",
+    "@smithy/smithy-client": "3.4.0"
   },
   "publishConfig": {
     "access": "public"

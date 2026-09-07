@@ -1,16 +1,15 @@
-import StepFunctions from "aws-sdk/clients/stepfunctions";
-import { AWSError } from "aws-sdk/lib/error";
-import { Request } from "aws-sdk/lib/request";
+import { ServiceException } from "@smithy/smithy-client";
+import { SFN as sfn, StartExecutionCommandInput, StartExecutionCommandOutput } from "@aws-sdk/client-sfn";
 import CorrelationIds from "@dazn/lambda-powertools-correlation-ids";
 
-declare const SFN: StepFunctions & {
+declare const SFN: sfn & {
   startExecutionWithCorrelationIds(
     correlationId: CorrelationIds,
-    params: StepFunctions.Types.StartExecutionInput,
+    params: StartExecutionCommandInput,
     callback?: (
-      err: AWSError,
-      data: StepFunctions.Types.StartExecutionOutput
+      err: ServiceException,
+      data: StartExecutionCommandOutput
     ) => void
-  ): Request<StepFunctions.Types.StartExecutionOutput, AWSError>;
+  ): Promise<StartExecutionCommandOutput, ServiceException>;
 };
 export default SFN;
